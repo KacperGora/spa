@@ -3,8 +3,10 @@ import React from "react";
 import logo from "../../images/logo.png";
 import { NavLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 const NavBar = () => {
   const history = useHistory();
+ const isAuth = useSelector((state) => state.auth.isLogged);
   const homeHandler = () => {
     history.push("/");
   };
@@ -30,16 +32,25 @@ const NavBar = () => {
           </li>
           <li>
             <NavLink to="/kontakt" className={`${classes.navLink}`}>
-             Kontakt
+              Kontakt
             </NavLink>
           </li>
+         {isAuth && <li><NavLink to='/profil'className={`${classes.navLink}`}>Profil</NavLink></li>}
           <li>
-            <NavLink
-              to="/login"
-              className={`${classes.navLink} ${classes.navCTA}`}
-            >
-              Zaloguj
-            </NavLink>
+            {!isAuth && (
+              <NavLink
+                to="/login"
+                className={`${classes.navLink} ${classes.navCTA}`}
+              >
+                Zaloguj
+              </NavLink>
+            )}
+            {isAuth && (
+              <NavLink
+                to="/calendar"
+                className={`${classes.navLink} ${classes.navCTA}`}
+              >Umów wizytę</NavLink>
+            )}
           </li>
         </ul>
       </nav>

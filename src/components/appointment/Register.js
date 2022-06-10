@@ -3,42 +3,43 @@ import { useHistory } from "react-router-dom";
 import Link from "react-scroll/modules/components/Link";
 
 import NavBar from "../mainPage/NavBar";
+import Spinner from "../UI/Spinner";
 import classes from "./Register.module.css";
 
 const Register = () => {
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [mailIsValid, setMailIsValid] = useState(false);
   const [mailTouched, setMailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const history = useHistory();
   const submitHandler = (e) => {
     e.preventDefault();
-    if (userMail.trim() === "") {
-      setMailIsValid(false);
-      setPasswordTouched(false);
-      return;
-    }
-    setMailIsValid(true);
+    setIsLoading(true);
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: userMail,
+          password: userPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        setIsLoading(false);
+        response.json();
+      })
+      .then((data) => console.log(data));
     setUserMail("");
     setUserPassword("");
   };
 
-    fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw", {
-        method: 'POST',
-        body: JSON.stringify({
-          email: userMail,
-         password: userPassword,
-         returnSecureToken: true
-        }),
-        headers: {
-          'Content-type' : 'application/json'
-        }
-      }
-    ).then(response => response.json()).then(data => console.log(data));
-
-    
   return (
     <section>
       <NavBar />
@@ -72,6 +73,7 @@ const Register = () => {
               Powrót do logowania
             </button>
             <button type="submit">Rejestracja</button>
+            {isLoading && <Spinner />}
           </form>
           {!mailIsValid && <p>Invalid email</p>}
         </div>

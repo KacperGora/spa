@@ -8,7 +8,7 @@ import NavBar from "../mainPage/NavBar";
 import plLocale from "@fullcalendar/core/locales/pl";
 
 import Modal from "../UI/Modal";
-import { modalActions } from "../../store/store";
+import { modalActions } from "../../store/modalSlice";
 import {useSelector, useDispatch} from 'react-redux'
 const Calendar = () => {
 
