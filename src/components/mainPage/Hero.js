@@ -2,6 +2,7 @@ import classes from "./Hero.module.css";
 import React from "react";
 import heroImg from '../../images/heroImg.jpg'
 import Slider from "../UI/Slider";
+import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <section className={classes.hero}>
@@ -19,9 +20,13 @@ const Hero = () => {
             incidunt perspiciatis? Ut voluptates quia vel temporibus incidunt ut
             officia perspiciatis?
           </p>
-          <a href="#" className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}>
+          <Link
+            to="/login"
+            className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
+          >
             Zadbaj o swoje dłonie
-          </a>
+          </Link>
+          
           <a href="#" className={`${classes.btn} ${classes.outline}`}>
             Dowiedz się więcej
           </a>

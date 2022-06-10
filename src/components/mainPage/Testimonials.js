@@ -5,16 +5,12 @@ import i2 from "../../images/face2.jpg";
 import i3 from "../../images/face3.jpg";
 import i4 from "../../images/face4.jpg";
 import g1 from "../../images/g1.jpg";
-import g2 from "../../images/g2.jpg";
 import g3 from "../../images/g3.jpg";
 import g4 from "../../images/g4.jpg";
-import g5 from "../../images/g5.jpg";
 import g6 from "../../images/g6.jpg";
 import g7 from "../../images/g7.jpg";
-import g8 from "../../images/g8.jpg";
 import g9 from "../../images/g9.jpg";
-import g10 from "../../images/g10.jpg";
-import g11 from "../../images/g11.jpg";
+
 const Testimonials = () => {
   return (
     <section className={`${classes.grid2} ${classes.testimonialSection}`}>

@@ -1,8 +1,8 @@
 import { Fragment } from "react"
-import Hero from "../components/layout/Hero";
-import HowItWorks from "../components/layout/HowItWorks";
-import NavBar from "../components/layout/NavBar";
-import Testimonials from "../components/layout/Testimonials";
+import Hero from "../components/mainPage/Hero";
+import HowItWorks from "../components/mainPage/HowItWorks";
+import NavBar from "../components//mainPage/NavBar";
+import Testimonials from "../components/mainPage/Testimonials";
 
 const Main = () => {
     return (

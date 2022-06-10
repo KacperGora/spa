@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Appointment from "../components/appointment/Appointment";
-import NavBar from "../components/layout/NavBar";
+import NavBar from "../components/mainPage/NavBar";
 
 
 const AppointmentPage = () => {

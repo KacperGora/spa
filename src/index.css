@@ -36,6 +36,9 @@ default 1
 }
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
+    
+  background-color: #fbf2f4;
 }
 body {
  font-family: 'Raleway', sans-serif;
