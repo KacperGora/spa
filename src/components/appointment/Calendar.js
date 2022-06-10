@@ -9,20 +9,24 @@ import plLocale from "@fullcalendar/core/locales/pl";
 
 import Modal from "../UI/Modal";
 import { modalActions } from "../../store/modalSlice";
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
+import AppointmentForm from "./AppointmentForm";
 const Calendar = () => {
-
-  const modal = useSelector(state => state.modal.isVisible)
-   const dispatch = useDispatch()
-
-    const addEventHandler = (e) => {
-     dispatch(modalActions.modalToggle())
-     console.log(e)
-    }
+  const modal = useSelector((state) => state.modal.isVisible);
+  const events = useSelector((state)=> state.calendar.meetings)
+  const dispatch = useDispatch();
+  const addEventHandler = (e) => {
+    dispatch(modalActions.modalToggle());
+    console.log(e);
+  };
   return (
     <section>
       <NavBar />
-      {modal && <Modal />}
+      {modal && (
+        <Modal>
+          <AppointmentForm />
+        </Modal>
+      )}
       <FullCalendar
         locale={plLocale}
         headerToolbar={{
@@ -30,6 +34,7 @@ const Calendar = () => {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
+       
         select={addEventHandler}
         // select={this.handleDateSelect}
         // eventContent={renderEventContent} // custom render function
@@ -40,6 +45,8 @@ const Calendar = () => {
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
+        slotDuration={'02:00'}
+        events = {events}
         plugins={[
           dayGridPlugin,
           interactionPlugin,
@@ -47,7 +54,6 @@ const Calendar = () => {
           timeGridPlugin,
         ]}
         initialView="dayGridMonth"
-       
       />
     </section>
   );

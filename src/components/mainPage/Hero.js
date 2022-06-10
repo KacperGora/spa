@@ -1,9 +1,11 @@
 import classes from "./Hero.module.css";
 import React from "react";
-import heroImg from '../../images/heroImg.jpg'
+
 import Slider from "../UI/Slider";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Hero = () => {
+  const isAuth = useSelector((state) => state.auth.isLogged);
   return (
     <section className={classes.hero}>
       <div className={classes.grid}>
@@ -20,13 +22,23 @@ const Hero = () => {
             incidunt perspiciatis? Ut voluptates quia vel temporibus incidunt ut
             officia perspiciatis?
           </p>
-          <Link
-            to="/login"
-            className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-          >
-            Zadbaj o swoje dłonie
-          </Link>
-          
+          {isAuth && (
+            <Link
+              to="/calendar"
+              className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
+            >
+              Zadbaj o swoje dłonie
+            </Link>
+          )}
+          {!isAuth && (
+            <Link
+              to="/login"
+              className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
+            >
+              Zadbaj o swoje dłonie
+            </Link>
+          )}
+
           <a href="#" className={`${classes.btn} ${classes.outline}`}>
             Dowiedz się więcej
           </a>

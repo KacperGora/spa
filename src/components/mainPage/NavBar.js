@@ -4,6 +4,7 @@ import logo from "../../images/logo.png";
 import { NavLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Link from "react-scroll/modules/components/Link";
 const NavBar = () => {
   const history = useHistory();
  const isAuth = useSelector((state) => state.auth.isLogged);
@@ -35,7 +36,32 @@ const NavBar = () => {
               Kontakt
             </NavLink>
           </li>
-         {isAuth && <li><NavLink to='/profil'className={`${classes.navLink}`}>Profil</NavLink></li>}
+          {isAuth && (
+            <li>
+              <div className={classes.dropdown}>
+                <NavLink to="/profil" className={`${classes.navLink}`}>
+                  Profil
+                </NavLink>
+                <ul className={classes.dropdownContent}>
+                  <li>
+                    <NavLink className={classes.link} to="'/">
+                      Oferta
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className={classes.link} to="'/">
+                      Praca
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className={classes.link}  to="'/">
+                      Wyloguj
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          )}
           <li>
             {!isAuth && (
               <NavLink
@@ -49,7 +75,9 @@ const NavBar = () => {
               <NavLink
                 to="/calendar"
                 className={`${classes.navLink} ${classes.navCTA}`}
-              >Umów wizytę</NavLink>
+              >
+                Umów wizytę
+              </NavLink>
             )}
           </li>
         </ul>

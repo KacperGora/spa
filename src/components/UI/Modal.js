@@ -16,16 +16,7 @@ const ModalOverlay = (props) => {
     <div className={classes.modal}>
       <div className={classes.content}>
         {props.children}
-        <h2>Dodaj spotkanie</h2>
-        <input type="datetime-local"></input>
-        <input type="text" placeholder="Imię"></input>
-        <input placeholder="Nazwisko" t></input>
-        <select>
-          <option>Hybryda</option>
-          <option>Żel</option>
-        </select>
-        <button onClick={()=> dispatch(modalActions.modalToggle())}>Anuluj</button>
-        <button>Akceptuj</button>
+     
       </div>
     </div>
   );
