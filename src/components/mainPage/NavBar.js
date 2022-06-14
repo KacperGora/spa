@@ -3,10 +3,13 @@ import React from "react";
 import logo from "../../images/logo.png";
 import { NavLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "react-scroll/modules/components/Link";
+import { loginActions } from "../../store/loginSlice";
 const NavBar = () => {
   const history = useHistory();
+  const dispatch = useDispatch()
+  
  const isAuth = useSelector((state) => state.auth.isLogged);
   const homeHandler = () => {
     history.push("/");
@@ -62,6 +65,9 @@ const NavBar = () => {
               </div>
             </li>
           )}
+          <li>
+            {isAuth && (<button onClick={()=>{dispatch(loginActions.logout()); history.push('/')}}>Wyloguj</button>)}
+          </li>
           <li>
             {!isAuth && (
               <NavLink
