@@ -3,10 +3,12 @@ const modalSlice = createSlice({
   name: "modal",
   initialState: {
     isVisible: false,
+    service : '45'
   },
   reducers: {
     modalToggle(state) {
       state.isVisible = !state.isVisible;
+      state.service = '45'
     },
   },
 });

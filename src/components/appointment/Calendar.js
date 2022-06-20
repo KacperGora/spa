@@ -24,7 +24,7 @@ const Calendar = () => {
 
   const dispatch = useDispatch();
   const addEventHandler = (e) => {
-    console.log(e)
+    setNewDate( new Date(e.startStr))
     dispatch(modalActions.modalToggle());
     dispatch(calendarActions.setDate(e.startStr));
     dispatch(calendarActions.setNewAppointment(e.startStr));
@@ -41,27 +41,34 @@ const Calendar = () => {
       <NavBar />
       {modal && (
         <Modal>
-          <AppointmentForm />
+          <AppointmentForm startDate={newDate} />
         </Modal>
       )}
       <FullCalendar
+        eventDurationEditable ={true}
+        durat
         locale={plLocale}
         headerToolbar={{
           left: "prev,next today",
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        
         select={addEventHandler}
-           weekends={false}
+        eventOverlap={false}
+        weekends={false}
         editable={true}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         slotDuration={"00:15"}
         events={newEvents}
-        eventClick={changeEventHandler
-        }
+        eventColor = {'#378006'}
+        displayEventTime={true}
+        displayEventEnd={true}
+        eventRemove={(e)=>{
+          console.log(e)
+        }}
+        eventClick={changeEventHandler}
         plugins={[
           dayGridPlugin,
           interactionPlugin,

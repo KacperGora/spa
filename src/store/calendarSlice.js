@@ -9,7 +9,7 @@ const calendarSlice = createSlice({
     removeMeeting: "",
     pickedDate: '',
     dateForAppointment: '',
-    service: ''
+    service: '45'
   },
   reducers: {
     setTypeOfService(state, action) {
@@ -28,11 +28,13 @@ const calendarSlice = createSlice({
       state.meeting = {
         title: action.payload.title,
         date: action.payload.date,
+        end: action.payload.end
       };
       state.meetings = [...state.meetings, action.payload];
     },
     addMeeting(state, payload) {
       state.meetings.push(payload);
+      state.service = '45'
     },
     removeMeeting() {},
   },

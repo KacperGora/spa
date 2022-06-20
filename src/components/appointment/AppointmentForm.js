@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calendarActions } from "../../store/calendarSlice";
 import { modalActions } from "../../store/modalSlice";
@@ -14,28 +14,54 @@ import {
   setHours,
   setMinutes,
   getDay,
-  addHours,
   addMinutes,
+  areIntervalsOverlapping,
+ 
 } from "date-fns";
 registerLocale("pl", pl);
 
-const AppointmentForm = () => {
+const AppointmentForm = ({ startDate }) => {
   const [name, setName] = useState("");
   const [secondName, setSecondName] = useState("");
   const service = useSelector((state) => state.calendar.service);
-  const [newDate, setNewDate] = useState(new Date(2022, 5, 20));
+  const [newDate, setNewDate] = useState(
+   startDate)
+
   const [excludedTimes, setExcludedTimes] = useState([]);
   const meetings = useSelector((state) => state.calendar.meetings);
 
   const fullName = `${name} ${secondName} ${service}`;
-  console.log(service);
-  const dispatch = useDispatch();
-  const workingMeeting = { title: fullName, date: newDate };
+    const [isOverlaped, setOverlaped] = useState(false)
 
+  const dispatch = useDispatch();
+
+  const workingMeeting = {
+    title: fullName,
+    date: newDate,
+    end: addMinutes(newDate, service),
+  };
+  useEffect(()=> {
+for (const element of meetings) {
+  setOverlaped(
+    areIntervalsOverlapping(
+      { start: parseISO(element.date), end: parseISO(element.end) },
+      {
+        start: newDate,
+        end: addMinutes(newDate, service),
+      }
+    )
+  );
+}
+  }, [meetings, newDate, service])
+   console.log(isOverlaped) 
   const submitHandler = (e) => {
     e.preventDefault();
+    if(isOverlaped) {
+      alert('wybierz cos innego')
+      return
+    }
     dispatch(calendarActions.setMeeting(workingMeeting));
-    dispatch(calendarActions.addMeeting());
+    dispatch(calendarActions.addMeeting(e));
     dispatch(modalActions.modalToggle());
   };
 
@@ -61,100 +87,105 @@ const AppointmentForm = () => {
     return day !== 0 && day !== 6;
   };
 
+  //=> true)
   let dates = [];
   let dateArr = [];
   meetings.map((item) => dates.push(item.date));
   dates.forEach((date) => dateArr.push(new Date(date)));
 
-  const getExcludedTimes = (date) => {
-    let arrSpecificDates = [];
-    for (let i = 0; i < dateArr.length; i++) {
-      if (
-        moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
-        moment(dateArr[i], moment.ISO_8601).format("YYYY/MM/DD")
-      ) {
-        arrSpecificDates.push(moment(dateArr[i], moment.ISO_8601).toObject());
+  const getExcludedTimes = useCallback(
+    (date) => {
+      let arrSpecificDates = [];
+      for (let i = 0; i < dateArr.length; i++) {
+        if (
+          moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
+          moment(dateArr[i], moment.ISO_8601).format("YYYY/MM/DD")
+        ) {
+          arrSpecificDates.push(moment(dateArr[i], moment.ISO_8601).toObject());
+        }
       }
-    }
 
-    let arrExcludedTimes = [];
-    console.log(service);
-    /// Manicure klasyczny 45 minut
-    if (service === "1") {
-      for (let i = 0; i < arrSpecificDates.length; i++) {
-        const pickedDate = setHours(
-          setMinutes(new Date(), arrSpecificDates[i].minutes),
-          arrSpecificDates[i].hours
-        );
+      let arrExcludedTimes = [];
 
-        arrExcludedTimes.push(
-          pickedDate,
-          addMinutes(pickedDate, 15),
-          addMinutes(pickedDate, 30)
-        );
-        setExcludedTimes(arrExcludedTimes);
+      /// Manicure klasyczny 45 minut
+      if (service === "45") {
+        for (let i = 0; i < arrSpecificDates.length; i++) {
+          const pickedDate = setHours(
+            setMinutes(new Date(), arrSpecificDates[i].minutes),
+            arrSpecificDates[i].hours
+          );
+
+          arrExcludedTimes.push(
+            pickedDate,
+            addMinutes(pickedDate, 15),
+            addMinutes(pickedDate, 30)
+          );
+          setExcludedTimes(arrExcludedTimes);
+        }
       }
-    }
-    /// Manicure hybryda 90 minut
-    if (service === "2") {
-      for (let i = 0; i < arrSpecificDates.length; i++) {
-        const pickedDate = setHours(
-          setMinutes(new Date(), arrSpecificDates[i].minutes),
-          arrSpecificDates[i].hours
-        );
-
-        arrExcludedTimes.push(
-          pickedDate,
-          addMinutes(pickedDate, 15),
-          addMinutes(pickedDate, 30),
-          addMinutes(pickedDate, 45),
-          addMinutes(pickedDate, 60),
-          pickedDate,
-          addMinutes(pickedDate, 75)
-        );
-        setExcludedTimes(arrExcludedTimes);
+      /// Manicure hybryda 90 minut
+      if (service === "90") {
+        for (let i = 0; i < arrSpecificDates.length; i++) {
+          const pickedDate = setHours(
+            setMinutes(new Date(), arrSpecificDates[i].minutes),
+            arrSpecificDates[i].hours
+          );
+          arrExcludedTimes.push(
+            pickedDate,
+            addMinutes(pickedDate, 15),
+            addMinutes(pickedDate, 30),
+            addMinutes(pickedDate, 45),
+            addMinutes(pickedDate, 60),
+            pickedDate,
+            addMinutes(pickedDate, 75)
+          );
+          setExcludedTimes(arrExcludedTimes);
+        }
       }
-    }
-    //Manicure 120 minut
-    if (service === "3") {
-      for (let i = 0; i < arrSpecificDates.length; i++) {
-        const pickedDate = setHours(
-          setMinutes(new Date(), arrSpecificDates[i].minutes),
-          arrSpecificDates[i].hours
-        );
+      //Manicure 120 minut
+      if (service === "120") {
+        for (let i = 0; i < arrSpecificDates.length; i++) {
+          const pickedDate = setHours(
+            setMinutes(new Date(), arrSpecificDates[i].minutes),
+            arrSpecificDates[i].hours
+          );
 
-        arrExcludedTimes.push(
-          pickedDate,
-          addMinutes(pickedDate, 15),
-          addMinutes(pickedDate, 30),
-          addMinutes(pickedDate, 45),
-          addMinutes(pickedDate, 60),
-          addMinutes(pickedDate, 75),
-          addMinutes(pickedDate, 90),
-          addMinutes(pickedDate, 105),
-          
-        );
-        setExcludedTimes(arrExcludedTimes);
+          arrExcludedTimes.push(
+            pickedDate,
+            addMinutes(pickedDate, 15),
+            addMinutes(pickedDate, 30),
+            addMinutes(pickedDate, 45),
+            addMinutes(pickedDate, 60),
+            addMinutes(pickedDate, 75),
+            addMinutes(pickedDate, 90),
+            addMinutes(pickedDate, 105)
+          );
+          setExcludedTimes(arrExcludedTimes);
+        }
       }
-    }
-    if (service === "2") {
-      for (let i = 0; i < arrSpecificDates.length; i++) {
-        const pickedDate = setHours(
-          setMinutes(new Date(), arrSpecificDates[i].minutes),
-          arrSpecificDates[i].hours
-        );
+      if (service === "") {
+        for (let i = 0; i < arrSpecificDates.length; i++) {
+          const pickedDate = setHours(
+            setMinutes(new Date(), arrSpecificDates[i].minutes),
+            arrSpecificDates[i].hours
+          );
 
-        arrExcludedTimes.push(
-          pickedDate,
-          addMinutes(pickedDate, 15),
-          addMinutes(pickedDate, 30),
-          addMinutes(pickedDate, 45),
-          addMinutes(pickedDate, 60)
-        );
-        setExcludedTimes(arrExcludedTimes);
+          arrExcludedTimes.push(
+            pickedDate,
+            addMinutes(pickedDate, 15),
+            addMinutes(pickedDate, 30),
+            addMinutes(pickedDate, 45),
+            addMinutes(pickedDate, 60)
+          );
+          setExcludedTimes(arrExcludedTimes);
+        }
       }
-    }
-  };
+    },
+    [dateArr, service]
+  );
+  useEffect(() => {
+    getExcludedTimes();
+  }, [getExcludedTimes]);
 
   return (
     <div>
@@ -182,6 +213,7 @@ const AppointmentForm = () => {
             placeholderText="Wybierz datę"
           />
           <DatePicker
+         
             onChange={(e) => {
               setNewDate(e);
             }}
@@ -200,6 +232,7 @@ const AppointmentForm = () => {
           />
 
           <input
+            required
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -207,6 +240,7 @@ const AppointmentForm = () => {
             placeholder="Imię"
           />
           <input
+            required
             onChange={(e) => {
               setSecondName(e.target.value);
             }}
@@ -214,13 +248,15 @@ const AppointmentForm = () => {
           />
 
           <select
+            defaultValue={service}
+            required
             onChange={(e) => {
               dispatch(calendarActions.setTypeOfService(e.target.value));
             }}
           >
-            <option value={"1"}>Manicure Klasyczny 40 minut 120zł</option>
-            <option value={"2"}>Manicure Hybrydowy 90 minut 120zł</option>
-            <option value={"3"}>Uzupełnienie Żelowe 120 minut 120zł</option>
+            <option value={"45"}>Manicure Klasyczny 40 minut 120zł</option>
+            <option value={"90"}>Manicure Hybrydowy 90 minut 120zł</option>
+            <option value={"120"}>Uzupełnienie Żelowe 120 minut 120zł</option>
             <option value={"4"}>
               Przedłużenie paznokci żelem 150 minut 120zł
             </option>
