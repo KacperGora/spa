@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import Spinner from '../UI/spinner/Spinner'
+import Spinner from "../UI/spinner/Spinner";
 import classes from "./Login.module.css";
 import { loginActions } from "../../store/loginSlice";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ const Login = () => {
   const history = useHistory();
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+   const [isLoading, setIsLoading] = useState(false);
 
   const loginSubmitHandler = (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ const Login = () => {
 
   const userLogin = useCallback(async () => {
     try {
+      setIsLoading(true)
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw",
         {
@@ -41,7 +43,9 @@ const Login = () => {
         dispatch(loginActions.login());
       }
       const data = await response.json();
-      console.log(data);
+      if (data.email === "admin@test.pl") {
+        dispatch(loginActions.admin());
+      };
     } catch (error) {
       console.log(error.message);
     }
@@ -65,6 +69,7 @@ const Login = () => {
             type="password"
             placeholder="password"
           ></input>
+
           <button>Zaloguj</button>
           <button
             type="submit"
@@ -74,6 +79,7 @@ const Login = () => {
           >
             Nie masz konta?
           </button>
+          {isLoading && <Spinner />}
         </form>
       </section>
       {isLogged && history.push("/")}

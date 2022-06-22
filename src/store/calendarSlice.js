@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 const calendarSlice = createSlice({
   name: "calendar",
@@ -24,6 +25,15 @@ const calendarSlice = createSlice({
     },
     fetchMeetings(state, action) {
       state.meetings = action.payload;
+      console.log(action.payload)
+      for(let i=0; i<action.payload.length; i++){
+
+        state.excludedTimes = [...state.excludedTimes, ...action.payload[i].times]
+      }
+      console.log(state.excludedTimes)
+        // state.excludedTimes = [...action.payload[0].times]     }
+        
+      // state.excludedTimes = [...state.excludedTimes, ...action.payload.times]
     },
     setMeeting(state, action) {
       state.meeting = {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calendarActions } from "../../store/calendarSlice";
 import { modalActions } from "../../store/modalSlice";
@@ -15,7 +15,7 @@ import {
   setMinutes,
   getDay,
   addMinutes,
-  areIntervalsOverlapping,
+  // areIntervalsOverlapping,
   addHours,
 } from "date-fns";
 registerLocale("pl", pl);
@@ -25,7 +25,8 @@ const AppointmentForm = ({ startDate }) => {
   const [secondName, setSecondName] = useState("");
   const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
   const [excludedTimes, setExcludedTimes] = useState([]);
-
+  
+  const auth = useSelector((state)=> state.auth.admin)
   const service = useSelector((state) => state.calendar.service);
   const dates = useSelector((state) => state.calendar.excludedTimes);
 
@@ -33,14 +34,14 @@ const AppointmentForm = ({ startDate }) => {
 
   const fullName = `${name} ${secondName} ${service}`;
   // const [isOverlaped, setOverlaped] = useState(false)
-
+  console.log(auth)
   const workingMeeting = {
     title: fullName,
     date: newDate,
     end: addMinutes(newDate, service),
     times: [],
   };
-  
+
   for (let i = 0; i < service; i = i + 15) {
     workingMeeting.times.push(addMinutes(newDate, i));
   }
@@ -73,25 +74,19 @@ const AppointmentForm = ({ startDate }) => {
     return day !== 0 && day !== 6;
   };
 
-  //=> true)
-
-  let dateArr = [];
-
- 
-
 console.log(dates)
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
 
       for (let i = 0; i < dates.length; i++) {
-        console.log( moment(date, moment.ISO_8601).format("YYYY/MM/DD"));
-        console.log(((new Date(date))));
+        console.log(moment(date, moment.ISO_8601).format("YYYY/MM/DD"));
+        console.log(new Date(date));
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
           moment(dates[i], moment.ISO_8601).format("YYYY/MM/DD")
         ) {
-           arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
+          arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
         }
       }
 
@@ -104,15 +99,14 @@ console.log(dates)
           arrSpecificDates[i].hours
         );
         arrExcludedTimes.push(pickedDate);
-       
       }
-       console.log(arrExcludedTimes);
+
       setExcludedTimes(arrExcludedTimes);
-    
+      console.log(arrExcludedTimes)
     },
-    [dates,]
+    [dates]
   );
-  console.log(excludedTimes);
+
   return (
     <div>
       <h2>Dodaj spotkanie</h2>

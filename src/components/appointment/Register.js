@@ -9,6 +9,7 @@ const Register = () => {
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState(undefined);
   const [mailIsValid, setMailIsValid] = useState(false);
   const [mailTouched, setMailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
@@ -29,16 +30,20 @@ const Register = () => {
           "Content-type": "application/json",
         },
       }
-    )
-      .then((response) => {
-        setIsLoading(false);
-        response.json();
-      })
-      .then((data) => console.log(data));
+    ).then((response) => {
+      if (response.ok) {
+        setStatus(true);
+      }
+      setIsLoading(false);
+      response.json();
+    });
+
     setUserMail("");
     setUserPassword("");
   };
-
+  const historyLoginPush = () => {
+    history.push("/login");
+  };
   return (
     <section>
       <NavBar />
@@ -72,9 +77,16 @@ const Register = () => {
               Powrót do logowania
             </button>
             <button type="submit">Rejestracja</button>
-            {isLoading && <Spinner />}
+            <div style={{ alignContent: "center" }}>
+              {isLoading && <Spinner />}
+            </div>
           </form>
-          {!mailIsValid && <p>Invalid email</p>}
+          {status && (
+            <p style={{ fontSize: "22px" }}>
+              Sukces, za chwilę zostaniesz przekierowana do strony logowania.
+            </p>
+          )}
+          {status && setTimeout(historyLoginPush, 3000)}
         </div>
       </section>
     </section>

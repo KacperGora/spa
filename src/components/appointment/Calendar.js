@@ -15,7 +15,6 @@ import { calendarActions } from "../../store/calendarSlice";
 const Calendar = () => {
   const modal = useSelector((state) => state.modal.isVisible);
   const events = useSelector((state) => state.calendar.meetings);
-  const date = useSelector((state) => state.calendar.pickedDate);
   const [newEvents, setEvents] = useState([]);
   const [newDate, setNewDate] = useState("");
 
