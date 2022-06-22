@@ -1,0 +1,72 @@
+.grid2 {
+  display: grid;
+  grid-template-columns: 60fr 40fr;
+  align-items: center;
+
+}
+.testmionial {
+  padding: 9.6rem;
+}
+.testimonialSection {
+  background-color: #fbf2f4;
+}
+.testimonials {
+  padding: 9.6rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 4.8rem;
+  column-gap: 8rem;
+}
+.testimonialImage {
+  width: 6.4rem;
+  border-radius: 50%;
+}
+.testimonialText {
+  font-size: 1.8rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+  color: #333;
+}
+.subheading {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #3d2b3c;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+  letter-spacing: 0.95px;
+  padding: 0 9.6rem
+}
+.secondary {
+  font-weight: 700;
+  letter-spacing: -0, 5px;
+  color: #333;
+  font-size: 4.4rem;
+  line-height: 1.2;
+  margin-bottom: 9.6rem;
+  padding: 0 9.6rem ;
+}
+.testimonialName {
+  font-size: 1.6rem;
+  color: #777;
+}
+
+.galleryItem img {
+  display: block;
+  width: 100%;
+  transition: all 0.4s;
+}
+
+.galleryItem img:hover {
+  transform: scale(1.1);
+}
+.galleryItem {
+  overflow: hidden;
+}
+.gallery {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+  padding: 1.6rem;
+}

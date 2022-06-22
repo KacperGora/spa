@@ -1,25 +1,26 @@
 import "./App.css";
 
 import { Route, Switch } from "react-router-dom";
-import Main from "./pages/Main";
-import Appointment from "./pages/AppointmentPage";
-import AppointmentPage from "./pages/AppointmentPage";
-import Register from "./components/appointment/Register";
-import Calendar from "./components/appointment/Calendar";
-import LoginPage from "./pages/LoginPage";
-import AboutMe from "./pages/AboutMe";
-import Portfolio from "./pages/Portfolio";
-import Kontakt from "./pages/Kontakt";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { calendarActions } from "./store/calendarSlice";
 
-function App() {
-  const event = useSelector((state) => state.calendar.meeting);
-  let events = useSelector((state) => state.calendar.meetings);
-  const [fetchedItems, setFetchedMeetings] = useState([]);
+import Main from "./pages/mainPage/Main";
+import Register from "./components/appointment/Register";
+import Calendar from "./components/appointment/Calendar";
+import LoginPage from "./pages/loginPage/LoginPage";
+import AboutMe from "./pages/aboutMe/AboutMe";
+import Portfolio from "./pages/portfolio/Portfolio";
+import Kontakt from "./pages/contactUs/Kontakt";
 
+
+function App() {
   const dispatch = useDispatch();
+
+  //new single event
+  const event = useSelector((state) => state.calendar.meeting);
+
+  //sending event to firebase
   useEffect(() => {
     fetch(
       "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings.json",
@@ -32,7 +33,8 @@ function App() {
       }
     ).then((resp) => console.log(resp));
   }, [event]);
-  
+
+  //fetching events from firebase
   useEffect(() => {
     fetch(
       "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings.json"
@@ -61,9 +63,6 @@ function App() {
         </Route>
         <Route path="/login" exact>
           <LoginPage />
-        </Route>
-        <Route path="/appointment" exact>
-          <AppointmentPage />
         </Route>
         <Route path="/register" exact>
           <Register />

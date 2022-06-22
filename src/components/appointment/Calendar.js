@@ -4,10 +4,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import momentPlugin from "@fullcalendar/moment";
-import NavBar from "../mainPage/NavBar";
+import NavBar from "../mainPage/navBarSection/NavBar";
 import plLocale from "@fullcalendar/core/locales/pl";
 
-import Modal from "../UI/Modal";
+import Modal from "../UI/modal/Modal";
 import { modalActions } from "../../store/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import AppointmentForm from "./AppointmentForm";
@@ -24,14 +24,14 @@ const Calendar = () => {
 
   const dispatch = useDispatch();
   const addEventHandler = (e) => {
-    setNewDate( new Date(e.startStr))
+    setNewDate(new Date(e.startStr));
     dispatch(modalActions.modalToggle());
     dispatch(calendarActions.setDate(e.startStr));
     dispatch(calendarActions.setNewAppointment(e.startStr));
   };
-  const changeEventHandler = e => {
-    dispatch(modalActions.modalToggle())
-  }
+  const changeEventHandler = (e) => {
+    dispatch(modalActions.modalToggle());
+  };
 
   useEffect(() => {
     setEvents(events);
@@ -45,8 +45,7 @@ const Calendar = () => {
         </Modal>
       )}
       <FullCalendar
-        eventDurationEditable ={true}
-        durat
+        eventDurationEditable={true}
         locale={plLocale}
         headerToolbar={{
           left: "prev,next today",
@@ -62,11 +61,11 @@ const Calendar = () => {
         dayMaxEvents={true}
         slotDuration={"00:15"}
         events={newEvents}
-        eventColor = {'#378006'}
+        eventColor={"#378006"}
         displayEventTime={true}
         displayEventEnd={true}
-        eventRemove={(e)=>{
-          console.log(e)
+        eventRemove={(e) => {
+          console.log(e);
         }}
         eventClick={changeEventHandler}
         plugins={[

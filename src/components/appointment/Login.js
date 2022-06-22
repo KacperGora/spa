@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import Spinner from "../UI/Spinner";
+import Spinner from '../UI/spinner/Spinner'
 import classes from "./Login.module.css";
 import { loginActions } from "../../store/loginSlice";
 import { useDispatch } from "react-redux";

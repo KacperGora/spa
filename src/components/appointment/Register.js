@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Link from "react-scroll/modules/components/Link";
 
-import NavBar from "../mainPage/NavBar";
-import Spinner from "../UI/Spinner";
+import NavBar from "../mainPage/navBarSection/NavBar";
+import Spinner from "../UI/spinner/Spinner";
 import classes from "./Register.module.css";
 
 const Register = () => {

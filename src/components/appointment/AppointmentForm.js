@@ -16,52 +16,39 @@ import {
   getDay,
   addMinutes,
   areIntervalsOverlapping,
- 
+  addHours,
 } from "date-fns";
 registerLocale("pl", pl);
 
 const AppointmentForm = ({ startDate }) => {
   const [name, setName] = useState("");
   const [secondName, setSecondName] = useState("");
-  const service = useSelector((state) => state.calendar.service);
-  const [newDate, setNewDate] = useState(
-   startDate)
-
+  const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
   const [excludedTimes, setExcludedTimes] = useState([]);
+
+  const service = useSelector((state) => state.calendar.service);
   const meetings = useSelector((state) => state.calendar.meetings);
 
-  const fullName = `${name} ${secondName} ${service}`;
-    const [isOverlaped, setOverlaped] = useState(false)
-
   const dispatch = useDispatch();
+
+  const fullName = `${name} ${secondName} ${service}`;
+  // const [isOverlaped, setOverlaped] = useState(false)
 
   const workingMeeting = {
     title: fullName,
     date: newDate,
     end: addMinutes(newDate, service),
+    times: [],
   };
-  useEffect(()=> {
-for (const element of meetings) {
-  setOverlaped(
-    areIntervalsOverlapping(
-      { start: parseISO(element.date), end: parseISO(element.end) },
-      {
-        start: newDate,
-        end: addMinutes(newDate, service),
-      }
-    )
-  );
-}
-  }, [meetings, newDate, service])
-   console.log(isOverlaped) 
+
+  for (let i = 0; i < service; i = i + 15) {
+    workingMeeting.times.push(addMinutes(newDate, i));
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if(isOverlaped) {
-      alert('wybierz cos innego')
-      return
-    }
     dispatch(calendarActions.setMeeting(workingMeeting));
-    dispatch(calendarActions.addMeeting(e));
+    // dispatch(calendarActions.addMeeting(e));
     dispatch(modalActions.modalToggle());
   };
 
@@ -90,102 +77,41 @@ for (const element of meetings) {
   //=> true)
   let dates = [];
   let dateArr = [];
-  meetings.map((item) => dates.push(item.date));
-  dates.forEach((date) => dateArr.push(new Date(date)));
+  useEffect(() => {
+    console.log(meetings)
+    meetings.forEach((item) => (dates = [...item.times]));
+  }, [meetings]);
 
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
-      for (let i = 0; i < dateArr.length; i++) {
+
+      for (let i = 0; i < dates.length; i++) {
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
-          moment(dateArr[i], moment.ISO_8601).format("YYYY/MM/DD")
+          moment(dates[i], moment.ISO_8601).format("YYYY/MM/DD")
         ) {
-          arrSpecificDates.push(moment(dateArr[i], moment.ISO_8601).toObject());
+          console.log("h");
+          arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
         }
       }
 
       let arrExcludedTimes = [];
-
+      let pickedDate;
       /// Manicure klasyczny 45 minut
-      if (service === "45") {
-        for (let i = 0; i < arrSpecificDates.length; i++) {
-          const pickedDate = setHours(
-            setMinutes(new Date(), arrSpecificDates[i].minutes),
-            arrSpecificDates[i].hours
-          );
+      for (let i = 0; i < arrSpecificDates.length; i++) {
+        pickedDate = setHours(
+          setMinutes(new Date(), arrSpecificDates[i].minutes),
+          arrSpecificDates[i].hours
+        );
+        arrExcludedTimes.push(pickedDate);
+        console.log(arrExcludedTimes);
+      }
 
-          arrExcludedTimes.push(
-            pickedDate,
-            addMinutes(pickedDate, 15),
-            addMinutes(pickedDate, 30)
-          );
-          setExcludedTimes(arrExcludedTimes);
-        }
-      }
-      /// Manicure hybryda 90 minut
-      if (service === "90") {
-        for (let i = 0; i < arrSpecificDates.length; i++) {
-          const pickedDate = setHours(
-            setMinutes(new Date(), arrSpecificDates[i].minutes),
-            arrSpecificDates[i].hours
-          );
-          arrExcludedTimes.push(
-            pickedDate,
-            addMinutes(pickedDate, 15),
-            addMinutes(pickedDate, 30),
-            addMinutes(pickedDate, 45),
-            addMinutes(pickedDate, 60),
-            pickedDate,
-            addMinutes(pickedDate, 75)
-          );
-          setExcludedTimes(arrExcludedTimes);
-        }
-      }
-      //Manicure 120 minut
-      if (service === "120") {
-        for (let i = 0; i < arrSpecificDates.length; i++) {
-          const pickedDate = setHours(
-            setMinutes(new Date(), arrSpecificDates[i].minutes),
-            arrSpecificDates[i].hours
-          );
-
-          arrExcludedTimes.push(
-            pickedDate,
-            addMinutes(pickedDate, 15),
-            addMinutes(pickedDate, 30),
-            addMinutes(pickedDate, 45),
-            addMinutes(pickedDate, 60),
-            addMinutes(pickedDate, 75),
-            addMinutes(pickedDate, 90),
-            addMinutes(pickedDate, 105)
-          );
-          setExcludedTimes(arrExcludedTimes);
-        }
-      }
-      if (service === "") {
-        for (let i = 0; i < arrSpecificDates.length; i++) {
-          const pickedDate = setHours(
-            setMinutes(new Date(), arrSpecificDates[i].minutes),
-            arrSpecificDates[i].hours
-          );
-
-          arrExcludedTimes.push(
-            pickedDate,
-            addMinutes(pickedDate, 15),
-            addMinutes(pickedDate, 30),
-            addMinutes(pickedDate, 45),
-            addMinutes(pickedDate, 60)
-          );
-          setExcludedTimes(arrExcludedTimes);
-        }
-      }
+      setExcludedTimes(arrExcludedTimes);
     },
-    [dateArr, service]
+    [dates]
   );
-  useEffect(() => {
-    getExcludedTimes();
-  }, [getExcludedTimes]);
 
   return (
     <div>
@@ -213,7 +139,6 @@ for (const element of meetings) {
             placeholderText="Wybierz datę"
           />
           <DatePicker
-         
             onChange={(e) => {
               setNewDate(e);
             }}
