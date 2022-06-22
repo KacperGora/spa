@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Link from "react-scroll/modules/components/Link";
 
-import NavBar from "../mainPage/navBarSection/NavBar";
+import NavBar from "../mainPage/NavBar";
 import Spinner from "../UI/spinner/Spinner";
 import classes from "./Register.module.css";
 

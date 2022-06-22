@@ -31,7 +31,7 @@ function App() {
           "Content-type": "application / json",
         },
       }
-    ).then((resp) => console.log(resp));
+    )
   }, [event]);
 
   //fetching events from firebase

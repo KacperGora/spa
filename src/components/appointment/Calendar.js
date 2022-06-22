@@ -4,7 +4,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import momentPlugin from "@fullcalendar/moment";
-import NavBar from "../mainPage/navBarSection/NavBar";
+import NavBar from '../../components/mainPage/NavBar'
 import plLocale from "@fullcalendar/core/locales/pl";
 
 import Modal from "../UI/modal/Modal";
@@ -18,16 +18,14 @@ const Calendar = () => {
   const date = useSelector((state) => state.calendar.pickedDate);
   const [newEvents, setEvents] = useState([]);
   const [newDate, setNewDate] = useState("");
-  const newAppointment = useSelector(
-    (state) => state.calendar.dateForAppointment
-  );
+
 
   const dispatch = useDispatch();
   const addEventHandler = (e) => {
     setNewDate(new Date(e.startStr));
     dispatch(modalActions.modalToggle());
     dispatch(calendarActions.setDate(e.startStr));
-    dispatch(calendarActions.setNewAppointment(e.startStr));
+   
   };
   const changeEventHandler = (e) => {
     dispatch(modalActions.modalToggle());

@@ -27,7 +27,7 @@ const AppointmentForm = ({ startDate }) => {
   const [excludedTimes, setExcludedTimes] = useState([]);
 
   const service = useSelector((state) => state.calendar.service);
-  const meetings = useSelector((state) => state.calendar.meetings);
+  const dates = useSelector((state) => state.calendar.excludedTimes);
 
   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ const AppointmentForm = ({ startDate }) => {
     end: addMinutes(newDate, service),
     times: [],
   };
-
+  
   for (let i = 0; i < service; i = i + 15) {
     workingMeeting.times.push(addMinutes(newDate, i));
   }
@@ -48,7 +48,6 @@ const AppointmentForm = ({ startDate }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(calendarActions.setMeeting(workingMeeting));
-    // dispatch(calendarActions.addMeeting(e));
     dispatch(modalActions.modalToggle());
   };
 
@@ -75,24 +74,24 @@ const AppointmentForm = ({ startDate }) => {
   };
 
   //=> true)
-  let dates = [];
-  let dateArr = [];
-  useEffect(() => {
-    console.log(meetings)
-    meetings.forEach((item) => (dates = [...item.times]));
-  }, [meetings]);
 
+  let dateArr = [];
+
+ 
+
+console.log(dates)
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
 
       for (let i = 0; i < dates.length; i++) {
+        console.log( moment(date, moment.ISO_8601).format("YYYY/MM/DD"));
+        console.log(((new Date(date))));
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
           moment(dates[i], moment.ISO_8601).format("YYYY/MM/DD")
         ) {
-          console.log("h");
-          arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
+           arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
         }
       }
 
@@ -101,18 +100,19 @@ const AppointmentForm = ({ startDate }) => {
       /// Manicure klasyczny 45 minut
       for (let i = 0; i < arrSpecificDates.length; i++) {
         pickedDate = setHours(
-          setMinutes(new Date(), arrSpecificDates[i].minutes),
+          setMinutes(new Date(date), arrSpecificDates[i].minutes),
           arrSpecificDates[i].hours
         );
         arrExcludedTimes.push(pickedDate);
-        console.log(arrExcludedTimes);
+       
       }
-
+       console.log(arrExcludedTimes);
       setExcludedTimes(arrExcludedTimes);
+    
     },
-    [dates]
+    [dates,]
   );
-
+  console.log(excludedTimes);
   return (
     <div>
       <h2>Dodaj spotkanie</h2>

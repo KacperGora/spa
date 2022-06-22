@@ -4,7 +4,7 @@ import logo from "../../images/logo.png";
 import { NavLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "react-scroll/modules/components/Link";
+
 import { loginActions } from "../../store/loginSlice";
 const NavBar = () => {
   const history = useHistory();
