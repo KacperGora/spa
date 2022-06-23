@@ -38,6 +38,7 @@ const calendarSlice = createSlice({
         date: action.payload.date,
         end: action.payload.end,
         times: action.payload.times,
+        serviceName: action.payload.serviceName
       };
       state.meetings = [...state.meetings, action.payload];
       state.excludedTimes = [...state.excludedTimes, ...action.payload.times];

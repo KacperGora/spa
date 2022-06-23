@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-
+import { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+
+import { loginActions } from "../../../store/loginSlice";
 
 import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Login.module.css";
-import { loginActions } from "../../../store/loginSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,7 @@ const Login = () => {
   const history = useHistory();
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginSubmitHandler = (e) => {
     e.preventDefault();
@@ -23,7 +22,7 @@ const Login = () => {
 
   const userLogin = useCallback(async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw",
         {
@@ -46,7 +45,6 @@ const Login = () => {
       if (data.email === "admin@test.pl") {
         dispatch(loginActions.admin(true));
       }
-     
     } catch (error) {
       console.log(error.message);
     }

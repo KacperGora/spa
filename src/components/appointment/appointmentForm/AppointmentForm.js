@@ -26,13 +26,35 @@ const AppointmentForm = ({ startDate }) => {
   const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
   const [excludedTimes, setExcludedTimes] = useState([]);
   const meetings = useSelector((state) => state.calendar.meetings);
-  const auth = useSelector((state) => state.auth.admin);
   const service = useSelector((state) => state.calendar.service);
   const dates = useSelector((state) => state.calendar.excludedTimes);
 
   const dispatch = useDispatch();
+  let serviceName = "";
+switch (service) {
+  case "45":
+    serviceName = "Manicure Klasyczny";
+    break;
 
-  const fullName = `${name} ${secondName}`;
+  case "90":
+    serviceName = "Manicure Hybrydowy";
+    break;
+  case "120":
+    serviceName = "Uzupełnienie żelowe";
+    break;
+  case "150":
+    serviceName = "Przedłużanie paznokci żelem";
+    break;
+  case "40":
+    serviceName = "Pedicure";
+    break;
+  default:
+    serviceName = "Nie podano usługi";
+}
+
+  const fullName = `${name} ${secondName} ${serviceName}`;
+
+  
 
   const [isOverlapped, setOverlapped] = useState(false);
   const workingMeeting = {
@@ -40,6 +62,7 @@ const AppointmentForm = ({ startDate }) => {
     date: newDate,
     end: addMinutes(newDate, service),
     times: [],
+    serviceName: serviceName
   };
 
   for (let i = 0; i < service; i = i + 15) {
@@ -118,7 +141,7 @@ const AppointmentForm = ({ startDate }) => {
     },
     [dates]
   );
-  console.log(workingMeeting.date, workingMeeting.end);
+
   useEffect(() => {
     meetings.forEach((meeting) =>
       setOverlapped(
@@ -136,7 +159,6 @@ const AppointmentForm = ({ startDate }) => {
     );
   }, [meetings, workingMeeting.date, workingMeeting.end]);
 
-  console.log(isOverlapped);
   return (
     <div>
       <h2>Dodaj spotkanie</h2>
@@ -209,7 +231,7 @@ const AppointmentForm = ({ startDate }) => {
             <option value={"150"}>
               Przedłużenie paznokci żelem 150 minut 120zł
             </option>
-            <option value={"45"}>Pedicure</option>
+            <option value={"40"}>Pedicure</option>
           </select>
           <div className={classes.actions}>
             <button onClick={() => dispatch(modalActions.modalToggle())}>

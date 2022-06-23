@@ -20,7 +20,7 @@ const Calendar = () => {
   const events = useSelector((state) => state.calendar.meetings);
   const [newEvents, setEvents] = useState([]);
   const [newDate, setNewDate] = useState("");
-  const [eventClicked, setEventClicked] = useState(false);
+
   const auth = useSelector((state) => state.auth.admin);
 
   const dispatch = useDispatch();
@@ -32,10 +32,12 @@ const Calendar = () => {
   // const changeEventHandler = (e) => {
   //   dispatch(modalActions.modalToggle())
   // };
-  let eventsWithNoNames = []
-events.forEach(event => eventsWithNoNames.push({date: event.date, end: event.end}))
-console.log(auth)
-  
+  let eventsWithNoNames = [];
+  events.forEach((event) =>
+    eventsWithNoNames.push({title: event.serviceName, date: event.date, end: event.end })
+  );
+  console.log(auth);
+
   useEffect(() => {
     setEvents(events);
   }, [events]);
@@ -55,11 +57,19 @@ console.log(auth)
         //   console.log(e);
         // }}
         locale={plLocale}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay, list",
-        }}
+        headerToolbar={
+          auth
+            ? {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay, listWeek",
+              }
+            : {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
+              }
+        }
         select={addEventHandler}
         eventOverlap={false}
         weekends={false}
@@ -68,13 +78,9 @@ console.log(auth)
         selectMirror={true}
         dayMaxEvents={true}
         slotDuration={"00:15"}
-        events={ auth ? events:
-         eventsWithNoNames
-        }
-       
+        events={auth ? events : eventsWithNoNames}
         eventColor={"#378006"}
         displayEventTime={true}
-        
         displayEventEnd={true}
         // eventClick={changeEventHandler}
         plugins={[
