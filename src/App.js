@@ -2,7 +2,7 @@ import "./App.css";
 
 import { Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { calendarActions } from "./store/calendarSlice";
 
 import Main from "./pages/mainPage/Main";
@@ -12,14 +12,14 @@ import LoginPage from "./pages/loginPage/LoginPage";
 import AboutMe from "./pages/aboutMe/AboutMe";
 import Portfolio from "./pages/portfolio/Portfolio";
 import Kontakt from "./pages/contactUs/Kontakt";
-
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const dispatch = useDispatch();
-  const admin = useSelector(state => state.auth.admin)
   //new single event
   const event = useSelector((state) => state.calendar.meeting);
-  console.log(admin);
+  
+
   //sending event to firebase
   useEffect(() => {
     fetch(
@@ -31,7 +31,7 @@ function App() {
           "Content-type": "application / json",
         },
       }
-    )
+    );
   }, [event]);
 
   //fetching events from firebase
@@ -48,28 +48,18 @@ function App() {
         dispatch(calendarActions.fetchMeetings(fetchedMeetings));
       });
   }, []);
-
+  // const userName = useSelector((state) => state.user.user[0].name);
+  // console.log(userName);
   return (
     <div>
       <Switch>
-        <Route path="/about" exact>
-          <AboutMe />
-        </Route>
-        <Route path="/portfolio" exact>
-          <Portfolio />
-        </Route>
-        <Route path="/kontakt" exact>
-          <Kontakt />
-        </Route>
-        <Route path="/login" exact>
-          <LoginPage />
-        </Route>
-        <Route path="/register" exact>
-          <Register />
-        </Route>
-        <Route path="/calendar" exact>
-          <Calendar />
-        </Route>
+        <Route component={AboutMe} path="/about" exact />
+        <Route component={Portfolio} path="/portfolio" exact />
+        <Route component={Kontakt} path="/kontakt" exact />
+        <Route component={LoginPage} path="/login" exact />
+        <Route component={Register} path="/register" exact />
+        <Route component={Calendar} path="/calendar" exact />
+        <Route component={Profile} path="/profile" exact />
         <Route path="*">
           <Main />
         </Route>

@@ -47,26 +47,10 @@ const NavBar = () => {
           {isAuth && (
             <li>
               <div className={classes.dropdown}>
-                <NavLink to="/profil" className={`${classes.navLink}`}>
+                <NavLink to="/profile" className={`${classes.navLink}`}>
                   Profil
                 </NavLink>
-                <ul className={classes.dropdownContent}>
-                  <li>
-                    <NavLink className={classes.link} to="'/">
-                      Oferta
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className={classes.link} to="'/">
-                      Praca
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className={classes.link} to="'/">
-                      Wyloguj
-                    </NavLink>
-                  </li>
-                </ul>
+                
               </div>
             </li>
           )}

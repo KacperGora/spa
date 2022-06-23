@@ -6,6 +6,8 @@ import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Register.module.css";
 
 const Register = () => {
+  const [userName, setUserName] = useState('')
+  const [userSecondName, setUserSecondName] = useState('')
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +35,22 @@ const Register = () => {
     ).then((response) => {
       if (response.ok) {
         setStatus(true);
+         fetch(
+           "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json",
+           {
+             method: "POST",
+             body: JSON.stringify({
+              email: userMail,
+              name: userName,
+              secondName: userSecondName,
+              meetings: [],
+
+             }),
+             headers: {
+               "Content-type": "application / json",
+             },
+           }
+         );
       }
       setIsLoading(false);
       response.json();
@@ -50,6 +68,8 @@ const Register = () => {
       <section className={classes.container}>
         <div className={classes.container}>
           <form onSubmit={submitHandler}>
+            <input onChange={(e)=> setUserName(e.target.value)} minLength='4' type='text' placeholder="Imię"/>
+            <input onChange={(e)=> {setUserSecondName(e.target.value) }} placeholder='Nazwisko' type='text' />
             <input
               onChange={(e) => setUserMail(e.target.value)}
               type="mail"

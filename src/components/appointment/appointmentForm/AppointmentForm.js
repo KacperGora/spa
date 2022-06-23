@@ -21,48 +21,52 @@ import {
 registerLocale("pl", pl);
 
 const AppointmentForm = ({ startDate }) => {
-  const [name, setName] = useState("");
-  const [secondName, setSecondName] = useState("");
+  const loggedUserName = useSelector((state) => state.user.user.name);
+  const loggedUserSecondName = useSelector(
+    (state) => state.user.user.secondName
+  );
+  const [name, setName] = useState(loggedUserName);
+  const [secondName, setSecondName] = useState(loggedUserSecondName);
   const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
   const [excludedTimes, setExcludedTimes] = useState([]);
   const meetings = useSelector((state) => state.calendar.meetings);
   const service = useSelector((state) => state.calendar.service);
   const dates = useSelector((state) => state.calendar.excludedTimes);
+  const loggedUserMail = useSelector((state) => state.user.user.email);
 
   const dispatch = useDispatch();
   let serviceName = "";
-switch (service) {
-  case "45":
-    serviceName = "Manicure Klasyczny";
-    break;
+  switch (service) {
+    case "45":
+      serviceName = "Manicure Klasyczny";
+      break;
 
-  case "90":
-    serviceName = "Manicure Hybrydowy";
-    break;
-  case "120":
-    serviceName = "Uzupełnienie żelowe";
-    break;
-  case "150":
-    serviceName = "Przedłużanie paznokci żelem";
-    break;
-  case "40":
-    serviceName = "Pedicure";
-    break;
-  default:
-    serviceName = "Nie podano usługi";
-}
+    case "90":
+      serviceName = "Manicure Hybrydowy";
+      break;
+    case "120":
+      serviceName = "Uzupełnienie żelowe";
+      break;
+    case "150":
+      serviceName = "Przedłużanie paznokci żelem";
+      break;
+    case "40":
+      serviceName = "Pedicure";
+      break;
+    default:
+      serviceName = "Nie podano usługi";
+  }
 
-  const fullName = `${name} ${secondName} ${serviceName}`;
-
-  
-
+  const fullName = `${name} ${secondName}`;
+  console.log(loggedUserMail);
   const [isOverlapped, setOverlapped] = useState(false);
   const workingMeeting = {
     title: fullName,
     date: newDate,
     end: addMinutes(newDate, service),
     times: [],
-    serviceName: serviceName
+    serviceName: serviceName,
+    email: loggedUserMail,
   };
 
   for (let i = 0; i < service; i = i + 15) {
@@ -70,16 +74,6 @@ switch (service) {
   }
 
   const submitHandler = (e) => {
-    if (
-      name.trim() === "" ||
-      name.trim().length < 2 ||
-      secondName.trim() === "" ||
-      secondName.trim().length < 2
-    ) {
-      alert("Uzupelnij dane");
-      e.preventDefault();
-      return;
-    }
     if (isOverlapped) {
       e.preventDefault();
       return;
@@ -203,6 +197,7 @@ switch (service) {
           />
 
           <input
+            value={loggedUserName}
             required
             onChange={(e) => {
               setName(e.target.value);
@@ -211,6 +206,7 @@ switch (service) {
             placeholder="Imię"
           />
           <input
+            value={loggedUserSecondName}
             required
             onChange={(e) => {
               setSecondName(e.target.value);

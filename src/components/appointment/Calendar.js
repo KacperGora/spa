@@ -20,7 +20,7 @@ const Calendar = () => {
   const events = useSelector((state) => state.calendar.meetings);
   const [newEvents, setEvents] = useState([]);
   const [newDate, setNewDate] = useState("");
-
+ const meetings = useSelector((state) => state.calendar.meetings);
   const auth = useSelector((state) => state.auth.admin);
 
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const Calendar = () => {
   // };
   let eventsWithNoNames = [];
   events.forEach((event) =>
-    eventsWithNoNames.push({title: event.serviceName, date: event.date, end: event.end })
+    eventsWithNoNames.push({title:'Termin niedostępny', date: event.date, end: event.end })
   );
   console.log(auth);
 
