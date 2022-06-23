@@ -1,15 +1,15 @@
 import React from "react";
 import classes from "./Testimonials.module.css";
-import i1 from "../../images/face1.jpg";
-import i2 from "../../images/face2.jpg";
-import i3 from "../../images/face3.jpg";
-import i4 from "../../images/face4.jpg";
-import g1 from "../../images/g1.jpg";
-import g3 from "../../images/g3.jpg";
-import g4 from "../../images/g4.jpg";
-import g6 from "../../images/g6.jpg";
-import g7 from "../../images/g7.jpg";
-import g9 from "../../images/g9.jpg";
+import i1 from "../../../images/face1.jpg";
+import i2 from "../../../images/face2.jpg";
+import i3 from "../../../images/face3.jpg";
+import i4 from "../../../images/face4.jpg";
+import g1 from "../../../images/g1.jpg";
+import g3 from "../../../images/g3.jpg";
+import g4 from "../../../images/g4.jpg";
+import g6 from "../../../images/g6.jpg";
+import g7 from "../../../images/g7.jpg";
+import g9 from "../../../images/g9.jpg";
 
 const Testimonials = () => {
   return (

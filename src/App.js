@@ -6,7 +6,7 @@ import { useEffect} from "react";
 import { calendarActions } from "./store/calendarSlice";
 
 import Main from "./pages/mainPage/Main";
-import Register from "./components/appointment/Register";
+import Register from "./components/auth/register/Register";
 import Calendar from "./components/appointment/Calendar";
 import LoginPage from "./pages/loginPage/LoginPage";
 import AboutMe from "./pages/aboutMe/AboutMe";
@@ -16,10 +16,10 @@ import Kontakt from "./pages/contactUs/Kontakt";
 
 function App() {
   const dispatch = useDispatch();
-
+  const admin = useSelector(state => state.auth.admin)
   //new single event
   const event = useSelector((state) => state.calendar.meeting);
-
+  console.log(admin);
   //sending event to firebase
   useEffect(() => {
     fetch(

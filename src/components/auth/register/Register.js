@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import NavBar from "../mainPage/NavBar";
-import Spinner from "../UI/spinner/Spinner";
+import NavBar from "../../layout/navBar/NavBar";
+import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Register.module.css";
 
 const Register = () => {
@@ -10,7 +10,7 @@ const Register = () => {
   const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState(undefined);
-  const [mailIsValid, setMailIsValid] = useState(false);
+  
   const [mailTouched, setMailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const history = useHistory();
@@ -68,7 +68,9 @@ const Register = () => {
               onBlur={() => {
                 setPasswordTouched(true);
               }}
-            ></input>
+            >
+              
+            </input>
             <button
               onClick={() => {
                 history.push("/login");
@@ -77,7 +79,7 @@ const Register = () => {
               Powrót do logowania
             </button>
             <button type="submit">Rejestracja</button>
-            <div style={{ alignContent: "center" }}>
+            <div>
               {isLoading && <Spinner />}
             </div>
           </form>

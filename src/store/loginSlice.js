@@ -8,12 +8,13 @@ const loginSlice = createSlice({
   reducers: {
     login(state) {
       state.isLogged = true;
+      
     },
     logout(state) {
       state.isLogged = false;
     },
-    admin(state){
-      state.admin = true
+    admin(state, action){
+      state.admin = action.payload
     }
   },
 });

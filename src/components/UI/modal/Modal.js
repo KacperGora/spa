@@ -7,13 +7,20 @@ import classes from "./Modal.module.css";
 
 const Backdrop = (props) => {
   const dispatch = useDispatch();
-  return <div onClick={()=> {dispatch(modalActions.modalToggle())}} className={classes.backdrop} />;
+  return (
+    <div
+      onClick={() => {
+        dispatch(modalActions.modalToggle());
+      }}
+      className={classes.backdrop}
+    />
+  );
 };
 
 const ModalOverlay = (props) => {
    const dispatch = useDispatch();
   return (
-    <div className={classes.modal}>
+    <div  className={classes.modal}>
       <div className={classes.content}>
         {props.children}
      
@@ -30,7 +37,7 @@ const Modal = (props) => {
     <Fragment>
       {ReactDOM.createPortal(<Backdrop/>, portalElement)}
       {ReactDOM.createPortal(
-        <ModalOverlay>{props.children}</ModalOverlay>,
+        <ModalOverlay >{props.children}</ModalOverlay>,
         portalElement
       )}
     </Fragment>

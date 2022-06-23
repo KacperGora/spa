@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import Spinner from "../UI/spinner/Spinner";
+import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Login.module.css";
-import { loginActions } from "../../store/loginSlice";
+import { loginActions } from "../../../store/loginSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -44,8 +44,9 @@ const Login = () => {
       }
       const data = await response.json();
       if (data.email === "admin@test.pl") {
-        dispatch(loginActions.admin());
-      };
+        dispatch(loginActions.admin(true));
+      }
+     
     } catch (error) {
       console.log(error.message);
     }

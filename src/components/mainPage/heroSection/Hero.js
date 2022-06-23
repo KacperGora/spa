@@ -1,7 +1,7 @@
 import classes from "./Hero.module.css";
 import React from "react";
 
-import Slider from '../UI/Slider'
+import Slider from '../../UI/slider/Slider'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 const Hero = () => {

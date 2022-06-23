@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import NavBar from "../../components/mainPage/NavBar";
+import NavBar from "../../components/layout/navBar/NavBar";
 import classes from "./Kontakt.module.css";
 
 const Kontakt = () => {

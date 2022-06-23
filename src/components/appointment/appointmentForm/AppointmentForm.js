@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { calendarActions } from "../../store/calendarSlice";
-import { modalActions } from "../../store/modalSlice";
+import { calendarActions } from "../../../store/calendarSlice";
+import { modalActions } from "../../../store/modalSlice";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import classes from "./AppointmentForm.module.css";
-import "./react-datepicker.css";
+import "../react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
 
@@ -15,7 +15,7 @@ import {
   setMinutes,
   getDay,
   addMinutes,
-  // areIntervalsOverlapping,
+  areIntervalsOverlapping,
   addHours,
 } from "date-fns";
 registerLocale("pl", pl);
@@ -25,16 +25,16 @@ const AppointmentForm = ({ startDate }) => {
   const [secondName, setSecondName] = useState("");
   const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
   const [excludedTimes, setExcludedTimes] = useState([]);
-  
-  const auth = useSelector((state)=> state.auth.admin)
+  const meetings = useSelector((state) => state.calendar.meetings);
+  const auth = useSelector((state) => state.auth.admin);
   const service = useSelector((state) => state.calendar.service);
   const dates = useSelector((state) => state.calendar.excludedTimes);
 
   const dispatch = useDispatch();
 
-  const fullName = `${name} ${secondName} ${service}`;
-  // const [isOverlaped, setOverlaped] = useState(false)
-  console.log(auth)
+  const fullName = `${name} ${secondName}`;
+
+  const [isOverlapped, setOverlapped] = useState(false);
   const workingMeeting = {
     title: fullName,
     date: newDate,
@@ -47,7 +47,22 @@ const AppointmentForm = ({ startDate }) => {
   }
 
   const submitHandler = (e) => {
+    if (
+      name.trim() === "" ||
+      name.trim().length < 2 ||
+      secondName.trim() === "" ||
+      secondName.trim().length < 2
+    ) {
+      alert("Uzupelnij dane");
+      e.preventDefault();
+      return;
+    }
+    if (isOverlapped) {
+      e.preventDefault();
+      return;
+    }
     e.preventDefault();
+
     dispatch(calendarActions.setMeeting(workingMeeting));
     dispatch(modalActions.modalToggle());
   };
@@ -74,14 +89,11 @@ const AppointmentForm = ({ startDate }) => {
     return day !== 0 && day !== 6;
   };
 
-console.log(dates)
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
 
       for (let i = 0; i < dates.length; i++) {
-        console.log(moment(date, moment.ISO_8601).format("YYYY/MM/DD"));
-        console.log(new Date(date));
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
           moment(dates[i], moment.ISO_8601).format("YYYY/MM/DD")
@@ -92,7 +104,7 @@ console.log(dates)
 
       let arrExcludedTimes = [];
       let pickedDate;
-      /// Manicure klasyczny 45 minut
+
       for (let i = 0; i < arrSpecificDates.length; i++) {
         pickedDate = setHours(
           setMinutes(new Date(date), arrSpecificDates[i].minutes),
@@ -102,11 +114,29 @@ console.log(dates)
       }
 
       setExcludedTimes(arrExcludedTimes);
-      console.log(arrExcludedTimes)
+      console.log(arrExcludedTimes);
     },
     [dates]
   );
+  console.log(workingMeeting.date, workingMeeting.end);
+  useEffect(() => {
+    meetings.forEach((meeting) =>
+      setOverlapped(
+        areIntervalsOverlapping(
+          {
+            start: new Date(workingMeeting.date),
+            end: new Date(workingMeeting.end),
+          },
+          {
+            start: new Date(meeting.date),
+            end: new Date(meeting.end),
+          }
+        )
+      )
+    );
+  }, [meetings, workingMeeting.date, workingMeeting.end]);
 
+  console.log(isOverlapped);
   return (
     <div>
       <h2>Dodaj spotkanie</h2>
@@ -176,18 +206,25 @@ console.log(dates)
             <option value={"45"}>Manicure Klasyczny 40 minut 120zł</option>
             <option value={"90"}>Manicure Hybrydowy 90 minut 120zł</option>
             <option value={"120"}>Uzupełnienie Żelowe 120 minut 120zł</option>
-            <option value={"4"}>
+            <option value={"150"}>
               Przedłużenie paznokci żelem 150 minut 120zł
             </option>
-            <option value={"P"}>Pedicure</option>
+            <option value={"45"}>Pedicure</option>
           </select>
           <div className={classes.actions}>
             <button onClick={() => dispatch(modalActions.modalToggle())}>
               Anuluj
             </button>
-            <button onClick={submitHandler}>Akceptuj</button>
+            <button type="submit" onClick={submitHandler}>
+              Akceptuj
+            </button>
           </div>
         </div>
+        {isOverlapped && (
+          <p style={{ padding: "12px", color: "red" }}>
+            Istnieje inne wydarzenie w tym okresie, wybierz proszę inny.
+          </p>
+        )}
       </form>
     </div>
   );

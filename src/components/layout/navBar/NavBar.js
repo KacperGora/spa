@@ -1,11 +1,11 @@
 import classes from "./NavBar.module.css";
 import React from "react";
-import logo from "../../images/logo.png";
+import logo from "../../../images/logo.png";
 import { NavLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginActions } from "../../store/loginSlice";
+import { loginActions } from "../../../store/loginSlice";
 const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch()
@@ -14,8 +14,13 @@ const NavBar = () => {
   const homeHandler = () => {
     history.push("/");
   };
+ const scrollHandler = () => {
+    const header = this.document.querySelector('header');
+    header.classList.toggle('sticky', this.window.scrollY>0)
+    console.log('object')
+  }
   return (
-    <header>
+    <header onScroll={scrollHandler} className={classes.header}>
       <img
         onClick={homeHandler}
         className={classes.logo}
@@ -57,7 +62,7 @@ const NavBar = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className={classes.link}  to="'/">
+                    <NavLink className={classes.link} to="'/">
                       Wyloguj
                     </NavLink>
                   </li>
@@ -66,7 +71,17 @@ const NavBar = () => {
             </li>
           )}
           <li>
-            {isAuth && (<button onClick={()=>{dispatch(loginActions.logout()); history.push('/')}}>Wyloguj</button>)}
+            {isAuth && (
+              <button
+                onClick={() => {
+                  dispatch(loginActions.logout());
+                  dispatch(loginActions.admin(false))
+                  history.push("/");
+                }}
+              >
+                Wyloguj
+              </button>
+            )}
           </li>
           <li>
             {!isAuth && (
