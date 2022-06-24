@@ -4,7 +4,7 @@ import classes from "./Profile.module.css";
 
 import React from "react";
 import { useSelector } from "react-redux";
-import { parseISO, parseJSON } from "date-fns";
+
 
 const Profile = () => {
   const loggedUser = useSelector((state) => state.user.user.name);
@@ -21,17 +21,17 @@ const Profile = () => {
   }, [loggedUserMail, meetings]);
   useEffect(() => {
     if (userMeetings.length === 0) {
-      setNoMeeting(true);
+      setNoMeeting(false);
     }
   }, [userMeetings.length]);
-  console.log(noMeeting)
+
   return (
     <Fragment>
       <NavBar />
       <section className={classes.container}>
         <div className={classes.hero}>
           <p className={classes.heading}>
-            Hej <span>{loggedUser}</span>
+            Hej <span>{loggedUser}</span>, fajnie Cię widzieć
           </p>
           <p className={classes.description}>Twoje przyszłe wizyty:</p>
           <p className={classes.description}>
