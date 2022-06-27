@@ -27,13 +27,15 @@ const AppointmentForm = ({ startDate }) => {
   );
   const [name, setName] = useState(loggedUserName);
   const [secondName, setSecondName] = useState(loggedUserSecondName);
-  const [newDate, setNewDate] = useState(addHours(new Date(startDate), 7));
+  const [newDate, setNewDate] = useState(null);
+  const [newTime, setNewTime] = useState(null);
   const [excludedTimes, setExcludedTimes] = useState([]);
   const meetings = useSelector((state) => state.calendar.meetings);
   const service = useSelector((state) => state.calendar.service);
   const dates = useSelector((state) => state.calendar.excludedTimes);
   const loggedUserMail = useSelector((state) => state.user.user.email);
-
+  const isChanging = useSelector((state) => state.calendar.changeEvent);
+  console.log(isChanging);
   const dispatch = useDispatch();
   let serviceName = "";
   switch (service) {
@@ -155,8 +157,8 @@ const AppointmentForm = ({ startDate }) => {
 
   return (
     <div>
-      <h2>Dodaj spotkanie</h2>
-      <form onSubmit={submitHandler}>
+      <h2>{`${isChanging ? "Edytuj" : "Dodaj"}`} spotkanie</h2>
+      {/* <form onSubmit={submitHandler}>
         <div className={classes.container}>
           <DatePicker
             locale="pl"
@@ -179,12 +181,13 @@ const AppointmentForm = ({ startDate }) => {
             placeholderText="Wybierz datę"
           />
           <DatePicker
+            value={newTime ? newTime : "09:00"}
+            selected={newTime}
             onChange={(e) => {
-              setNewDate(e);
+              setNewTime(e);
             }}
             onSelect={getExcludedTimes}
             excludeTimes={excludedTimes}
-            selected={newDate}
             timeCaption="Godzina"
             showTimeSelect
             showTimeSelectOnly
@@ -229,21 +232,32 @@ const AppointmentForm = ({ startDate }) => {
             </option>
             <option value={"40"}>Pedicure</option>
           </select>
+
           <div className={classes.actions}>
-            <button onClick={() => dispatch(modalActions.modalToggle())}>
+            <button
+              onClick={() => {
+                dispatch(modalActions.modalToggle());
+                dispatch(calendarActions.setIsChangingEvent(false));
+              }}
+            >
               Anuluj
             </button>
             <button type="submit" onClick={submitHandler}>
               Akceptuj
             </button>
           </div>
+          {isChanging && (
+            <button style={{ width: "200%", display: "flex" }}>
+              Anuluj spotkanie
+            </button>
+          )}
         </div>
         {isOverlapped && (
           <p style={{ padding: "12px", color: "red" }}>
             Istnieje inne wydarzenie w tym okresie, wybierz proszę inny.
           </p>
         )}
-      </form>
+      </form> */}
     </div>
   );
 };

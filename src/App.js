@@ -13,6 +13,7 @@ import AboutMe from "./pages/aboutMe/AboutMe";
 import Portfolio from "./pages/portfolio/Portfolio";
 import Kontakt from "./pages/contactUs/Kontakt";
 import Profile from "./pages/Profile/Profile";
+import FetchEvent from "./components/fetchEvent";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,23 +36,24 @@ function App() {
   }, [event]);
 
   //fetching events from firebase
-  useEffect(() => {
-    fetch(
-      "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings.json"
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        const fetchedMeetings = [];
-        for (const key in data) {
-          fetchedMeetings.push(data[key]);
-        }
-        dispatch(calendarActions.fetchMeetings(fetchedMeetings));
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(
+  //     "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings.json"
+  //   )
+  //     .then((resp) => resp.json())
+  //     .then((data) => {
+  //       const fetchedMeetings = [];
+  //       for (const key in data) {
+  //         fetchedMeetings.push(data[key]);
+  //       }
+  //       dispatch(calendarActions.fetchMeetings(fetchedMeetings));
+  //     });
+  // }, []);
   // const userName = useSelector((state) => state.user.user[0].name);
   // console.log(userName);
   return (
     <div>
+      <FetchEvent />
       <Switch>
         <Route component={AboutMe} path="/about" exact />
         <Route component={Portfolio} path="/portfolio" exact />

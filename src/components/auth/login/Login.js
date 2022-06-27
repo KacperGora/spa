@@ -52,9 +52,7 @@ setIsLoading(false);
           for(let key in response){
            user.push(response[key])
           }
-        dispatch(userActions.setUser(...user.filter((user) => user.email === enteredMail)))(
-          
-        );
+        dispatch(userActions.setUser(...user.filter((user) => user.email === enteredMail)))
          
         
           

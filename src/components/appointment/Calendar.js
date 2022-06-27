@@ -15,13 +15,17 @@ import { useSelector, useDispatch } from "react-redux";
 import AppointmentForm from "./appointmentForm/AppointmentForm";
 
 import { calendarActions } from "../../store/calendarSlice";
+import FetchEvent from "../fetchEvent";
+import CalendarForm from "./CalendarForm";
 
 const Calendar = () => {
   const modal = useSelector((state) => state.modal.isVisible);
   const events = useSelector((state) => state.calendar.meetings);
-  const [newDate, setNewDate] = useState("");
+  const excludedTimes = useSelector((state) => state.calendar.excludedTimes);
+  const [newDate, setNewDate] = useState(new Date());
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const auth = useSelector((state) => state.auth.admin);
+  const changingEvent = useSelector((state) => state.calendar.changeEvent);
 
   const dispatch = useDispatch();
   const addEventHandler = (e) => {
@@ -29,6 +33,7 @@ const Calendar = () => {
     dispatch(modalActions.modalToggle());
     dispatch(calendarActions.setDate(e.startStr));
   };
+  useEffect(() => {}, []);
 
   let eventsWithNoNames = [
     ...events.filter((meeting) => meeting.email !== loggedUserMail),
@@ -47,21 +52,19 @@ const Calendar = () => {
   ];
 
   const arr = eventsForUSers.concat(...eventsWithNames);
-  console.log(arr);
-  // events.forEach((event) =>
-  //   eventsWithNoNames.push({
-  //     title: "Termin niedostępny",
-  //     date: event.date,
-  //     end: event.end,
-  //   })
-  // );
 
+  const eventClickHandler = (e) => {
+    if (e.event._def.extendedProps.email === loggedUserMail) {
+      dispatch(modalActions.modalToggle());
+      dispatch(calendarActions.setIsChangingEvent(true));
+    }
+  };
   return (
     <section>
       <NavBar />
       {modal && (
         <Modal>
-          <AppointmentForm startDate={newDate} />
+          <CalendarForm startDate={newDate} />
         </Modal>
       )}
       {/* {modal && <Modal>  <EventClicked></EventClicked></Modal>} */}
@@ -92,12 +95,9 @@ const Calendar = () => {
         slotDuration={"00:15"}
         events={auth ? events : arr}
         eventColor={"#378006"}
-        eventHint={(e) => {
-          console.log(e);
-        }}
         displayEventTime={true}
         displayEventEnd={true}
-        // eventClick={changeEventHandler}
+        eventClick={eventClickHandler}
         plugins={[
           listPlugin,
           dayGridPlugin,
@@ -107,6 +107,7 @@ const Calendar = () => {
         ]}
         initialView="dayGridMonth"
       />
+    <FetchEvent></FetchEvent>
     </section>
   );
 };
