@@ -11,12 +11,18 @@ const FetchEvent = () => {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        const fetchedMeetings = [];
-        for (const key in data) {
-          fetchedMeetings.push(data[key]);
-        }
+       
+         const fetchedMeetings = [];
+      
+ for (const [key, value] of Object.entries(data)) {
+           fetchedMeetings.push({ ...value, key });
+         }
+         
+        
+       
+   
         dispatch(calendarActions.fetchMeetings(fetchedMeetings));
-        console.log(fetchedMeetings);
+      
       });
   }, [dispatch]);
   //fetching events from firebase

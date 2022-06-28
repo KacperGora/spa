@@ -38,14 +38,13 @@ const Profile = () => {
       (meeting) => meeting.date > new Date().toISOString()
     ),
   ];
-  while(pastMeetings.length > 3)
-   {
-   pastMeetings = (pastMeetings.slice(1))
+  while (pastMeetings.length > 3) {
+    pastMeetings = pastMeetings.slice(1);
   }
-  console.log(pastMeetings)
+  console.log(pastMeetings);
 
   const futureContent = futureMeetings.map((meeting) => (
-    <li>
+    <li key={Math.random()}>
       {`${meeting.serviceName} dnia ${new Date(
         meeting.date
       ).toLocaleDateString()} o godzinie ${new Date(
@@ -58,8 +57,8 @@ const Profile = () => {
     </li>
   ));
   const pastContent = pastMeetings.map((meeting) => (
-    <li>
-    {`  ${`${meeting.serviceName}`} w dniu
+    <li key={Math.random()}>
+      {`  ${`${meeting.serviceName}`} w dniu
       ${`${new Date(meeting.date).toLocaleDateString()}`}, (
       ${formatDistance(new Date(meeting.date), new Date(), {
         locale: pl,

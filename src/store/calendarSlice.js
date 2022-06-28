@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-
 const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
@@ -13,7 +12,8 @@ const calendarSlice = createSlice({
     dateForAppointment: "",
     service: "45",
     excludedTimes: [],
-    changeEvent: false
+    changeEvent: false,
+    key: ''
   },
   reducers: {
     setIsChangingEvent(state, action){
@@ -38,8 +38,10 @@ const calendarSlice = createSlice({
       state.meetings = action.payload;
       for(let i=0; i<action.payload.length; i++){
       state.excludedTimes = [...state.excludedTimes, ...action.payload[i].times];
-      
+    
       }
+      
+ 
         // for (let i = 0; i < action.payload.length; i++) {
         //   state.excludedTimes = [
         //     ...state.excludedTimes,
@@ -49,6 +51,7 @@ const calendarSlice = createSlice({
         // console.log(state.excludedTimes);
   
     },
+    findKey(state, action){state.key = action.payload},
     setMeeting(state, action) {
       state.meeting = {
         title: action.payload.title,
@@ -57,6 +60,7 @@ const calendarSlice = createSlice({
         times: action.payload.times,
         serviceName: action.payload.serviceName,
         email: action.payload.email,
+        // key: action.payload.key
       };
       state.meetings = [...state.meetings, action.payload];
       state.excludedTimes = [...state.excludedTimes, ...action.payload.times];

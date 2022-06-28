@@ -1,9 +1,9 @@
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import classes from "../appointment/appointmentForm/AppointmentForm.module.css";
+import classes from "./CalendarForm.module.css";
 import { calendarActions } from "../../store/calendarSlice";
 import { modalActions } from "../../store/modalSlice";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useCallback } from "react";
 import moment from "moment";
 
@@ -18,7 +18,10 @@ import {
 } from "date-fns";
 
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import FetchEvent from "../fetchEvent";
 const CalendarForm = ({ startDate }) => {
+  const history = useHistory();
   const meetings = useSelector((state) => state.calendar.meetings);
 
   const dates = useSelector((state) => state.calendar.excludedTimes);
@@ -37,6 +40,8 @@ const CalendarForm = ({ startDate }) => {
   const fullName = `${name} ${secondName}`;
   const isChanging = useSelector((state) => state.calendar.changeEvent);
   const loggedUserMail = useSelector((state) => state.user.user.email);
+  const key = useSelector((state) => state.calendar.key);
+
   let serviceName = "";
   switch (service) {
     case "45":
@@ -67,11 +72,11 @@ const CalendarForm = ({ startDate }) => {
     serviceName: serviceName,
     email: loggedUserMail,
   };
+
   for (let i = 0; i < service; i = i + 15) {
     workingMeeting.times.push(addMinutes(newDate, i));
   }
 
-  console.log(workingMeeting);
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     if (isOverlapped) {
@@ -107,7 +112,7 @@ const CalendarForm = ({ startDate }) => {
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
-      console.log(dates);
+     
       for (let i = 0; i < dates.length; i++) {
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
@@ -134,126 +139,144 @@ const CalendarForm = ({ startDate }) => {
     },
     [dates]
   );
-
+  
   useEffect(() => {
-    meetings.forEach((meeting) =>
-      setOverlapped(
-        areIntervalsOverlapping(
-          {
-            start: new Date(workingMeeting.date),
-            end: new Date(workingMeeting.end),
-          },
-          {
-            start: new Date(meeting.date),
-            end: new Date(meeting.end),
-          }
+    if (meetings.length > 1) {
+      meetings.forEach((meeting) =>
+        setOverlapped(
+          areIntervalsOverlapping(
+            {
+              start: new Date(workingMeeting.date),
+              end: new Date(workingMeeting.end),
+            },
+            {
+              start: new Date(meeting.date),
+              end: new Date(meeting.end),
+            }
+          )
         )
-      )
-    );
+      );
+    }
   }, [meetings, workingMeeting.date, workingMeeting.end]);
+
+  const cancelMeetingHandler = () => {
+    FetchEvent();
+    fetch(
+      `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${key}.json`,
+      { method: "DELETE" }
+    ).then((resp) => resp.json());
+    dispatch(modalActions.modalToggle());
+  };
+  const editMeetingHandler = () => {};
   return (
-    <form onSubmit={submitHandler}>
-      <div className={classes.container}>
-        <DatePicker
-          locale="pl"
-          filterDate={isWeekday}
-          onChange={(e) => {
-            setNewDate(e);
-            getExcludedTimes();
-          }}
-          selected={newDate}
-          minDate={new Date()}
-          maxDate={parseISO(maxDate)}
-          required
-          onSelect={getExcludedTimes}
-          excludeOut
-          timeIntervals={15}
-          shouldCloseOnSelect={true}
-          name="startDate"
-          dateFormat="dd MMMM, yyyy "
-          fixedHeight
-          excludeTimes={excludedTimes}
-          placeholderText="Wybierz datę"
-        />
-        <DatePicker
-          value={newDate ? newDate : "09:00"}
-          selected={newDate}
-          onChange={(e) => {
-            setNewDate(e);
-            getExcludedTimes();
-          }}
-          onSelect={getExcludedTimes}
-          excludeTimes={excludedTimes}
-          timeCaption="Godzina"
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={15}
-          timeFormat="HH:mm"
-          dateFormat="HH:mm"
-          minDate={new Date()}
-          minTime={setHours(setMinutes(new Date(), 0), 9)}
-          maxTime={setHours(setMinutes(new Date(), 0), 17)}
-        />
+    <Fragment>
+      <form onSubmit={submitHandler}>
+        <div className={classes.container}>
+          <DatePicker
+            locale="pl"
+            filterDate={isWeekday}
+            onChange={(e) => {
+              setNewDate(e);
+              getExcludedTimes();
+            }}
+            selected={newDate}
+            minDate={new Date()}
+            maxDate={parseISO(maxDate)}
+            required
+            onSelect={getExcludedTimes}
+            excludeOut
+            timeIntervals={15}
+            shouldCloseOnSelect={true}
+            name="startDate"
+            dateFormat="dd MMMM, yyyy "
+            fixedHeight
+            excludeTimes={excludedTimes}
+            placeholderText="Wybierz datę"
+          />
+          <DatePicker
+            value={newDate ? newDate : "09:00"}
+            selected={newDate}
+            onChange={(e) => {
+              setNewDate(e);
+              getExcludedTimes();
+            }}
+            onSelect={getExcludedTimes}
+            excludeTimes={excludedTimes}
+            timeCaption="Godzina"
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={15}
+            timeFormat="HH:mm"
+            dateFormat="HH:mm"
+            minDate={new Date()}
+            minTime={setHours(setMinutes(new Date(), 0), 9)}
+            maxTime={setHours(setMinutes(new Date(), 0), 17)}
+          />
 
-        <input
-          value={loggedUserName}
-          required
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          type="text"
-          placeholder="Imię"
-        />
-        <input
-          value={loggedUserSecondName}
-          required
-          onChange={(e) => {
-            setSecondName(e.target.value);
-          }}
-          placeholder="Nazwisko"
-        />
+          <input
+            value={loggedUserName}
+            required
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            type="text"
+            placeholder="Imię"
+          />
+          <input
+            value={loggedUserSecondName}
+            required
+            onChange={(e) => {
+              setSecondName(e.target.value);
+            }}
+            placeholder="Nazwisko"
+          />
 
-        <select
-          defaultValue={service}
-          required
-          onChange={(e) => {
-            dispatch(calendarActions.setTypeOfService(e.target.value));
-          }}
-        >
-          <option value={"45"}>Manicure Klasyczny 40 minut 120zł</option>
-          <option value={"90"}>Manicure Hybrydowy 90 minut 120zł</option>
-          <option value={"120"}>Uzupełnienie Żelowe 120 minut 120zł</option>
-          <option value={"150"}>
-            Przedłużenie paznokci żelem 150 minut 120zł
-          </option>
-          <option value={"40"}>Pedicure</option>
-        </select>
-
-        <div className={classes.actions}>
-          <button
-            onClick={() => {
-              dispatch(modalActions.modalToggle());
-              dispatch(calendarActions.setIsChangingEvent(false));
+          <select
+            defaultValue={service}
+            required
+            onChange={(e) => {
+              dispatch(calendarActions.setTypeOfService(e.target.value));
             }}
           >
-            Anuluj
-          </button>
-          <button type="submit" onClick={submitHandler}>
-            Akceptuj
-          </button>
+            <option value={"45"}>Manicure Klasyczny 40 minut 120zł</option>
+            <option value={"90"}>Manicure Hybrydowy 90 minut 120zł</option>
+            <option value={"120"}>Uzupełnienie Żelowe 120 minut 120zł</option>
+            <option value={"150"}>
+              Przedłużenie paznokci żelem 150 minut 120zł
+            </option>
+            <option value={"40"}>Pedicure</option>
+          </select>
+
+          <div className={classes.actions}>
+            <button
+              onClick={() => {
+                dispatch(modalActions.modalToggle());
+                dispatch(calendarActions.setIsChangingEvent(false));
+              }}
+            >
+              Anuluj
+            </button>
+            <button type="submit" onClick={submitHandler}>
+              Akceptuj
+            </button>
+          </div>
         </div>
+        {isOverlapped && (
+          <p style={{ padding: "12px", color: "red" }}>
+            Istnieje inne wydarzenie w tym okresie, wybierz proszę inny.
+          </p>
+        )}
+      </form>
+      <div style={{gap: '16px',display:'flex', padding: '8px 32px'}}>
         {isChanging && (
-          <button style={{ width: "200%", display: "flex" }}>
-            Anuluj spotkanie
-          </button>
+          <button onClick={cancelMeetingHandler}>Anuluj spotkanie</button>
+        )}
+        {isChanging && (
+          <button onClick={editMeetingHandler}>Edytuj spotkanie</button>
         )}
       </div>
-      {isOverlapped && (
-        <p style={{ padding: "12px", color: "red" }}>
-          Istnieje inne wydarzenie w tym okresie, wybierz proszę inny.
-        </p>
-      )}
-    </form>
+      <FetchEvent />
+    </Fragment>
   );
 };
 
