@@ -14,12 +14,12 @@ import {
   getDay,
   addMinutes,
   areIntervalsOverlapping,
-  addHours,
 } from "date-fns";
 
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import FetchEvent from "../fetchEvent";
+
 const CalendarForm = ({ startDate }) => {
   const history = useHistory();
   const meetings = useSelector((state) => state.calendar.meetings);
@@ -42,6 +42,13 @@ const CalendarForm = ({ startDate }) => {
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const key = useSelector((state) => state.calendar.key);
 
+  for (let i = 0; i < meetings.length; i++) {
+    // if([newDate.toISOString() ===(meetings[i].date)])
+    // console.log('s')
+    // if(meetings[i].date === newDate){
+    //   console.log('h')
+    // }
+  }
   let serviceName = "";
   switch (service) {
     case "45":
@@ -87,6 +94,7 @@ const CalendarForm = ({ startDate }) => {
 
     dispatch(calendarActions.setMeeting(workingMeeting));
     dispatch(modalActions.modalToggle());
+    dispatch(calendarActions.setExcludedTimes(...workingMeeting.times));
     dispatch(calendarActions.setIsChangingEvent(false));
   };
   const isWeekday = (date) => {
@@ -109,16 +117,49 @@ const CalendarForm = ({ startDate }) => {
     newMM = "0" + newMM;
   }
   let maxDate = yyyy + "-" + newMM + "-" + dd + "T08:00";
+  // dispatch(
+  //   calendarActions.setOverlapped(
+
+  //   )
+  // );
+  let preOverlappedArray = [
+    ...meetings.filter(
+      (meeting) =>
+        new Date(meeting.date).toLocaleDateString() ===
+        newDate.toLocaleDateString()
+    ),
+  ];
+
+  useEffect(() => {
+    for (let i = 0; i < preOverlappedArray.length; i++) {
+      setOverlapped(
+        areIntervalsOverlapping(
+          {
+            start: newDate,
+            end: addMinutes(newDate, service),
+          },
+          {
+            start: new Date(preOverlappedArray[i].date),
+            end: new Date(preOverlappedArray[i].end),
+          }
+        )
+      );
+    }
+  }, [newDate, preOverlappedArray, service]);
+
+  console.log(isOverlapped);
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
-     
+      let overlappedArr = [];
+
       for (let i = 0; i < dates.length; i++) {
         if (
           moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
           moment(dates[i], moment.ISO_8601).format("YYYY/MM/DD")
         ) {
           arrSpecificDates.push(moment(dates[i], moment.ISO_8601).toObject());
+          overlappedArr.push(new Date(dates[i]));
         }
       }
 
@@ -135,39 +176,26 @@ const CalendarForm = ({ startDate }) => {
       }
 
       setExcludedTimes(arrExcludedTimes);
-      console.log(arrExcludedTimes);
     },
+
     [dates]
   );
-  
-  useEffect(() => {
-    if (meetings.length > 1) {
-      meetings.forEach((meeting) =>
-        setOverlapped(
-          areIntervalsOverlapping(
-            {
-              start: new Date(workingMeeting.date),
-              end: new Date(workingMeeting.end),
-            },
-            {
-              start: new Date(meeting.date),
-              end: new Date(meeting.end),
-            }
-          )
-        )
-      );
-    }
-  }, [meetings, workingMeeting.date, workingMeeting.end]);
 
   const cancelMeetingHandler = () => {
-    FetchEvent();
     fetch(
       `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${key}.json`,
       { method: "DELETE" }
-    ).then((resp) => resp.json());
-    dispatch(modalActions.modalToggle());
+    ).then((resp) => {
+      if (resp.ok)
+        dispatch(modalActions.modalToggle(), history.push("/calendar"));
+    });
   };
-  const editMeetingHandler = () => {};
+  useEffect(() => {
+    getExcludedTimes();
+  }, [getExcludedTimes]);
+  const editMeetingHandler = (e) => {
+    console.log(newDate);
+  };
   return (
     <Fragment>
       <form onSubmit={submitHandler}>
@@ -179,6 +207,7 @@ const CalendarForm = ({ startDate }) => {
               setNewDate(e);
               getExcludedTimes();
             }}
+            value={newDate ? newDate : "Wybierz datę"}
             selected={newDate}
             minDate={new Date()}
             maxDate={parseISO(maxDate)}
@@ -267,7 +296,7 @@ const CalendarForm = ({ startDate }) => {
           </p>
         )}
       </form>
-      <div style={{gap: '16px',display:'flex', padding: '8px 32px'}}>
+      <div style={{ gap: "16px", display: "flex", padding: "8px 32px" }}>
         {isChanging && (
           <button onClick={cancelMeetingHandler}>Anuluj spotkanie</button>
         )}

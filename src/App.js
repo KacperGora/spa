@@ -1,9 +1,8 @@
 import "./App.css";
 
 import { Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { calendarActions } from "./store/calendarSlice";
 
 import Main from "./pages/mainPage/Main";
 import Register from "./components/auth/register/Register";
@@ -16,7 +15,6 @@ import Profile from "./pages/Profile/Profile";
 import FetchEvent from "./components/fetchEvent";
 
 function App() {
-  const dispatch = useDispatch();
   //new single event
   const event = useSelector((state) => state.calendar.meeting);
   

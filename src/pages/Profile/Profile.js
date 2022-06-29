@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import NavBar from "../../components/layout/navBar/NavBar";
 import classes from "./Profile.module.css";
 import formatDistance from "date-fns/formatDistance";
 import React from "react";
-import { useSelector } from "react-redux";
-import { locale } from "moment";
+import { useSelector } from "react-redux"
 import { pl } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
 registerLocale("pl", pl);
@@ -41,7 +40,7 @@ const Profile = () => {
   while (pastMeetings.length > 3) {
     pastMeetings = pastMeetings.slice(1);
   }
-  console.log(pastMeetings);
+
 
   const futureContent = futureMeetings.map((meeting) => (
     <li key={Math.random()}>
