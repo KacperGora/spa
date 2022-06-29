@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import NavBar from "../../layout/navBar/NavBar";
 import Spinner from "../../UI/spinner/Spinner";
@@ -15,7 +15,7 @@ const Register = () => {
   
   const [mailTouched, setMailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const submitHandler = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -60,7 +60,7 @@ const Register = () => {
     setUserPassword("");
   };
   const historyLoginPush = () => {
-    history.push("/login");
+   navigate("/login");
   };
   return (
     <section>
@@ -93,7 +93,7 @@ const Register = () => {
             </input>
             <button
               onClick={() => {
-                history.push("/login");
+                navigate("/login");
               }}
             >
               Powrót do logowania

@@ -1,23 +1,22 @@
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { loginActions } from "../../../store/loginSlice";
 import { userActions } from "../../../store/usersSlice";
 
 import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Login.module.css";
-
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
-  const isLogged = useSelector((state) => state.auth.isLogged);
-  const history = useHistory();
+
+  const navigate = useNavigate();
   const [enteredMail, setEnteredMail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] =useState()
+  const [error, setError] = useState();
 
-    const loginSubmitHandler = (e) => {
+  const loginSubmitHandler = (e) => {
     e.preventDefault();
     userLogin();
   };
@@ -39,34 +38,39 @@ const Login = () => {
           },
         }
       );
-     if(!response.ok){
-      setError(true)
-     }
-setIsLoading(false);
+      if (!response.ok) {
+        setError(true);
+      }
+      setIsLoading(false);
       if (response.ok) {
         dispatch(loginActions.login());
+
         fetch(
           "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json"
-        ).then((data) => data.json()).then((response)=> {
-          let user = []
-          for(let key in response){
-           user.push(response[key])
-          }
-        dispatch(userActions.setUser(...user.filter((user) => user.email === enteredMail)))
-         
-        
-          
-          })
+        )
+          .then((data) => data.json())
+          .then((response) => {
+            let user = [];
+            for (let key in response) {
+              user.push(response[key]);
+            }
+            dispatch(
+              userActions.setUser(
+                ...user.filter((user) => user.email === enteredMail)
+              )
+            );
+          });
+        navigate("/");
       }
+
       const data = await response.json();
       if (data.email === "admin@test.pl") {
         dispatch(loginActions.admin(true));
       }
     } catch (error) {
-     
       console.log(error.message);
     }
-  }, [dispatch, enteredMail, enteredPassword]);
+  }, [dispatch, enteredMail, enteredPassword, navigate]);
 
   return (
     <section className={classes.container}>
@@ -91,7 +95,7 @@ setIsLoading(false);
           <button
             type="submit"
             onClick={() => {
-              history.push("register");
+              navigate("/register");
             }}
           >
             Nie masz konta?
@@ -100,7 +104,6 @@ setIsLoading(false);
           {error && <p>Nie udana próba logowania.</p>}
         </form>
       </section>
-      {isLogged && history.push("/")}
     </section>
   );
 };

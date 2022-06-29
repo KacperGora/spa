@@ -2,17 +2,17 @@ import classes from "./NavBar.module.css";
 import React from "react";
 import logo from "../../../images/logo.png";
 import { NavLink} from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { loginActions } from "../../../store/loginSlice";
 const NavBar = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   
  const isAuth = useSelector((state) => state.auth.isLogged);
   const homeHandler = () => {
-    history.push("/");
+    navigate("/");
   };
  const scrollHandler = () => {
     const header = this.document.querySelector('header');
@@ -60,7 +60,7 @@ const NavBar = () => {
                 onClick={() => {
                   dispatch(loginActions.logout());
                   dispatch(loginActions.admin(false))
-                  history.push("/");
+                  navigate("/");
                 }}
               >
                 Wyloguj

@@ -26,6 +26,7 @@ const Calendar = () => {
   const [newDate, setNewDate] = useState(new Date());
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const auth = useSelector((state) => state.auth.admin);
+   const isChanging = useSelector((state) => state.calendar.changeEvent);
   const dispatch = useDispatch();
   const addEventHandler = (e) => {
     setNewDate(new Date(e.startStr));
@@ -53,7 +54,7 @@ const Calendar = () => {
   const arr = eventsForUSers.concat(...eventsWithNames);
 
   const eventClickHandler = (e) => {
-    console.log(e)
+ 
     if (auth) {
       dispatch(modalActions.modalToggle());
       dispatch(calendarActions.setIsChangingEvent(true));
@@ -64,6 +65,7 @@ const Calendar = () => {
         dispatch(modalActions.modalToggle());
         dispatch(calendarActions.setIsChangingEvent(true));
         dispatch(calendarActions.findKey(e.event._def.extendedProps.key));
+        
       }
     }
   };
@@ -107,6 +109,7 @@ const Calendar = () => {
       );
     }
   };
+  FetchEvent()
   return (
     <section>
       <NavBar />
@@ -156,7 +159,7 @@ const Calendar = () => {
         ]}
         initialView="dayGridMonth"
       />
-      <FetchEvent/>
+      <FetchEvent />
     </section>
   );
 };

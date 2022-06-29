@@ -17,11 +17,11 @@ import {
 } from "date-fns";
 
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FetchEvent from "../fetchEvent";
 
 const CalendarForm = ({ startDate }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const meetings = useSelector((state) => state.calendar.meetings);
 
   const dates = useSelector((state) => state.calendar.excludedTimes);
@@ -30,6 +30,7 @@ const CalendarForm = ({ startDate }) => {
   const [newDate, setNewDate] = useState(
     setHours(setMinutes(new Date(startDate), 0), 9)
   );
+  const fetchEvent = FetchEvent
   const loggedUserName = useSelector((state) => state.user.user.name);
   const loggedUserSecondName = useSelector(
     (state) => state.user.user.secondName
@@ -42,13 +43,6 @@ const CalendarForm = ({ startDate }) => {
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const key = useSelector((state) => state.calendar.key);
 
-  for (let i = 0; i < meetings.length; i++) {
-    // if([newDate.toISOString() ===(meetings[i].date)])
-    // console.log('s')
-    // if(meetings[i].date === newDate){
-    //   console.log('h')
-    // }
-  }
   let serviceName = "";
   switch (service) {
     case "45":
@@ -79,6 +73,7 @@ const CalendarForm = ({ startDate }) => {
     serviceName: serviceName,
     email: loggedUserMail,
   };
+
 
   for (let i = 0; i < service; i = i + 15) {
     workingMeeting.times.push(addMinutes(newDate, i));
@@ -147,7 +142,6 @@ const CalendarForm = ({ startDate }) => {
     }
   }, [newDate, preOverlappedArray, service]);
 
-  console.log(isOverlapped);
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
@@ -186,19 +180,52 @@ const CalendarForm = ({ startDate }) => {
       `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${key}.json`,
       { method: "DELETE" }
     ).then((resp) => {
-      if (resp.ok)
-        dispatch(modalActions.modalToggle(), history.push("/calendar"));
+      if (resp.ok) dispatch(modalActions.modalToggle(), navigate("/calendar"));
+      dispatch(calendarActions.setIsChangingEvent(false));
     });
   };
   useEffect(() => {
     getExcludedTimes();
   }, [getExcludedTimes]);
+
+     let filteredEvent = meetings.filter((event) => event.key === key);
+ 
   const editMeetingHandler = (e) => {
-    console.log(newDate);
+    
+       if(isOverlapped){
+        return
+       }
+       else 
+     fetch(
+       `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${filteredEvent[0].key}.json`,
+       {
+         method: "PUT",
+         body: JSON.stringify({
+           serviceName: workingMeeting.serviceName,
+           title: workingMeeting.title,
+           date: workingMeeting.date,
+           end: workingMeeting.end,
+           times: workingMeeting.times,
+           email: filteredEvent[0].email,
+         }),
+         headers: {
+           "Content-type": "application / json",
+         },
+       }
+     ).then(data => console.log(data));
+    dispatch(calendarActions.setIsChangingEvent(false));
+    dispatch(modalActions.modalToggle())
+    fetchEvent()
   };
+    fetchEvent();
   return (
     <Fragment>
       <form onSubmit={submitHandler}>
+        {isChanging ? (
+          <h2 style={{ paddingBottom: "16px" }}>Edytuj lub anuluj spotkanie</h2>
+        ) : (
+          <h2 style={{ paddingBottom: "16px" }}>Dodaj spotkanie</h2>
+        )}
         <div className={classes.container}>
           <DatePicker
             locale="pl"
@@ -285,9 +312,9 @@ const CalendarForm = ({ startDate }) => {
             >
               Anuluj
             </button>
-            <button type="submit" onClick={submitHandler}>
+           {!isChanging && <button type="submit" onClick={submitHandler}>
               Akceptuj
-            </button>
+            </button>}
           </div>
         </div>
         {isOverlapped && (

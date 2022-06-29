@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -52,18 +52,16 @@ function App() {
   return (
     <div>
       <FetchEvent />
-      <Switch>
-        <Route component={AboutMe} path="/about" exact />
-        <Route component={Portfolio} path="/portfolio" exact />
-        <Route component={Kontakt} path="/kontakt" exact />
-        <Route component={LoginPage} path="/login" exact />
-        <Route component={Register} path="/register" exact />
-        <Route component={Calendar} path="/calendar" exact />
-        <Route component={Profile} path="/profile" exact />
-        <Route path="*">
-          <Main />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route element={<AboutMe />} path="/about" />
+        <Route element={<Portfolio />} path="/portfolio" />
+        <Route element={<Kontakt />} path="/kontakt" />
+        <Route element={<LoginPage />} path="/login" />
+        <Route element={<Register />} path="/register" />
+        <Route element={<Calendar />} path="/calendar" />
+        <Route element={<Profile />} path="/profile" />
+        <Route element={<Main />} path="/"></Route>
+      </Routes>
     </div>
   );
 }

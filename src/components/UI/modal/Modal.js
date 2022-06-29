@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../../store/modalSlice";
+import { calendarActions } from "../../../store/calendarSlice";
 
 import classes from "./Modal.module.css";
 
@@ -11,6 +12,7 @@ const Backdrop = (props) => {
     <div
       onClick={() => {
         dispatch(modalActions.modalToggle());
+         dispatch(calendarActions.setIsChangingEvent(false));
       }}
       className={classes.backdrop}
     />
