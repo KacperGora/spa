@@ -9,7 +9,8 @@ import classes from "./Register.module.css";
 import useInput from "../use-input";
 
 const Register = () => {
-  const [passwordsAreValid, setPasswordAreValid] = useState(false);
+  const [error, setError] = useState("");
+  const [passwordsAreValid, setPasswordAreValid] = useState(true);
 
   //name validation
   const {
@@ -59,11 +60,16 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
-     if ((enteredPassword === confirmPassword) & enteredPasswordIsValid) {
-       setPasswordAreValid(true);
-     }
+    if ((enteredPassword === confirmPassword) & enteredPasswordIsValid) {
+      setTimeout(() => {
+        setPasswordAreValid(true);
+      }, 400);
+    } else if ((enteredPassword !== confirmPassword) & enteredPasswordIsValid) {
+      setTimeout(() => {
+        setPasswordAreValid(false);
+      }, 250);
+    }
   }, [confirmPassword, enteredPassword, enteredPasswordIsValid]);
-
 
   let formIsValid = false;
   if (
@@ -100,23 +106,37 @@ const Register = () => {
     }
     e.preventDefault();
     setIsLoading(true);
-    const httpFeedback = await authFn(
-      registerUrl,
-      enteredMail,
-      enteredPassword
-    );
-    setIsLoading(false);
-    console.log(httpFeedback);
-    if (httpFeedback.response.ok) {
-      setStatus(true);
-      fetchFn(userUrl, "POST", body);
+    try {
+      const httpFeedback = await authFn(
+        registerUrl,
+        enteredMail,
+        enteredPassword
+      );
+      setIsLoading(false);
+      if (!httpFeedback.response.ok) {
+        if (httpFeedback.data.error.errors[0].message === "EMAIL_EXISTS") {
+          setError(`Na podany adres zostało już utworzone konto.`);
+        } else
+          setError(
+            `Coś poszło nie tak spróbuj ponownie później ${httpFeedback.data.error.errors[0].message}`
+          );
+
+        // throw new Error(httpFeedback.data.error)
+      }
+      if (httpFeedback.response.ok) {
+        setStatus(true);
+        fetchFn(userUrl, "POST", body);
+      }
+    } catch (error) {
+      setError(error);
     }
   };
 
-  // };
+  console.log(error);
   const historyLoginPush = () => {
     navigate("/login");
   };
+
   return (
     <section>
       <NavBar />
@@ -196,7 +216,9 @@ const Register = () => {
             >
               Powrót do logowania
             </button>
-            <button type="submit">Rejestracja</button>
+            <button type="submit" disabled={!formIsValid}>
+              Rejestracja
+            </button>
             <div>{isLoading && <Spinner />}</div>
           </form>
           {status && (
@@ -211,7 +233,9 @@ const Register = () => {
           {passwordHasError && (
             <p>Hasło powinno mieć conajmniej pięć znaków.</p>
           )}
+          {!passwordsAreValid && <p>Hasla nie sa identyzczne</p>}
           {status && setTimeout(historyLoginPush, 3000)}
+          {error && <p>{error}</p>}
         </div>
       </section>
     </section>

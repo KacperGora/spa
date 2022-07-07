@@ -104,7 +104,7 @@ const Calendar = () => {
 
   return (
     <section>
-      <FetchEvent />
+      {/* <FetchEvent /> */}
       <NavBar />
       {modal && (
         <Modal>
