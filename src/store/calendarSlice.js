@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
@@ -13,17 +12,16 @@ const calendarSlice = createSlice({
     service: "45",
     excludedTimes: [],
     changeEvent: false,
-    key: ''
+    key: "",
   },
   reducers: {
-    setIsChangingEvent(state, action){
-      state.changeEvent = action.payload
+    setIsChangingEvent(state, action) {
+      state.changeEvent = action.payload;
     },
     setTypeOfService(state, action) {
       state.service = action.payload;
     },
     setExcludedTimes(state, action) {
-   
       state.excludedTimes = [...state.excludedTimes, action.payload];
     },
     setDate(state, action) {
@@ -32,25 +30,27 @@ const calendarSlice = createSlice({
     fetchMeetings(state, action) {
       state.meetings = action.payload;
       state.excludedTimes = []
-      for(let i=0; i<action.payload.length; i++){
-      state.excludedTimes = [...state.excludedTimes, ...action.payload[i].times];
-
+      for (let i = 0; i < action.payload.length; i++) {
+        state.excludedTimes = [
+          ...state.excludedTimes,
+          ...action.payload[i].times,
+        ];
       }
-      
- 
-        // for (let i = 0; i < action.payload.length; i++) {
-        //   state.excludedTimes = [
-        //     ...state.excludedTimes,
-        //     ...action.payload[i].times,
-        //   ];
-        // }
-        // console.log(state.excludedTimes);
-  
+
+      // for (let i = 0; i < action.payload.length; i++) {
+      //   state.excludedTimes = [
+      //     ...state.excludedTimes,
+      //     ...action.payload[i].times,
+      //   ];
+      // }
+      // console.log(state.excludedTimes);
     },
-    setOverlapped(state, action){
+    setOverlapped(state, action) {
       // state.meetings.forEach(meeting => meeting.isOverlapped === action.payload)
     },
-    findKey(state, action){state.key = action.payload},
+    findKey(state, action) {
+      state.key = action.payload;
+    },
     setMeeting(state, action) {
       state.meeting = {
         title: action.payload.title,
@@ -59,7 +59,7 @@ const calendarSlice = createSlice({
         times: action.payload.times,
         serviceName: action.payload.serviceName,
         email: action.payload.email,
-        
+
         // key: action.payload.key
       };
       state.meetings = [...state.meetings, action.payload];

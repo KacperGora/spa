@@ -17,20 +17,21 @@ import {
 } from "date-fns";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import FetchEvent from "../fetchEvent";
+import fetchFn from "../fetch";
+
 
 const CalendarForm = ({ startDate }) => {
-  const navigate = useNavigate();
-  const meetings = useSelector((state) => state.calendar.meetings);
 
+  const meetings = useSelector((state) => state.calendar.meetings);
+  const auth = useSelector((state) => state.auth.admin);
   const dates = useSelector((state) => state.calendar.excludedTimes);
   const [excludedTimes, setExcludedTimes] = useState([]);
   const service = useSelector((state) => state.calendar.service);
   const [newDate, setNewDate] = useState(
     setHours(setMinutes(new Date(startDate), 0), 9)
   );
-  const fetchEvent = FetchEvent
+
   const loggedUserName = useSelector((state) => state.user.user.name);
   const loggedUserSecondName = useSelector(
     (state) => state.user.user.secondName
@@ -48,7 +49,6 @@ const CalendarForm = ({ startDate }) => {
     case "45":
       serviceName = "Manicure Klasyczny";
       break;
-
     case "90":
       serviceName = "Manicure Hybrydowy";
       break;
@@ -73,7 +73,6 @@ const CalendarForm = ({ startDate }) => {
     serviceName: serviceName,
     email: loggedUserMail,
   };
-
 
   for (let i = 0; i < service; i = i + 15) {
     workingMeeting.times.push(addMinutes(newDate, i));
@@ -112,11 +111,7 @@ const CalendarForm = ({ startDate }) => {
     newMM = "0" + newMM;
   }
   let maxDate = yyyy + "-" + newMM + "-" + dd + "T08:00";
-  // dispatch(
-  //   calendarActions.setOverlapped(
 
-  //   )
-  // );
   let preOverlappedArray = [
     ...meetings.filter(
       (meeting) =>
@@ -125,23 +120,24 @@ const CalendarForm = ({ startDate }) => {
     ),
   ];
 
-  useEffect(() => {
-    for (let i = 0; i < preOverlappedArray.length; i++) {
-      setOverlapped(
-        areIntervalsOverlapping(
-          {
-            start: newDate,
-            end: addMinutes(newDate, service),
-          },
-          {
-            start: new Date(preOverlappedArray[i].date),
-            end: new Date(preOverlappedArray[i].end),
-          }
-        )
-      );
-    }
-  }, [newDate, preOverlappedArray, service]);
-
+ 
+const checkOverlap = () => {
+ for (let i = 0; i < preOverlappedArray.length; i++) {
+   setOverlapped(
+     areIntervalsOverlapping(
+       {
+         start: newDate,
+         end: addMinutes(newDate, service),
+       },
+       {
+         start: new Date(preOverlappedArray[i].date),
+         end: new Date(preOverlappedArray[i].end),
+       }
+     )
+   );
+ }
+}
+ useEffect(() => {checkOverlap()}, [checkOverlap, newDate, preOverlappedArray, service]);
   const getExcludedTimes = useCallback(
     (date) => {
       let arrSpecificDates = [];
@@ -165,61 +161,55 @@ const CalendarForm = ({ startDate }) => {
           setMinutes(new Date(date), arrSpecificDates[i].minutes),
           arrSpecificDates[i].hours
         );
-
         arrExcludedTimes.push(pickedDate);
       }
-
       setExcludedTimes(arrExcludedTimes);
     },
-
     [dates]
   );
+  const urlDelete = `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${key}.json`;
+  const cancelMeetingHandler = async() => {
+  const httpFeedback = await fetchFn(urlDelete, "DELETE");
+  if(httpFeedback.response.ok){
+    dispatch(modalActions.modalToggle())
+  }
 
-  const cancelMeetingHandler = () => {
-    fetch(
-      `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${key}.json`,
-      { method: "DELETE" }
-    ).then((resp) => {
-      if (resp.ok) dispatch(modalActions.modalToggle(), navigate("/calendar"));
-      dispatch(calendarActions.setIsChangingEvent(false));
-    });
   };
   useEffect(() => {
     getExcludedTimes();
   }, [getExcludedTimes]);
 
-     let filteredEvent = meetings.filter((event) => event.key === key);
- 
+  useEffect(() => {
+    checkOverlap();
+  }, [checkOverlap]);
+
+let filteredEvent = meetings.filter((event) => event.key === key);
+const urlEdit =   `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${filteredEvent[0]?.key}.json`
+const body = {
+  serviceName: workingMeeting.serviceName,
+  title: workingMeeting.title,
+  date: workingMeeting.date,
+  end: workingMeeting.end,
+  times: workingMeeting.times,
+  email: filteredEvent[0]?.email,
+};
   const editMeetingHandler = (e) => {
-    
-       if(isOverlapped){
-        return
-       }
-       else 
-     fetch(
-       `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${filteredEvent[0].key}.json`,
-       {
-         method: "PUT",
-         body: JSON.stringify({
-           serviceName: workingMeeting.serviceName,
-           title: workingMeeting.title,
-           date: workingMeeting.date,
-           end: workingMeeting.end,
-           times: workingMeeting.times,
-           email: filteredEvent[0].email,
-         }),
-         headers: {
-           "Content-type": "application / json",
-         },
-       }
-     ).then(data => console.log(data));
+   getExcludedTimes();
+   checkOverlap();
+    if (isOverlapped) {
+      return;
+    } else
+   
+  fetchFn(urlEdit, 'PUT', body );  
+
     dispatch(calendarActions.setIsChangingEvent(false));
-    dispatch(modalActions.modalToggle())
-    fetchEvent()
+    dispatch(modalActions.modalToggle());
   };
-    fetchEvent();
+
   return (
     <Fragment>
+      <FetchEvent />
+      
       <form onSubmit={submitHandler}>
         {isChanging ? (
           <h2 style={{ paddingBottom: "16px" }}>Edytuj lub anuluj spotkanie</h2>
@@ -301,6 +291,7 @@ const CalendarForm = ({ startDate }) => {
               Przedłużenie paznokci żelem 150 minut 120zł
             </option>
             <option value={"40"}>Pedicure</option>
+            {auth && <option value={"45"}>Praca własna</option>}
           </select>
 
           <div className={classes.actions}>
@@ -312,9 +303,11 @@ const CalendarForm = ({ startDate }) => {
             >
               Anuluj
             </button>
-           {!isChanging && <button type="submit" onClick={submitHandler}>
-              Akceptuj
-            </button>}
+            {!isChanging && (
+              <button type="submit" onClick={submitHandler}>
+                Akceptuj
+              </button>
+            )}
           </div>
         </div>
         {isOverlapped && (

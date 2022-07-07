@@ -60,6 +60,7 @@ const NavBar = () => {
                 onClick={() => {
                   dispatch(loginActions.logout());
                   dispatch(loginActions.admin(false))
+                  localStorage.removeItem('token')
                   navigate("/");
                 }}
               >

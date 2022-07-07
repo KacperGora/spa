@@ -1,97 +1,135 @@
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "../../../store/loginSlice";
 import { userActions } from "../../../store/usersSlice";
-
 import Spinner from "../../UI/spinner/Spinner";
 import classes from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
+import authFn from "../authFn";
+import fetchFn from "../../fetch";
+import useInput from "../use-input";
+
 const Login = () => {
+ const [error, setError] = useState(false)
+ const [errorMessage, setErrorMessage] = useState('')
+  //custom hook for email validation
+ const {
+  value: enteredMail,
+  isValid: enteredMailIsValid,
+  hasError: mailInputHasError,
+  valueChangeHandler: mailChangeHandler,
+  inputBlurHandler: mailBlurHandler,
+  reset: resetMailInput
+ } = useInput(value => value.trim() !== '' && value.includes('@') )
+
+
+ //custom hook for password validation
+ const {
+   value: enteredPassword,
+   isValid: enteredPasswordIsValid,
+   hasError: passwordInputHasError,
+   valueChangeHandler: passwordChangeHandler,
+   inputBlurHandler: passwordBlurHandler,
+   reset: resetPasswordInput,
+ } = useInput((value) => value.trim() !== "" && value.length > 5);
+
+ let formIsValid = false
+ if (enteredMailIsValid && enteredPasswordIsValid) {
+  formIsValid = true
+ }
+
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-  const [enteredMail, setEnteredMail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  
+  
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  //validation
 
-  const loginSubmitHandler = (e) => {
+  const loginUrl =
+    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw";
+  const usersUrl =
+    "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json";
+
+
+
+  const loginSubmitHandler = async (e) => {
     e.preventDefault();
-    userLogin();
-  };
+    setIsLoading(true);
 
-  const userLogin = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: enteredMail,
-            password: enteredPassword,
-            returnSecureToken: true,
-          }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        setError(true);
-      }
+    if (!enteredMailIsValid) {
       setIsLoading(false);
-      if (response.ok) {
-        dispatch(loginActions.login());
+      return;
+    } 
+   
 
-        fetch(
-          "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json"
-        )
-          .then((data) => data.json())
-          .then((response) => {
-            let user = [];
-            for (let key in response) {
-              user.push(response[key]);
-            }
-            dispatch(
-              userActions.setUser(
-                ...user.filter((user) => user.email === enteredMail)
-              )
-            );
-          });
-        navigate("/");
+    else {
+      setIsLoading(false);
+      const httpFeedback = await authFn(loginUrl, enteredMail, enteredPassword);
+      if(httpFeedback.data.error) {
+        setError(true);
+       if(httpFeedback.data.error.message === 'EMAIL_NOT_FOUND'){
+        setErrorMessage('Podano nieprawidłowe dane.')
+       }
       }
+      
 
-      const data = await response.json();
-      if (data.email === "admin@test.pl") {
+
+       if (httpFeedback && httpFeedback.response && httpFeedback.response.ok) {
+         dispatch(loginActions.login());
+         const httpFeedback = await fetchFn(usersUrl);
+
+         let users = [];
+         for (let key in httpFeedback.data) {
+           users.push(httpFeedback.data[key]);
+         }
+         dispatch(
+           userActions.setUser(
+             ...users.filter((user) => user.email === enteredMail)
+           )
+         );
+         navigate("/");
+       }
+      if (httpFeedback && httpFeedback.data &&  httpFeedback.data.email === "admin@test.pl") {
         dispatch(loginActions.admin(true));
       }
-    } catch (error) {
-      console.log(error.message);
+      resetMailInput()
     }
-  }, [dispatch, enteredMail, enteredPassword, navigate]);
+    };
 
   return (
     <section className={classes.container}>
       <section className={classes.container}>
         <form onSubmit={loginSubmitHandler}>
           <input
+            className={mailInputHasError ? classes.invalidInput : ""}
             onChange={(e) => {
-              setEnteredMail(e.target.value);
+              mailChangeHandler(e);
+              setError(false)
             }}
             type="email"
             placeholder="Email"
+            onBlur={() => {
+              mailBlurHandler();
+            }}
+            // onFocus={() => setEnteredMailTouched(false)}
+            // required
           ></input>
           <input
+            className={passwordInputHasError ? classes.invalidInput : ""}
             onChange={(e) => {
-              setEnteredPassword(e.target.value);
+              passwordChangeHandler(e);
+              setError(false);
+            }}
+            onBlur={() => {
+              passwordBlurHandler();
             }}
             type="password"
             placeholder="password"
+            // required
+            minLength={"6"}
           ></input>
 
-          <button>Zaloguj</button>
+          <button disabled={!formIsValid}>Zaloguj</button>
           <button
             type="submit"
             onClick={() => {
@@ -100,8 +138,10 @@ const Login = () => {
           >
             Nie masz konta?
           </button>
+          {mailInputHasError && <p>Nie wprowadzono poprawnego adresu email.</p>}
+          {passwordInputHasError && <p>Nie wprowadzono poprawnego hasła.</p>}
+          {error && <p>{errorMessage}</p>}
           {isLoading && <Spinner />}
-          {error && <p>Nie udana próba logowania.</p>}
         </form>
       </section>
     </section>

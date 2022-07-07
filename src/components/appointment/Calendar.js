@@ -1,39 +1,41 @@
-import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import "./react-datepicker.css";
 import momentPlugin from "@fullcalendar/moment";
-import NavBar from "../layout/navBar/NavBar";
 import plLocale from "@fullcalendar/core/locales/pl";
-
-import Modal from "../UI/modal/Modal";
-import { modalActions } from "../../store/modalSlice";
-import { useSelector, useDispatch } from "react-redux";
-// import AppointmentForm from "./appointmentForm/AppointmentForm";
-
-import { calendarActions } from "../../store/calendarSlice";
-import FetchEvent from "../fetchEvent";
-import CalendarForm from "./CalendarForm";
 
 import { addMinutes, subHours } from "date-fns";
 
+import Modal from "../UI/modal/Modal";
+import NavBar from "../layout/navBar/NavBar";
+import { modalActions } from "../../store/modalSlice";
+import { calendarActions } from "../../store/calendarSlice";
+
+import CalendarForm from "./CalendarForm";
+import FetchEvent from "../fetchEvent";
+import "./react-datepicker.css";
+import fetchFn from "../fetch";
+
 const Calendar = () => {
+  const dispatch = useDispatch();
+
   const modal = useSelector((state) => state.modal.isVisible);
   const events = useSelector((state) => state.calendar.meetings);
-  const [newDate, setNewDate] = useState(new Date());
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const auth = useSelector((state) => state.auth.admin);
-   const isChanging = useSelector((state) => state.calendar.changeEvent);
-  const dispatch = useDispatch();
+
+  const [newDate, setNewDate] = useState(new Date());
+
   const addEventHandler = (e) => {
     setNewDate(new Date(e.startStr));
     dispatch(modalActions.modalToggle());
     dispatch(calendarActions.setDate(e.startStr));
   };
-
 
   let eventsWithNoNames = [
     ...events.filter((meeting) => meeting.email !== loggedUserMail),
@@ -54,71 +56,61 @@ const Calendar = () => {
   const arr = eventsForUSers.concat(...eventsWithNames);
 
   const eventClickHandler = (e) => {
- 
+    setNewDate(e.event._instance.range.start)
+  //allowing admin for changing every event, and user can only change his own events
     if (auth) {
       dispatch(modalActions.modalToggle());
       dispatch(calendarActions.setIsChangingEvent(true));
       dispatch(calendarActions.findKey(e.event._def.extendedProps.key));
     }
-    if(!auth) {
+    else {
       if (e.event._def.extendedProps.email === loggedUserMail) {
         dispatch(modalActions.modalToggle());
         dispatch(calendarActions.setIsChangingEvent(true));
         dispatch(calendarActions.findKey(e.event._def.extendedProps.key));
-        
       }
     }
   };
+  // only for admin
   const eventChangeHandler = (e) => {
-    // console.log(e);
     if (auth) {
       let filteredEvent = events.filter(
         (event) => event.key === e.event._def.extendedProps.key
       );
-  
       const interval15 =
         (e.event._instance.range.end - e.event._instance.range.start) /
         1000 /
         60 /
         15;
       let times = [];
-    console.log(e.event._instance.range.start);
       for (let i = 0; i < interval15; i++) {
         times.push(
-          
           subHours(addMinutes(e.event._instance.range.start, i * 15), 2)
         );
       }
-
-      fetch(
-        `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${filteredEvent[0].key}.json`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            serviceName: filteredEvent[0].serviceName,
-            title: filteredEvent[0].title,
-            date: subHours(e.event._instance.range.start, 2),
-            end: subHours(e.event._instance.range.end, 2),
-            times,
-            email: filteredEvent[0].email,
-          }),
-          headers: {
-            "Content-type": "application / json",
-          },
-        }
-      );
+      //prepare data for changing at firebase
+      const url = `https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings/${filteredEvent[0].key}.json`;
+      const body = {
+        serviceName: filteredEvent[0].serviceName,
+        title: filteredEvent[0].title,
+        date: subHours(e.event._instance.range.start, 2),
+        end: subHours(e.event._instance.range.end, 2),
+        times,
+        email: filteredEvent[0].email,
+      };
+      fetchFn(url, "PUT", body);
     }
   };
-  FetchEvent()
+
   return (
     <section>
+      <FetchEvent />
       <NavBar />
       {modal && (
         <Modal>
           <CalendarForm startDate={newDate} />
         </Modal>
       )}
-      {/* {modal && <Modal>  <EventClicked></EventClicked></Modal>} */}
       <FullCalendar
         stickyHeaderDates={true}
         eventDurationEditable={true}
@@ -159,7 +151,7 @@ const Calendar = () => {
         ]}
         initialView="dayGridMonth"
       />
-      <FetchEvent />
+      
     </section>
   );
 };

@@ -16,7 +16,6 @@ const FetchEvent = () => {
           for (const [key, value] of Object.entries(data)) {
             fetchedMeetings.push({ ...value, key });
           }
-
           dispatch(calendarActions.fetchMeetings(fetchedMeetings));
         }
       });
