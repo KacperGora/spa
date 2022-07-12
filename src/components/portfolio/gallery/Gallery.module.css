@@ -1,0 +1,28 @@
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  align-items: center;
+}
+.galleryItem img {
+  display: block;
+  width: 100%;
+  transition: all 0.4s;
+}
+
+.galleryItem img:hover {
+  transform: scale(1.1);
+}
+.galleryItem {
+  overflow: hidden;
+  width: 15%;
+  display: flex;
+  flex-grow: 0;
+
+}
+.gallery {
+  display: flex;
+  gap: 1%;
+  align-self: flex-start;
+  flex-wrap: wrap;
+
+}

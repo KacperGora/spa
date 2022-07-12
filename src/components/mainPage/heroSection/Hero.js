@@ -22,26 +22,28 @@ const Hero = () => {
             incidunt perspiciatis? Ut voluptates quia vel temporibus incidunt ut
             officia perspiciatis?
           </p>
-          {isAuth && (
-            <Link
-              to="/calendar"
-              className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-            >
-              Zadbaj o swoje dłonie
-            </Link>
-          )}
-          {!isAuth && (
-            <Link
-              to="/login"
-              className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-            >
-              Zadbaj o swoje dłonie
-            </Link>
-          )}
+          <div className={classes.actions}>
+            {isAuth && (
+              <Link
+                to="/calendar"
+                className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
+              >
+                Zadbaj o swoje dłonie
+              </Link>
+            )}
+            {!isAuth && (
+              <Link
+                to="/login"
+                className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
+              >
+                Zadbaj o swoje dłonie
+              </Link>
+            )}
 
-          <a href="#" className={`${classes.btn} ${classes.outline}`}>
-            Dowiedz się więcej
-          </a>
+            <a href="#" className={`${classes.btn} ${classes.outline}`}>
+              Dowiedz się więcej
+            </a>
+          </div>
         </div>
         <div className={classes.aa}>
           <Slider />

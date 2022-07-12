@@ -3,7 +3,7 @@ import { calendarActions } from "../store/calendarSlice";
 import { useDispatch } from "react-redux";
 
 const FetchEvent = () => {
-  //fetching events from firebase
+
   const dispatch = useDispatch();
   useEffect(() => {
     fetch(
@@ -20,6 +20,6 @@ const FetchEvent = () => {
         }
       });
   }, [dispatch]);
-  //fetching events from firebase
+ 
 };
 export default FetchEvent;

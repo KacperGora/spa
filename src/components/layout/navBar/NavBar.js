@@ -1,26 +1,31 @@
 import classes from "./NavBar.module.css";
-import React from "react";
+
+import React, { useState } from "react";
 import logo from "../../../images/logo.png";
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FaBars } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
 
 import { loginActions } from "../../../store/loginSlice";
+
 const NavBar = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  
- const isAuth = useSelector((state) => state.auth.isLogged);
+  const dispatch = useDispatch();
+  const [active, setIsActive] = useState(false)
+  console.log(active)
+  const isAuth = useSelector((state) => state.auth.isLogged);
   const homeHandler = () => {
     navigate("/");
   };
- const scrollHandler = () => {
-    const header = this.document.querySelector('header');
-    header.classList.toggle('sticky', this.window.scrollY>0)
-    console.log('object')
+
+  const burgerHandler = ()=>{
+    setIsActive(!active)
+
   }
   return (
-    <header onScroll={scrollHandler} className={classes.header}>
+    <header className={`${classes.header} ${active ? classes.navOpen : ''}`}>
       <img
         onClick={homeHandler}
         className={classes.logo}
@@ -50,7 +55,6 @@ const NavBar = () => {
                 <NavLink to="/profile" className={`${classes.navLink}`}>
                   Profil
                 </NavLink>
-                
               </div>
             </li>
           )}
@@ -59,8 +63,8 @@ const NavBar = () => {
               <button
                 onClick={() => {
                   dispatch(loginActions.logout());
-                  dispatch(loginActions.admin(false))
-                  localStorage.removeItem('token')
+                  dispatch(loginActions.admin(false));
+                  localStorage.removeItem("token");
                   navigate("/");
                 }}
               >
@@ -88,6 +92,10 @@ const NavBar = () => {
           </li>
         </ul>
       </nav>
+      <button onClick={burgerHandler} className={classes.btnNav}>
+        <FaBars className={classes.iconNavMenu} />
+        <GrClose className={classes.iconNavClose} />
+      </button>
     </header>
   );
 };

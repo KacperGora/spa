@@ -7,7 +7,7 @@ import authFn from "../authFn";
 import fetchFn from "../../fetch";
 import classes from "./Register.module.css";
 import useInput from "../use-input";
-
+import Input from "./Input";
 const Register = () => {
   const [error, setError] = useState("");
   const [passwordsAreValid, setPasswordAreValid] = useState(true);
@@ -115,13 +115,11 @@ const Register = () => {
       setIsLoading(false);
       if (!httpFeedback.response.ok) {
         if (httpFeedback.data.error.errors[0].message === "EMAIL_EXISTS") {
-          setError(`Na podany adres zostało już utworzone konto.`);
+          setError(`Na podany adres email zostało już utworzone konto.`);
         } else
           setError(
             `Coś poszło nie tak spróbuj ponownie później ${httpFeedback.data.error.errors[0].message}`
           );
-
-        // throw new Error(httpFeedback.data.error)
       }
       if (httpFeedback.response.ok) {
         setStatus(true);
@@ -131,8 +129,6 @@ const Register = () => {
       setError(error);
     }
   };
-
-  console.log(error);
   const historyLoginPush = () => {
     navigate("/login");
   };
@@ -143,71 +139,57 @@ const Register = () => {
       <section className={classes.container}>
         <div className={classes.container}>
           <form onSubmit={submitHandler}>
-            <input
-              className={nameInputHasError ? classes.invalidInput : ""}
-              onChange={(e) => nameChangeHandler(e)}
-              onBlur={() => nameBlurHandler()}
-              minLength="4"
+            <Input
+              onChange={nameChangeHandler}
+              onBlur={nameBlurHandler}
               type="text"
+              hasError={nameInputHasError}
               placeholder="Imię"
-              required
             />
-            <input
-              className={secondNameInputHasError ? classes.invalidInput : ""}
-              onChange={(e) => {
-                secondNameChangeHandler(e);
-              }}
-              onBlur={() => secondNameBlurHandler()}
-              placeholder="Nazwisko"
+
+            <Input
+              onChange={secondNameChangeHandler}
+              onBlur={secondNameBlurHandler}
               type="text"
-              required
+              hasError={secondNameInputHasError}
+              placeholder="Nazwisko"
             />
-            <input
-              className={mailInputHasError ? classes.invalidInput : ""}
-              onChange={(e) => mailChangeHandler(e)}
+
+            <Input
+              onChange={mailChangeHandler}
+              onBlur={mailBlurHandler}
               type="mail"
-              required
-              onBlur={() => {
-                mailBlurHandler();
-              }}
+              hasError={mailInputHasError}
               placeholder="Adres email"
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$"
-            ></input>
-            <input
-              className={phoneNumberHasError ? classes.invalidInput : ""}
+              pattern={"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$"}
+            />
+
+            <Input
+              onChange={phoneNumberChangeHandler}
+              onBlur={phoneNumberBlurHandler}
               type="tel"
-              pattern="[0-9]{3}[0-9]{3}[0-9]{3}"
-              aria-required={true}
-              onChange={(e) => phoneNumberChangeHandler(e)}
-              required
-              onBlur={() => {
-                phoneNumberBlurHandler();
-              }}
+              hasError={phoneNumberHasError}
               placeholder="Numer telefonu"
-            ></input>
-            <input
-              className={passwordHasError ? classes.invalidInput : ""}
-              onChange={(e) => passwordChangeHandler(e)}
+              pattern={"[0-9]{3}[0-9]{3}[0-9]{3}"}
+            />
+
+            <Input
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
               type="password"
+              hasError={passwordHasError}
               placeholder="Hasło"
               minLength="5"
-              required
-              onBlur={() => {
-                passwordBlurHandler();
-              }}
-            ></input>
+            />
 
-            <input
-              className={passwordHasError ? classes.invalidInput : ""}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+            <Input
+              onChange={setConfirmPassword}
+              onBlur={passwordBlurHandler}
               type="password"
-              placeholder="Powtórz hasło"
+              hasError={passwordHasError}
+              placeholder=" Powtóz hasło"
               minLength="5"
-              required
-              onBlur={() => {
-                passwordBlurHandler();
-              }}
-            ></input>
+            />
 
             <button
               onClick={() => {

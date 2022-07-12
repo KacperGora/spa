@@ -44,5 +44,18 @@ body {
  font-family: 'Raleway', sans-serif;
   line-height: 1;
   font-weight: 400;
-  color: #333
+  color: #333;
+  overflow-x: hidden;
+}
+
+@media (max-width: 75em) {
+  html {
+    font-size: 56.25%;
+  }
+}
+
+@media (max-width: 59em) {
+  html {
+    font-size: 50%;
+  }
 }

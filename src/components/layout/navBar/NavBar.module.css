@@ -7,28 +7,28 @@ header {
   align-items: center;
   background-color: #fbf2f4;
   height: 9.6rem;
-  padding: 0 7.2rem;
+  padding: 0 3.2rem;
   transition: 0.6s;
   z-index: 10;
+  margin: 0 auto;
+  max-width: 120rem;
 }
-
 
 .navList {
   list-style: none;
   display: flex;
   align-items: center;
   gap: 3.2rem;
-   transition: all 0.3s;
+  transition: all 0.3s;
 }
 .navLink:visited,
 .navLink:link {
   display: inline-block;
-  
+
   text-decoration: none;
   color: #333;
   font-size: 1.8rem;
   font-weight: 500;
- 
 }
 .navLink:hover,
 .navLink:active {
@@ -50,14 +50,14 @@ header {
 }
 
 .dropdown {
-  position:relative;
+  position: relative;
   display: inline-block;
 }
 .dropdownContent {
   display: none;
   position: absolute;
   right: 0;
-  z-index: -1
+  z-index: -1;
 }
 
 .dropdownContent li {
@@ -66,9 +66,85 @@ header {
   text-decoration: none;
   display: block;
 }
-.dropdownContent li:hover {background-color: #f1f1f1;}
+.dropdownContent li:hover {
+  background-color: #f1f1f1;
+}
 
 .dropdown:hover .dropdownContent {
   display: block;
 }
+.btnNav {
+  border: none;
+  background-color: none;
+  cursor: pointer;
+  display: none;
+}
+.iconNavMenu,
+.iconNavClose {
+  height: 3.2rem;
+  width: 3.2rem;
+  color: #333;
+}
 
+.iconNavClose {
+  display: none;
+}
+
+@media (max-width: 75em) {
+  header {
+    padding: 0 3.2rem;
+  }
+}
+@media (max-width: 59em) {
+  .btnNav {
+    display: block;
+    z-index: 100;
+    background: none;
+  }
+  .nav {
+    background-color: rgba(255, 255, 255, 0.848);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    z-index: 12;
+    justify-content: center;
+    transition: all 0.5s ease-in;
+    opacity: 0;
+    transform: translateX(100%);
+    
+
+    pointer-events: none;
+
+    visibility: hidden;
+  }
+  .navOpen .nav {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transform: translateX(0%);
+  }
+  .navOpen .iconNavClose {
+    display: block;
+    z-index: 3;
+  }
+  .navOpen .iconNavClose {
+    display: block;
+    cursor: pointer;
+    z-index: 99;
+  }
+  .navOpen .iconNavMenu {
+    display: none;
+  }
+  .navList {
+    flex-direction: column;
+    gap: 4.8rem;
+  }
+  .navLink:visited,
+  .navLink:link {
+    font-size: 3rem;
+  }
+}

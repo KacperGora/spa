@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment} from "react";
 import NavBar from "../../components/layout/navBar/NavBar";
 import classes from "./Profile.module.css";
-import formatDistance from "date-fns/formatDistance";
+
 import React from "react";
 import { useSelector } from "react-redux"
 import { pl } from "date-fns/locale";
@@ -12,11 +12,6 @@ registerLocale("pl", pl);
 
 const Profile = () => {
   const loggedUser = useSelector((state) => state.user.user.name);
-  const meetings = useSelector((state) => state.calendar.meetings);
-  const [userMeetings, setUserMeetings] = useState([]);
-  const loggedUserMail = useSelector((state) => state.user.user.email);
- 
-
   return (
     <Fragment>
       <FetchEvent />

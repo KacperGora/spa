@@ -18,9 +18,9 @@ const Slider = () => {
   if (!Array.isArray(slides) || slides.length <= 0) {
     return null;
   }
-  setTimeout(() => {
-    nextSlide();
-  }, 3000);
+  // setTimeout(() => {
+  //   nextSlide();
+  // }, 3000);
   return (
     <section className="slider">
       <FaArrowCircleLeft className="left" onClick={prevSlide} />

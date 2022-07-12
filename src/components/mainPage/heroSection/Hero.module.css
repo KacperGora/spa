@@ -2,28 +2,28 @@
   max-width: 130rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4.8rem  0 9.6rem 0;
+  padding: 4.8rem  0 0 0;
   margin: 0 auto;
   align-items: center;
 }
 .hero {
   background-color: #fbf2f4;
-  padding: 4.8rem  0 9.6rem 0;
+  /* padding: 4.8rem  0 9.6rem 0; */
+  max-width: 120rem;
   padding: 0 3.2rem;
+  margin: 0 auto;
 }
-.heroText {
-}
+
 .brand {
     display: flex;
     align-items: flex-end;
-    
 }
 .name {
     color: #333;
     opacity: 50%;
 }
 .heading {
-  font-size: 5.2rem;
+  font-size: 4.8rem;
   font-weight: 700;
   line-height: 1.05;
   color: #333;
@@ -70,4 +70,53 @@
 }
 .marginRightSM {
     margin-right: 1.6rem;
+}
+
+@media(max-width: 84em) {
+  .grid {
+    max-width: 120rem ;
+  }
+ .heading {
+  font-size: 4.4rem;}
+}
+
+
+@media(max-width: 75em){
+  .heading{
+    font-size: 3.2rem;
+  }
+  .description {
+    font-size: 1.6rem;
+    margin-bottom: 3.2rem
+  }
+ .btn:link,
+.btn:visited {
+  font-size: 1.6rem;
+ }
+}
+
+@media(max-width:59em){
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+     padding: 0 8rem;
+  }
+  .heroText, 
+  .aa {
+    text-align: center;
+  }
+  .actions {
+   margin-bottom: 20px;
+  }
+}
+@media (max-width: 36em) {
+  .description {
+    font-size: 1.4rem;
+    margin-bottom: 2.4rem;
+    line-height: 1.4;
+  }
+   .heading{
+    font-size: 2.4rem;
+  }
 }

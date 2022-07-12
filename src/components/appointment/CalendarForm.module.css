@@ -1,16 +1,29 @@
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 90%;
-    justify-items: center;
+    width: 50%;
+
     gap: 0.5rem;
+    
 }
 select {
     margin-left:0;
-    width: 75%;
+    width: 35%;
 }
 .actions {
     display: flex;
     flex-grow: 1;
     gap: 1rem;
+}
+
+@media(max-width: 62em ){
+    .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 80%;
+   
+}
+select {
+    width: 40%
+}
 }

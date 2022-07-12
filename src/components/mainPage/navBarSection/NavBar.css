@@ -9,7 +9,11 @@ header {
   height: 9.6rem;
   padding: 0 7.2rem;
 }
-
+@media(max-width: 1200px){
+  header {
+    background-color: red;
+  }
+}
 .navList {
   list-style: none;
   display: flex;
