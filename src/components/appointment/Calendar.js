@@ -17,9 +17,9 @@ import { modalActions } from "../../store/modalSlice";
 import { calendarActions } from "../../store/calendarSlice";
 
 import CalendarForm from "./CalendarForm";
-import FetchEvent from "../fetchEvent";
 import "./react-datepicker.css";
 import fetchFn from "../fetch";
+import FetchEvent from "../fetchEvent";
 
 const Calendar = () => {
   const dispatch = useDispatch();
@@ -58,6 +58,7 @@ const Calendar = () => {
   const eventClickHandler = (e) => {
     setNewDate(e.event._instance.range.start)
   //allowing admin for changing every event, and user can only change his own events
+
     if (auth) {
       dispatch(modalActions.modalToggle());
       dispatch(calendarActions.setIsChangingEvent(true));
@@ -104,7 +105,7 @@ const Calendar = () => {
 
   return (
     <section>
-      {/* <FetchEvent /> */}
+      <FetchEvent />
       <NavBar />
       {modal && (
         <Modal>

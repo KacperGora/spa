@@ -8,6 +8,7 @@ import { pl } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
 import ProfileMeetings from "./ProfileMeetings";
 import FetchEvent from "../../components/fetchEvent";
+import Footer from "../../components/layout/footer/Footer";
 registerLocale("pl", pl);
 
 const Profile = () => {
@@ -21,9 +22,10 @@ const Profile = () => {
           <p className={classes.heading}>
             Hej <span>{loggedUser}</span>, fajnie Cię widzieć
           </p>
-        <ProfileMeetings />
+          <ProfileMeetings />
         </div>
       </section>
+      <Footer />
     </Fragment>
   );
 };

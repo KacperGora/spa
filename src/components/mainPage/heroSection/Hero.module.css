@@ -38,7 +38,7 @@
 .btn:link,
 .btn:visited {
   font-size: 2rem;
-  color: #fff;
+  color: #333;
   padding: 1.6rem 3.2rem;
   border-radius: 9px;
   display: inline-block;
@@ -48,15 +48,15 @@
 .full:link,
 .full:visited {
   background-color: #996c95;
+  color: #fff
 }
 .full:hover,
 .full:active {
   background-color: #aa78a6;
 }
-.outline:link,
-.outline:visited {
+.outline:link{
   background-color: #fff;
-  color: #333;
+  color: #333
 }
 .outline:hover,
 .outline:active {
@@ -112,7 +112,7 @@
 }
 @media (max-width: 36em) {
   .description {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     margin-bottom: 2.4rem;
     line-height: 1.4;
   }

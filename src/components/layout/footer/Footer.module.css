@@ -1,0 +1,55 @@
+.footer {
+    padding: 9.6rem 0;
+padding-bottom: 0;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 150px;
+  background-color: #fbf2f4;
+  padding: 0 3.2rem;
+  margin: 0 auto;
+  max-width: 120rem;
+
+  border-top: solid 2px #996c95;
+  
+  
+}
+.flexContainer {
+  margin-top: 1.2rem;
+    height: 45%;
+    display: flex;
+    align-items: center;
+ 
+   gap: 16px;
+   justify-content: flex-start;
+    /* justify-content: space-around */
+}
+.icons {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: #333;
+  margin-right: 1.6rem;
+}
+.logoImg {
+ height: 100%;
+  aspect-ratio: inherit;
+  cursor: pointer;
+}
+.icons {
+
+}
+.addressCol  {
+  text-align: center;
+  line-height: 1.6;
+  padding: 1.2rem;
+}
+
+.addressCol a {
+  color: #333
+}
+ul {
+  padding: 1.2rem;
+  line-height: 2;
+  text-align: center;
+}

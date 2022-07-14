@@ -9,4 +9,14 @@
     margin:auto  3.2rem ;
     font-size: 2.4rem;
     font-weight: 500;
+    padding: 3.2rem 0;
+    display: flex;
+    justify-content: center;
+}
+.contain {
+    display: flex;
+    
+}
+.iconsContainer {
+    padding-left: 2.4rem;
 }

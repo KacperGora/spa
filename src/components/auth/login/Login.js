@@ -9,6 +9,7 @@ import authFn from "../authFn";
 import fetchFn from "../../fetch";
 import useInput from "../use-input";
 import Input from "../register/Input";
+import Footer from "../../layout/footer/Footer";
 
 const Login = () => {
   const [error, setError] = useState(false);
@@ -128,6 +129,7 @@ const Login = () => {
           {isLoading && <Spinner />}
         </form>
       </section>
+      <Footer />
     </section>
   );
 };

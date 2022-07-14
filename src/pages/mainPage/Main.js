@@ -3,6 +3,7 @@ import Hero from '../../components/mainPage/heroSection/Hero'
 import HowItWorks from '../../components/mainPage/howItWorksSection/HowItWorks'
 import NavBar from "../../components/layout/navBar/NavBar"; 
 import Testimonials from '../../components/mainPage/testimonialSection/Testimonials'
+import Footer from "../../components/layout/footer/Footer";
 
 const Main = () => {
     return (
@@ -12,6 +13,7 @@ const Main = () => {
         <Hero />
         <HowItWorks />
         <Testimonials />
+        <Footer />
       </Fragment>
     );
 }

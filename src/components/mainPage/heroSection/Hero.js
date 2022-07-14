@@ -4,10 +4,13 @@ import React from "react";
 import Slider from '../../UI/slider/Slider'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import MyComponent from "../../map/Map";
+
 const Hero = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);
   return (
     <section className={classes.hero}>
+
       <div className={classes.grid}>
         <div className={classes.heroText}>
           <div className={classes.brand}>

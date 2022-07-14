@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
-
+import { MdPerson } from "react-icons/md";
 import { loginActions } from "../../../store/loginSlice";
 
 const NavBar = () => {
@@ -25,13 +25,14 @@ const NavBar = () => {
 
   }
   return (
-    <header className={`${classes.header} ${active ? classes.navOpen : ''}`}>
+    <header className={`${classes.header} ${active ? classes.navOpen : ""}`}>
       <img
         onClick={homeHandler}
         className={classes.logo}
         src={logo}
         alt="Brand logo"
       />
+
       <nav className={classes.nav}>
         <ul className={classes.navList}>
           <li>
@@ -44,6 +45,7 @@ const NavBar = () => {
               Portfolio
             </NavLink>
           </li>
+
           <li>
             <NavLink to="/kontakt" className={`${classes.navLink}`}>
               Kontakt
@@ -53,7 +55,7 @@ const NavBar = () => {
             <li>
               <div className={classes.dropdown}>
                 <NavLink to="/profile" className={`${classes.navLink}`}>
-                  Profil
+                  <MdPerson className={classes.icons} />
                 </NavLink>
               </div>
             </li>
