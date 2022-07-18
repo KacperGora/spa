@@ -4,6 +4,7 @@
     padding: 0 3.2rem;
     max-width: 120rem;
     margin: 1.6rem auto ;
+    min-height: 68vh;
  }
 
  input {
