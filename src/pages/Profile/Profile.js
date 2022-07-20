@@ -1,14 +1,16 @@
-import { Fragment} from "react";
-import NavBar from "../../components/layout/navBar/NavBar";
+import { Fragment } from "react";
+
 import classes from "./Profile.module.css";
 
 import React from "react";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import { pl } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
-import ProfileMeetings from "./ProfileMeetings";
+
+import ProfileMeetings from "./components/ProfileMeetings";
 import FetchEvent from "../../components/fetchEvent";
-import Footer from "../../components/layout/footer/Footer";
+import NavBar from "../../layout/navBar/NavBar";
+import Footer from "../../layout/footer/Footer";
 registerLocale("pl", pl);
 
 const Profile = () => {

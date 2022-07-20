@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { MdPerson } from "react-icons/md";
-import { loginActions } from "../../../store/loginSlice";
+import { loginActions } from "../../store/loginSlice";
 
 const NavBar = () => {
   const navigate = useNavigate();

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import NavBar from "../../layout/navBar/NavBar";
-import Spinner from "../../UI/spinner/Spinner";
-import authFn from "../authFn";
-import fetchFn from "../../fetch";
+import Spinner from "../../../../components/UI/spinner/Spinner";
+import authFn from "../../../../components/auth/authFn";
+import fetchFn from "../../../../components/fetch";
 import classes from "./Register.module.css";
-import useInput from "../use-input";
+import useInput from "../../../../hooks/use-input";
 import Input from "./Input";
 const Register = () => {
   const [error, setError] = useState("");

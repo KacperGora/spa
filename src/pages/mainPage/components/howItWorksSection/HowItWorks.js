@@ -1,6 +1,6 @@
 import classes from "./HowItWorks.module.css";
-import zpat2 from "../../../images/zpat2.jpg";
-import zpat3 from "../../../images/zpat3.jpg";
+import zpat2 from "../../../assets/images/zpat2.jpg";
+import zpat3 from "../../../../assets/images/zpat3.jpg";
 import zpat1 from "../../../images/zpat1.jpg";
 import { Element } from "react-scroll/modules";
 const HowItWorks = () => {
