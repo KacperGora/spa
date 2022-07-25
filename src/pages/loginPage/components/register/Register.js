@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import NavBar from "../../layout/navBar/NavBar";
+import NavBar from "../../../../layout/navBar/NavBar";
 import Spinner from "../../../../components/UI/spinner/Spinner";
 import authFn from "../../../../components/auth/authFn";
 import fetchFn from "../../../../components/fetch";
+import PhoneIcon from "@mui/icons-material/Phone";
 import classes from "./Register.module.css";
 import useInput from "../../../../hooks/use-input";
 import Input from "./Input";
+import BadgeIcon from "@mui/icons-material/Badge";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import LockIcon from "@mui/icons-material/Lock";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
 const Register = () => {
   const [error, setError] = useState("");
   const [passwordsAreValid, setPasswordAreValid] = useState(true);
+
+  // Add a new document in collection "cities"
 
   //name validation
   const {
@@ -57,28 +67,13 @@ const Register = () => {
     inputBlurHandler: passwordBlurHandler,
   } = useInput((value) => value.trim() !== "" && value.trim().length > 5);
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  useEffect(() => {
-    if ((enteredPassword === confirmPassword) & enteredPasswordIsValid) {
-      setTimeout(() => {
-        setPasswordAreValid(true);
-      }, 400);
-    } else if ((enteredPassword !== confirmPassword) & enteredPasswordIsValid) {
-      setTimeout(() => {
-        setPasswordAreValid(false);
-      }, 250);
-    }
-  }, [confirmPassword, enteredPassword, enteredPasswordIsValid]);
-
   let formIsValid = false;
   if (
     enteredNameIsValid &&
     enteredSecondNameIsValid &&
     enteredMailIsValid &&
     enteredPhoneNumberIsValid &&
-    enteredPasswordIsValid &&
-    passwordsAreValid
+    enteredPasswordIsValid
   ) {
     formIsValid = true;
   }
@@ -87,8 +82,9 @@ const Register = () => {
   const [status, setStatus] = useState(undefined);
 
   const navigate = useNavigate();
-  const registerUrl =
-    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAGWo9-dHn91oycTewIhxo2TyM8C8ZOEdw";
+  const key = process.env.REACT_APP_FIREBASE_KEY;
+
+  const registerUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`;
   const userUrl =
     "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json";
 
@@ -123,7 +119,11 @@ const Register = () => {
       }
       if (httpFeedback.response.ok) {
         setStatus(true);
-        fetchFn(userUrl, "POST", body);
+        const docRef = await addDoc(collection(db, "users"), {
+          ...body,
+        });
+        //previous version w/out firebase database
+        // fetchFn(userUrl, "POST", body);
       }
     } catch (error) {
       setError(error);
@@ -138,69 +138,82 @@ const Register = () => {
       <NavBar />
       <section className={classes.container}>
         <div className={classes.container}>
-          <form onSubmit={submitHandler}>
-            <Input
-              onChange={nameChangeHandler}
-              onBlur={nameBlurHandler}
-              type="text"
-              hasError={nameInputHasError}
-              placeholder="Imię"
-            />
-
-            <Input
-              onChange={secondNameChangeHandler}
-              onBlur={secondNameBlurHandler}
-              type="text"
-              hasError={secondNameInputHasError}
-              placeholder="Nazwisko"
-            />
-
-            <Input
-              onChange={mailChangeHandler}
-              onBlur={mailBlurHandler}
-              type="mail"
-              hasError={mailInputHasError}
-              placeholder="Adres email"
-              pattern={"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$"}
-            />
-
-            <Input
-              onChange={phoneNumberChangeHandler}
-              onBlur={phoneNumberBlurHandler}
-              type="tel"
-              hasError={phoneNumberHasError}
-              placeholder="Numer telefonu"
-              pattern={"[0-9]{3}[0-9]{3}[0-9]{3}"}
-            />
-
-            <Input
-              onChange={passwordChangeHandler}
-              onBlur={passwordBlurHandler}
-              type="password"
-              hasError={passwordHasError}
-              placeholder="Hasło"
-              minLength="5"
-            />
-
-            <Input
-              onChange={setConfirmPassword}
-              onBlur={passwordBlurHandler}
-              type="password"
-              hasError={passwordHasError}
-              placeholder=" Powtóz hasło"
-              minLength="5"
-            />
-
-            <button
-              onClick={() => {
-                navigate("/login");
+          <form className={classes.form} onSubmit={submitHandler}>
+            <h2
+              style={{
+                textAlign: "center",
+                padding: "10px",
+                marginBottom: "8px",
               }}
             >
-              Powrót do logowania
-            </button>
-            <button type="submit" disabled={!formIsValid}>
-              Rejestracja
-            </button>
+              Zarejestruj konto
+            </h2>
+            <div className={classes.handler}>
+              <BadgeIcon className={classes.icon} />
+              <Input
+                onChange={nameChangeHandler}
+                onBlur={nameBlurHandler}
+                type="text"
+                hasError={nameInputHasError}
+                placeholder="Imię"
+              />
+              <DriveFileRenameOutlineIcon className={classes.icon} />
+              <Input
+                onChange={secondNameChangeHandler}
+                onBlur={secondNameBlurHandler}
+                type="text"
+                hasError={secondNameInputHasError}
+                placeholder="Nazwisko"
+              />
+            </div>
+            <div className={classes.handler}>
+              <AlternateEmailIcon className={classes.icon} />
+              <Input
+                onChange={mailChangeHandler}
+                onBlur={mailBlurHandler}
+                type="mail"
+                hasError={mailInputHasError}
+                placeholder="Adres email"
+                pattern={"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$"}
+              />
+              <PhoneIcon className={classes.icon} />
+              <Input
+                onChange={phoneNumberChangeHandler}
+                onBlur={phoneNumberBlurHandler}
+                type="tel"
+                hasError={phoneNumberHasError}
+                placeholder="Numer telefonu"
+                pattern={"[0-9]{3}[0-9]{3}[0-9]{3}"}
+              />
+            </div>
+            <div className={classes.handler}>
+              <LockIcon className={classes.icon} />
+              <Input
+                onChange={passwordChangeHandler}
+                onBlur={passwordBlurHandler}
+                type="password"
+                hasError={passwordHasError}
+                placeholder="Hasło"
+                minLength="5"
+              />
+            </div>
+            <div className={classes.button}>
+              <button
+                className={classes.button}
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Powrót do logowania
+              </button>
+              <button
+                className={classes.button}
+                type="submit"
+                disabled={!formIsValid}
+              >
+                Rejestracja
+              </button>
+            </div>
             <div>{isLoading && <Spinner />}</div>
           </form>
           {status && (

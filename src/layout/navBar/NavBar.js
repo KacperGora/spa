@@ -1,7 +1,7 @@
 import classes from "./NavBar.module.css";
 
 import React, { useState } from "react";
-import logo from "../../../images/logo.png";
+import logo from "../../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +9,13 @@ import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { MdPerson } from "react-icons/md";
 import { loginActions } from "../../store/loginSlice";
+import style from "../../pages/contactUs/components/Mapstyles";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [active, setIsActive] = useState(false)
-  console.log(active)
+
   const isAuth = useSelector((state) => state.auth.isLogged);
   const homeHandler = () => {
     navigate("/");
@@ -22,6 +23,7 @@ const NavBar = () => {
 
   const burgerHandler = ()=>{
     setIsActive(!active)
+    
 
   }
   return (

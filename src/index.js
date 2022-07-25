@@ -6,15 +6,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-
-
+import {LoadScript} from "@react-google-maps/api";
+const GOOGLE_APP_KEY = 'AIzaSyDVFOtkV_zQmarBaru6SQ1qozIxAe5G66w';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <LoadScript googleMapsApiKey={GOOGLE_APP_KEY}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </LoadScript>
     </Provider>
   </React.StrictMode>
 );

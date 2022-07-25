@@ -15,18 +15,19 @@ const center = {
 
 function Map() {
   return (
-    <LoadScript googleMapsApiKey="AIzaSyDVFOtkV_zQmarBaru6SQ1qozIxAe5G66w">
+    
       <GoogleMap
+    
         mapContainerStyle={containerStyle}
         center={center}
         zoom={15}
-        options={{ disableDefaultUI: true , }}
+        options={{ disableDefaultUI: true }}
       >
         <Marker position={center} label={"Around Her Beauty"} />
         {/* Child components, such as markers, info windows, etc. */}
         <></>
       </GoogleMap>
-    </LoadScript>
+   
   );
 }
 

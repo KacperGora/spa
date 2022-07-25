@@ -1,16 +1,17 @@
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginActions } from "../../../store/loginSlice";
-import { userActions } from "../../../store/usersSlice";
-import Spinner from "../../UI/spinner/Spinner";
+import { loginActions } from "../../../../store/loginSlice";
+import { userActions } from "../../../../store/usersSlice";
+import Spinner from "../../../../components/UI/spinner/Spinner";
 import classes from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
-import authFn from "../authFn";
-import fetchFn from "../../fetch";
-import useInput from "../use-input";
+import authFn from "../../../../components/auth/authFn";
+import fetchFn from "../../../../components/fetch";
+import useInput from "../../../../hooks/use-input";
 import Input from "../register/Input";
-import Footer from "../../layout/footer/Footer";
-
+import Footer from "../../../../layout/footer/Footer";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import LockIcon from "@mui/icons-material/Lock";
 const Login = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,7 +61,7 @@ const Login = () => {
     } else {
       setIsLoading(false);
       const httpFeedback = await authFn(loginUrl, enteredMail, enteredPassword);
-      console.log(httpFeedback);
+
       if (httpFeedback.data.error) {
         setError(true);
         if (httpFeedback.data.error.message === "EMAIL_NOT_FOUND") {
@@ -97,32 +98,38 @@ const Login = () => {
   return (
     <section className={classes.container}>
       <section className={classes.container}>
-        <form onSubmit={loginSubmitHandler}>
-          <Input
-            onChange={mailChangeHandler}
-            hasError={mailInputHasError}
-            type="mail"
-            onBlur={mailBlurHandler}
-            placeholder="Adres email"
-          />
-
-          <Input
-            onChange={passwordChangeHandler}
-            hasError={passwordInputHasError}
-            type="password"
-            onBlur={passwordBlurHandler}
-            placeholder="Hasło"
-          />
-
-          <button disabled={!formIsValid}>Zaloguj</button>
-          <button
-            type="submit"
-            onClick={() => {
-              navigate("/register");
-            }}
-          >
-            Nie masz konta?
-          </button>
+        <form className={classes.form} onSubmit={loginSubmitHandler}>
+          <div className={classes.inputContainer}>
+            <AlternateEmailIcon />
+            <Input
+              onChange={mailChangeHandler}
+              hasError={mailInputHasError}
+              type="mail"
+              onBlur={mailBlurHandler}
+              placeholder="Adres email"
+            />
+          </div>{" "}
+          <div className={classes.inputContainer}>
+            <LockIcon />
+            <Input
+              onChange={passwordChangeHandler}
+              hasError={passwordInputHasError}
+              type="password"
+              onBlur={passwordBlurHandler}
+              placeholder="Hasło"
+            />
+          </div>
+          <div className={classes.inputContainer}>
+            <button disabled={!formIsValid}>Zaloguj</button>
+            <button
+              type="submit"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Nie masz konta?
+            </button>
+          </div>
           {mailInputHasError && <p>Nie wprowadzono poprawnego adresu email.</p>}
           {passwordInputHasError && <p>Nie wprowadzono poprawnego hasła.</p>}
           {error && <p>{errorMessage}</p>}

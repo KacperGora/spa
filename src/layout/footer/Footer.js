@@ -1,5 +1,5 @@
 import classes from "./Footer.module.css";
-import logo from '../../../images/logotransparent.png'
+import logo from "../../assets/images/logotransparent.png";
 import { Link, useNavigate } from "react-router-dom";
 import {  FaInstagram } from "react-icons/fa";
 

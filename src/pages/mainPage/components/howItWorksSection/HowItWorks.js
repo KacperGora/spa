@@ -1,7 +1,5 @@
 import classes from "./HowItWorks.module.css";
-import zpat2 from "../../../assets/images/zpat2.jpg";
-import zpat3 from "../../../../assets/images/zpat3.jpg";
-import zpat1 from "../../../images/zpat1.jpg";
+
 import { Element } from "react-scroll/modules";
 const HowItWorks = () => {
   return (
@@ -33,7 +31,7 @@ const HowItWorks = () => {
           </div>
           <div className={classes.imageBox}>
             <img
-              src={zpat1}
+              src="https://firebasestorage.googleapis.com/v0/b/aroundher.appspot.com/o/zpat1.jpg?alt=media&token=630f4da3-18b1-4260-a240-da3569828284"
               className={classes.img}
               alt="Clock with calendar to make an appointment"
             />
@@ -41,7 +39,7 @@ const HowItWorks = () => {
           {/* 2 */}
           <div className={classes.imageBox}>
             <img
-              src={zpat2}
+              src="https://firebasestorage.googleapis.com/v0/b/aroundher.appspot.com/o/zpat2.jpg?alt=media&token=6dff7481-86ba-4003-be91-9f7c2cf564fb"
               className={classes.img}
               alt="Clock with calendar to make an appointment"
             />
@@ -66,13 +64,15 @@ const HowItWorks = () => {
               Po skończonej usłudze ciesz się...
             </h3>
             <p className={classes.stepDescirption}>
-              Opoublikuj swoje dłonie, oznaczając naszą pracę na swoim profilu,
-              a przy następnej wizycie dostaniesz 10% rabatu!
+              Opublikuj swoje dłonie, oznaczając naszą pracę na swoim profilu, a
+              przy następnej wizycie dostaniesz 10% rabatu!
             </p>
           </div>
           <div className={classes.imageBox}>
             <img
-              src={zpat3}
+              src={
+                "https://firebasestorage.googleapis.com/v0/b/aroundher.appspot.com/o/zpat3.jpg?alt=media&token=d292c10c-11e5-4d98-a007-dbcc54a19d0e"
+              }
               className={classes.img}
               alt="A female hands with manicure"
             />

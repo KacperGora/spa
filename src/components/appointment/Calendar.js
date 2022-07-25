@@ -12,7 +12,7 @@ import plLocale from "@fullcalendar/core/locales/pl";
 import { addMinutes, subHours } from "date-fns";
 
 import Modal from "../UI/modal/Modal";
-import NavBar from "../layout/navBar/NavBar";
+import NavBar from "../../layout/navBar/NavBar";
 import { modalActions } from "../../store/modalSlice";
 import { calendarActions } from "../../store/calendarSlice";
 

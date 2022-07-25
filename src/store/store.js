@@ -7,6 +7,7 @@ import calendarReducer from "./calendarSlice";
 
 export const store = configureStore({
   reducer: {
+   
     user: userReducer,
     modal: modalReducer,
     auth: loginReducer,

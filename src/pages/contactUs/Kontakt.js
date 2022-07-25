@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import NavBar from "../../components/layout/navBar/NavBar";
 import classes from "./Kontakt.module.css";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import {
@@ -10,10 +9,11 @@ import {
   MdOutlineMessage,
 } from "react-icons/md";
 
-import Map from "../../components/map/Map";
+import Map from "./components/Map";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Footer from "../../components/layout/footer/Footer";
+import NavBar from "../../layout/navBar/NavBar";
+import Footer from "../../layout/footer/Footer";
 
 const Kontakt = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);

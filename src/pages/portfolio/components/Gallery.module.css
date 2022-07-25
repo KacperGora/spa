@@ -1,12 +1,14 @@
 .container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 200px 300px;
+  grid-template-rows: 400px 600px;
   grid-gap: 10px;
-  grid-auto-flow: dense;
+  background-size: cover;
+  grid-auto-flow: row dense;
   max-width: 120rem;
   margin: 2rem auto;
   padding: 0 3.2rem;
+ 
 }
 .galleryItem {
   width: 100%;
@@ -22,7 +24,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 35% 55%;
+  object-position: 25% 45%;
   cursor: pointer;
   transition: 0.5s ease-in-out;
   border-radius: 10px;
@@ -40,7 +42,7 @@
   grid-column: span 3;
 }
 .w4 {
-  grid-column: span 4;
+  grid-column: span 3;
 }
 .h2 {
   grid-row: span 2;
@@ -51,71 +53,66 @@
 .h4 {
   grid-row: span 4;
 }
-/* .galleryItem img {
-  display: block;
-  width: 100%;
-  transition: all 0.4s;
-} */
 
-/* .galleryItem img:hover {
-  transform: scale(1.1);
-}
-.galleryItem {
-  overflow: hidden;
-  width: 100%;
-  display: flex;
-  flex-grow: 0;
-}
-.gallery {
-  /* display: flex; */
-/* gap: 1%;
-  align-self: flex-start;
-  flex-wrap: wrap; */
-/* max-width: 120rem;
-  margin: 3.2rem auto;
-  padding: 0 3.2rem;
-/* } */
 @media (max-width: 75em) {
   .container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-auto-rows: 150px 250px;
     grid-gap: 10px;
   }
   .w4 {
-  grid-column: span 3;
-}
-.h4 {
-  grid-row: span 3;
-}
+    grid-column: span 3;
+  }
+  .h4 {
+    grid-row: span 2;
+  }
 }
 @media (max-width: 59em) {
   .container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 125px 200px;
     grid-gap: 10px;
   }
-    .w4 {
-  grid-column: span 2;
-}
-.h4 {
-  grid-row: span 2;
-}
-.galleryItem .image img {
- object-position: 35% 40%;
-}
+  .w4 {
+    grid-column: span 2;
+  }
+  .h4 {
+    grid-row: span 1;
+  }
+  .galleryItem .image img {
+    object-position: 35% 40%;
+  }
 }
 @media (max-width: 36em) {
   .container {
     grid-template-columns: 1fr;
-    grid-auto-rows: 100px 200px;
+
+    grid-auto-rows: minmax(300px, auto);
+    grid-auto-columns: minmax(400px, auto);
     grid-gap: 10px;
   }
-    .w4 {
-  grid-column: span 1;
+  .w4 {
+    grid-column: span 4;
+  }
+  .h4 {
+    grid-row: span 4;
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+  .galleryItem {
+    display: flex;
+    flex-direction: column;
+  width: 40%;
+  height: 40%;
+  position: relative;
 }
-.h4 {
-  grid-row: span 1;
+  .galleryItem .image img {
+    display: flex;
+      width: 100%;
+      height: 100%;
+
+    object-position: 45% 40%;
+  }
 }
-.galleryItem .image img {
- object-position: 45% 40%;
-}}

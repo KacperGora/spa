@@ -2,13 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 let initialToken = localStorage.getItem('token')
 let token = initialToken
 
-const calculateRemainingTime = (expirationTime) => {
-  const currentTime = new Date().getTime();
-  const adjExpirationTime = new Date(expirationTime).getTime()
-  const remainingTime = adjExpirationTime - currentTime
 
-  return remainingTime;
-}
 
 const loginSlice = createSlice({
   name: "login",

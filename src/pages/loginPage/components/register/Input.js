@@ -4,7 +4,7 @@ const Input = (props) => {
   return (
     <Fragment>
       <input
-        className={props.hasError ? classes.invalidInput : ""}
+        className={props.hasError ? classes.invalidInput : classes.input}
         onChange={(e) => {
           props.onChange(e);
         }}

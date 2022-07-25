@@ -2,12 +2,12 @@ import { formatDistance } from "date-fns";
 import { pl } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import classes from "./Profile.module.css";
+import classes from "../Profile.module.css";
 const ProfileMeetings = () => {
  
   const meetings = useSelector((state) => state.calendar.meetings);
   const [userMeetings, setUserMeetings] = useState([]);
-  const loggedUserMail = useSelector((state) => state.user.user.email);
+  const loggedUserMail = useSelector((state) => state.user.user?.email);
 
   useEffect(() => {
     setUserMeetings(

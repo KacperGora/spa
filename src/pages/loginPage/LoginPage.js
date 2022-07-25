@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
-import Login from "../../components/auth/login/Login";
-import NavBar from "../../components/layout/navBar/NavBar"; 
-import { useNavigate } from "react-router-dom";
+
+import Login from "./components/login/Login";
+import NavBar from '../../layout/navBar/NavBar'
+
 const LoginPage = () => {
 
   return (

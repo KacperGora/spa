@@ -1,10 +1,10 @@
-import NavBar from "../../components/layout/navBar/NavBar";
 import Gallery from "./components/Gallery";
-import classes from "./Portfolio.module.css";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { Fragment } from "react";
 import Footer from "../../layout/footer/Footer";
+import NavBar from "../../layout/navBar/NavBar";
+import classes from "./Portfolio.module.css";
 
 const Portfolio = () => {
   return (

@@ -4,7 +4,7 @@ import React from "react";
 import Slider from '../../../../components/UI/slider/Slider'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import MyComponent from "../../map/Map";
+
 
 const Hero = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);

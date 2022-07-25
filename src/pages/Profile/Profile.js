@@ -14,7 +14,7 @@ import Footer from "../../layout/footer/Footer";
 registerLocale("pl", pl);
 
 const Profile = () => {
-  const loggedUser = useSelector((state) => state.user.user.name);
+  const loggedUser = useSelector((state) => state.user.user?.name);
   return (
     <Fragment>
       <FetchEvent />
@@ -22,7 +22,7 @@ const Profile = () => {
       <section className={classes.container}>
         <div className={classes.hero}>
           <p className={classes.heading}>
-            Hej <span>{loggedUser}</span>, fajnie Cię widzieć
+            Hej <span>{loggedUser ? loggedUser : ''}</span>, fajnie Cię widzieć
           </p>
           <ProfileMeetings />
         </div>

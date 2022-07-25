@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux"
 
 const authFn = async (url, enteredMail, enteredPassword) => {
   // try {
