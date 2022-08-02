@@ -14,16 +14,14 @@ const ProfileMeetings = () => {
     );
   }, [loggedUserMail, meetings]);
 
-  let pastMeetings = [
-    ...userMeetings.filter(
-      (meeting) => meeting.date < new Date().toISOString()
-    ),
-  ];
-  let futureMeetings = [
-    ...userMeetings.filter(
-      (meeting) => meeting.date > new Date().toISOString()
-    ),
-  ];
+  let pastMeetings = userMeetings.filter(
+    (meeting) => meeting.date < new Date().toISOString()
+  );
+
+  let futureMeetings = userMeetings.filter(
+    (meeting) => meeting.date > new Date().toISOString()
+  );
+
   if (pastMeetings.length > 3) {
     pastMeetings.shift();
   }

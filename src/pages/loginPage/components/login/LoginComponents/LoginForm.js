@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Spinner from "../../../../../components/UI/spinner/Spinner";
 import Input from "../../Input";
 import useInput from "../../../../../hooks/use-input";
@@ -8,12 +8,11 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
 import classes from "./LoginForm.module.css";
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch } from "react-redux/es/exports";
 import { auth } from "../../../../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../../../firebase";
-import { calendarActions } from "../../../../../store/calendarSlice";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   let formIsValid = false;
-  const loggedUser = useSelector((state) => state.user);
 
   //custom hook for email validation
   const {
@@ -86,21 +84,6 @@ function LoginForm() {
     resetMailInput();
     resetPasswordInput();
   };
-  // useEffect(() => {
-  //   fetch(
-  //     "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/meetings.json"
-  //   )
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //       const fetchedMeetings = [];
-  //       if (data) {
-  //         for (const [key, value] of Object.entries(data)) {
-  //           fetchedMeetings.push({ ...value, key });
-  //         }
-  //         dispatch(calendarActions.fetchMeetings(fetchedMeetings));
-  //       }
-  //     });
-  // }, [dispatch]);
   return (
     <form className={classes.form} onSubmit={loginSubmitHandler}>
       <div className={classes.inputContainer}>

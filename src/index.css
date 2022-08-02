@@ -37,14 +37,16 @@ default 1
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
-    
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: #fbf2f4;
 }
 body {
- font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   line-height: 1;
   font-weight: 400;
   color: #333;
+  max-width: 100%;
   overflow-x: hidden;
   height: 100%;
 }

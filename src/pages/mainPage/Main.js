@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux";
+import { Fragment, useEffect } from "react"
+import {  useDispatch } from "react-redux";
 import Hero from './components/heroSection/Hero'
 import HowItWorks from './components/howItWorksSection/HowItWorks'
 import Testimonials from './components/testimonialSection/Testimonials'

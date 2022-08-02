@@ -53,7 +53,7 @@ const calendarSlice = createSlice({
         serviceName: action.payload.serviceName,
         email: action.payload.email,
 
-        // key: action.payload.key
+       
       };
       state.meetings = [...state.meetings, action.payload];
      
