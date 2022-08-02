@@ -1,20 +1,21 @@
 .footer {
-  padding: 9.6rem 0;
+  padding: 9.4rem 0;
   padding-bottom: 0;
 }
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 150px;
+  /* grid-template-rows: 150px; */
   background-color: #fbf2f4;
   padding: 0 3.2rem;
   margin: 0 auto;
   max-width: 120rem;
   position: relative;
+  left: 0;
   bottom: 0;
+  right: 0;
   border-top: solid 2px #996c95;
 }
-
 
 .addressCol a {
   color: #333;
@@ -23,4 +24,32 @@ ul {
   padding: 1.2rem;
   line-height: 2;
   text-align: center;
+}
+@media (max-width: 59em) {
+  
+.container {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  
+  /* justify-content: space-around */
+}
+.address {
+  grid-column-start:2 ;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.links {
+  grid-column-start:1 ;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.main {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  justify-self: center;
+  
+
+}
 }

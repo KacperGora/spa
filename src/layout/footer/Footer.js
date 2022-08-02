@@ -7,9 +7,15 @@ const Footer = () => {
   return (
     <footer className={classes.footer}>
       <div className={`${classes.container}`}>
-        <FooterMain/>
-        <FooterAddress />
-        <FooterLinks />
+        <div className={classes.main}>
+          <FooterMain />
+        </div>
+        <div className={classes.address}>
+          <FooterAddress />
+        </div>
+        <div className={classes.links}>
+          <FooterLinks />
+        </div>
       </div>
     </footer>
   );

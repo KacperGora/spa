@@ -69,7 +69,7 @@
 }
 @media (max-width: 59em) {
   .container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 125px 200px;
     grid-gap: 10px;
   }
@@ -77,13 +77,13 @@
     grid-column: span 2;
   }
   .h4 {
-    grid-row: span 1;
+    grid-row: span 2;
   }
   .galleryItem .image img {
     object-position: 35% 40%;
   }
 }
-@media (max-width: 36em) {
+/* @media (max-width: 36em) {
   .container {
     grid-template-columns: 1fr;
 
@@ -115,4 +115,4 @@
 
     object-position: 45% 40%;
   }
-}
+} */

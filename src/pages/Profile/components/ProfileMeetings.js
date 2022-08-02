@@ -24,8 +24,8 @@ const ProfileMeetings = () => {
       (meeting) => meeting.date > new Date().toISOString()
     ),
   ];
-  if(pastMeetings.length > 3) {
-    pastMeetings.shift()
+  if (pastMeetings.length > 3) {
+    pastMeetings.shift();
   }
 
   const futureContent = futureMeetings.map((meeting) => (
@@ -55,11 +55,15 @@ const ProfileMeetings = () => {
   return (
     <Fragment>
       <div>
-        <p className={classes.description}>Twoje ostatnie wizyty:</p>
+        <p className={classes.description}>
+          <b>Twoje ostatnie wizyty:</b>
+        </p>
         <p className={classes.description}>{pastContent}</p>
       </div>
       <div>
-        <p className={classes.description}>Twoje przyszłe wizyty:</p>
+        <p className={classes.description}>
+          <b>Twoje przyszłe wizyty:</b>
+        </p>
         <p className={classes.description}> {futureContent}</p>
       </div>
       {userMeetings.length === 0 ? (
