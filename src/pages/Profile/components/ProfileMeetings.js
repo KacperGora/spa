@@ -4,17 +4,15 @@ import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import classes from "../Profile.module.css";
 const ProfileMeetings = () => {
- 
   const meetings = useSelector((state) => state.calendar.meetings);
   const [userMeetings, setUserMeetings] = useState([]);
   const loggedUserMail = useSelector((state) => state.user.user?.email);
 
   useEffect(() => {
     setUserMeetings(
-      meetings.filter((meeting) => meeting.email === loggedUserMail),
+      meetings.filter((meeting) => meeting.email === loggedUserMail)
     );
   }, [loggedUserMail, meetings]);
- 
 
   let pastMeetings = [
     ...userMeetings.filter(
@@ -26,8 +24,8 @@ const ProfileMeetings = () => {
       (meeting) => meeting.date > new Date().toISOString()
     ),
   ];
-  while (pastMeetings.length > 3) {
-    pastMeetings = pastMeetings.slice(1);
+  if(pastMeetings.length > 3) {
+    pastMeetings.shift()
   }
 
   const futureContent = futureMeetings.map((meeting) => (
@@ -53,9 +51,9 @@ const ProfileMeetings = () => {
       temu)`}
     </li>
   ));
+
   return (
     <Fragment>
-     
       <div>
         <p className={classes.description}>Twoje ostatnie wizyty:</p>
         <p className={classes.description}>{pastContent}</p>
@@ -68,7 +66,9 @@ const ProfileMeetings = () => {
         <p style={{ fontSize: "16px" }}>
           Najprawdopodbniej nie masz jeszcze żadnych umówionych wizyt.
         </p>
-      ) : ''}
+      ) : (
+        ""
+      )}
     </Fragment>
   );
 };

@@ -3,25 +3,27 @@ import { useNavigate } from "react-router-dom";
 
 import NavBar from "../../../../layout/navBar/NavBar";
 import Spinner from "../../../../components/UI/spinner/Spinner";
-import authFn from "../../../../components/auth/authFn";
-import fetchFn from "../../../../components/fetch";
+
 import PhoneIcon from "@mui/icons-material/Phone";
 import classes from "./Register.module.css";
 import useInput from "../../../../hooks/use-input";
-import Input from "./Input";
+import Input from "../Input";
 import BadgeIcon from "@mui/icons-material/Badge";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
+
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../../../firebase";
+
 const Register = () => {
   const [error, setError] = useState("");
-  const [passwordsAreValid, setPasswordAreValid] = useState(true);
-
-  // Add a new document in collection "cities"
-
+  const navigate = useNavigate();
+  const [active, setActive] = useState(false);
+ 
   //name validation
   const {
     value: enteredName,
@@ -81,20 +83,6 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState(undefined);
 
-  const navigate = useNavigate();
-  const key = process.env.REACT_APP_FIREBASE_KEY;
-
-  const registerUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`;
-  const userUrl =
-    "https://aroundher-default-rtdb.europe-west1.firebasedatabase.app/users.json";
-
-  const body = {
-    email: enteredMail,
-    phoneNumber: enteredPhoneNumber,
-    name: enteredName,
-    secondName: enteredSecondName,
-    meetings: [],
-  };
   const submitHandler = async (e) => {
     if (!formIsValid) {
       e.preventDefault();
@@ -102,33 +90,39 @@ const Register = () => {
     }
     e.preventDefault();
     setIsLoading(true);
-    try {
-      const httpFeedback = await authFn(
-        registerUrl,
-        enteredMail,
-        enteredPassword
-      );
-      setIsLoading(false);
-      if (!httpFeedback.response.ok) {
-        if (httpFeedback.data.error.errors[0].message === "EMAIL_EXISTS") {
-          setError(`Na podany adres email zostało już utworzone konto.`);
-        } else
-          setError(
-            `Coś poszło nie tak spróbuj ponownie później ${httpFeedback.data.error.errors[0].message}`
-          );
-      }
-      if (httpFeedback.response.ok) {
-        setStatus(true);
-        const docRef = await addDoc(collection(db, "users"), {
-          ...body,
+
+    //creating user
+    createUserWithEmailAndPassword(auth, enteredMail, enteredPassword)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        updateProfile(user, {
+          displayName: enteredName,
         });
-        //previous version w/out firebase database
-        // fetchFn(userUrl, "POST", body);
-      }
-    } catch (error) {
-      setError(error);
-    }
+        setStatus(true);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorCode || errorMessage);
+      });
   };
+  //adding user to collection
+  useEffect(() => {
+    const addUserToCollection = async () => {
+      if (status) {
+        const docRef = await addDoc(collection(db, "users"), {
+          email: enteredMail,
+          phoneNumber: enteredPhoneNumber,
+          name: enteredName,
+          secondName: enteredSecondName,
+          meetings: [],
+          timestamp: serverTimestamp(),
+        });
+      }
+    };
+    addUserToCollection();
+  }, [enteredMail, enteredName, enteredPhoneNumber, enteredSecondName, status]);
+
   const historyLoginPush = () => {
     navigate("/login");
   };
@@ -137,7 +131,7 @@ const Register = () => {
     <section>
       <NavBar />
       <section className={classes.container}>
-        <div className={classes.container}>
+        <div className={`${classes.container}`}>
           <form className={classes.form} onSubmit={submitHandler}>
             <h2
               style={{
@@ -148,7 +142,11 @@ const Register = () => {
             >
               Zarejestruj konto
             </h2>
-            <div className={classes.handler}>
+            <div
+              className={`${classes.handler} ${
+                active ? classes.handlerGrid : ""
+              } `}
+            >
               <BadgeIcon className={classes.icon} />
               <Input
                 onChange={nameChangeHandler}
@@ -228,7 +226,6 @@ const Register = () => {
           {passwordHasError && (
             <p>Hasło powinno mieć conajmniej pięć znaków.</p>
           )}
-          {!passwordsAreValid && <p>Hasla nie sa identyzczne</p>}
           {status && setTimeout(historyLoginPush, 3000)}
           {error && <p>{error}</p>}
         </div>

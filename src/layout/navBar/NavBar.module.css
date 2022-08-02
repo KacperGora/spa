@@ -6,10 +6,11 @@
   width: 2.4rem;
     height: 2.4rem;
   color: #996c95;
-  margin-right: 1.6rem;
+ 
 
 }
-header {
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,6 +31,13 @@ header {
   align-items: center;
   gap: 3.2rem;
   transition: all 0.3s;
+}
+.logoutButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  
 }
 .navLink:visited,
 .navLink:link {
@@ -59,30 +67,7 @@ header {
   background-color: #986c94;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-.dropdownContent {
-  display: none;
-  position: absolute;
-  right: 0;
-  z-index: -1;
-}
 
-.dropdownContent li {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.dropdownContent li:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdownContent {
-  display: block;
-}
 .btnNav {
   border: none;
   background-color: none;
@@ -125,10 +110,7 @@ header {
     transition: all 0.5s ease-in;
     opacity: 0;
     transform: translateX(100%);
-    
-
     pointer-events: none;
-
     visibility: hidden;
   }
   .navOpen .nav {

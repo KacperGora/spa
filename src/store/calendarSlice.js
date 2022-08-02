@@ -11,7 +11,6 @@ const calendarSlice = createSlice({
     addMeeting: "",
     removeMeeting: "",
     pickedDate: "",
-    dateForAppointment: "",
     service: "45",
     excludedTimes: [],
     changeEvent: false,
@@ -33,24 +32,15 @@ const calendarSlice = createSlice({
     fetchMeetings(state, action) {
       state.meetings = action.payload;
       state.excludedTimes = []
+   
       for (let i = 0; i < action.payload.length; i++) {
         state.excludedTimes = [
           ...state.excludedTimes,
           ...action.payload[i].times,
         ];
       }
-
-      // for (let i = 0; i < action.payload.length; i++) {
-      //   state.excludedTimes = [
-      //     ...state.excludedTimes,
-      //     ...action.payload[i].times,
-      //   ];
-      // }
-      // console.log(state.excludedTimes);
     },
-    setOverlapped(state, action) {
-      // state.meetings.forEach(meeting => meeting.isOverlapped === action.payload)
-    },
+ 
     findKey(state, action) {
       state.key = action.payload;
     },
@@ -66,13 +56,9 @@ const calendarSlice = createSlice({
         // key: action.payload.key
       };
       state.meetings = [...state.meetings, action.payload];
-      // state.excludedTimes = [...state.excludedTimes, ...action.payload.times];
+     
     },
-    addMeeting(state, payload) {
-      // state.meetings.push(payload);
-      // state.service = '45'
-    },
-    removeMeeting() {},
+ 
   },
 });
 

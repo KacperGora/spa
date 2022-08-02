@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 const modalSlice = createSlice({
   name: "modal",
   initialState: {
@@ -8,6 +9,7 @@ const modalSlice = createSlice({
   reducers: {
     modalToggle(state) {
       state.isVisible = !state.isVisible;
+      
     },
   },
 });

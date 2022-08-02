@@ -1,9 +1,6 @@
 #Live demo 
 https://aroundher.web.app/
 
-panel admina: admin@test.pl
-password: 12345678
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
