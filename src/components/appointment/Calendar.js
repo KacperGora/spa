@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { NamedTimeZoneImpl } from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -18,7 +18,7 @@ import { calendarActions } from "../../store/calendarSlice";
 
 import CalendarForm from "./CalendarForm";
 import "./react-datepicker.css";
-import classes from './Calendar.module.css'
+import classes from "./Calendar.module.css";
 import FetchEvents from "./components/FetchEvents";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -88,7 +88,7 @@ const Calendar = () => {
         (event) => event.id === e.event._def.publicId
       );
       dispatch(calendarActions.findKey(e.event._def.publicId));
-
+      console.log(filteredEvent[0].mail);
       const interval15 =
         (e.event._instance.range.end - e.event._instance.range.start) /
         1000 /
@@ -112,10 +112,13 @@ const Calendar = () => {
         times,
         email: filteredEvent[0].email,
       });
+
+      // // // const editUserDoc = doc(db, "users", filteredEvent[0].mail);
       dispatch(calendarActions.setIsChangingEvent(false));
       FetchEvents();
     }
   };
+
   return (
     <section>
       <NavBar />
@@ -126,9 +129,10 @@ const Calendar = () => {
       )}
       <div className={classes.calendarContainer}>
         <FullCalendar
+          locale={plLocale}
+          timeZone="UTC"
           stickyHeaderDates={true}
           eventDurationEditable={true}
-          locale={plLocale}
           eventChange={onlyAdminEdit}
           headerToolbar={
             auth

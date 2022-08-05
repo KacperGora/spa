@@ -1,18 +1,28 @@
 import { formatDistance } from "date-fns";
 import { pl } from "date-fns/locale";
+import { doc, getDoc } from "firebase/firestore";
 import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { db } from "../../../firebase";
 import classes from "../Profile.module.css";
 const ProfileMeetings = () => {
-  const meetings = useSelector((state) => state.calendar.meetings);
+
   const [userMeetings, setUserMeetings] = useState([]);
   const loggedUserMail = useSelector((state) => state.user.user?.email);
 
   useEffect(() => {
-    setUserMeetings(
-      meetings.filter((meeting) => meeting.email === loggedUserMail)
-    );
-  }, [loggedUserMail, meetings]);
+    const fetchUsersMeetings = async () => {
+      const docRef = doc(db, "users", loggedUserMail);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setUserMeetings(docSnap.data().meetings);
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    };
+    fetchUsersMeetings();
+  }, [loggedUserMail]);
 
   let pastMeetings = userMeetings.filter(
     (meeting) => meeting.date < new Date().toISOString()

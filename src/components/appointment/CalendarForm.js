@@ -20,6 +20,8 @@ import {
   getDay,
   addMinutes,
   areIntervalsOverlapping,
+  addHours,
+  subHours,
 } from "date-fns";
 
 import { db } from "../../firebase";
@@ -30,6 +32,8 @@ import {
   setDoc,
   getDocs,
   updateDoc,
+  deleteField,
+  serverTimestamp,
 } from "firebase/firestore";
 import FetchEvents from "./components/FetchEvents";
 
@@ -39,13 +43,12 @@ const CalendarForm = ({ startDate }) => {
   const excludedEventsTimes = useSelector(
     (state) => state.calendar.excludedTimes
   );
-
   const service = useSelector((state) => state.calendar.service);
   const loggedUserLastName = useSelector((state) => state.user.user.secondName);
   const loggedUserName = useSelector((state) => state.user.user.name);
   const dispatch = useDispatch();
   const [excludedTimes, setExcludedTimes] = useState([]);
-  const [newDate, setNewDate] = useState(
+  const [pickedDate, setPickedDate] = useState(
     setHours(setMinutes(new Date(startDate), 0), 9)
   );
 
@@ -57,21 +60,30 @@ const CalendarForm = ({ startDate }) => {
   const loggedUserMail = useSelector((state) => state.user.user.email);
   const key = useSelector((state) => state.calendar.key);
   let serviceName = "";
+  let serviceAmount;
+  const userMeetings = meetings.filter(
+    (meeting) => meeting.email === loggedUserMail
+  );
   switch (service) {
     case "45":
       serviceName = "Manicure Klasyczny";
+      serviceAmount = 120;
       break;
     case "90":
       serviceName = "Manicure Hybrydowy";
+      serviceAmount = 120;
       break;
     case "120":
       serviceName = "Uzupełnienie żelowe";
+      serviceAmount = 120;
       break;
     case "150":
       serviceName = "Przedłużanie paznokci żelem";
+      serviceAmount = 120;
       break;
     case "40":
       serviceName = "Pedicure";
+      serviceAmount = 120;
       break;
     default:
       serviceName = "Nie podano usługi";
@@ -79,15 +91,19 @@ const CalendarForm = ({ startDate }) => {
 
   const workingMeeting = {
     title: fullName,
-    date: newDate.toISOString(),
-    end: addMinutes(newDate, service).toISOString(),
+    date: addHours(pickedDate, 2).toISOString(),
+    end: addHours(addMinutes(pickedDate, service), 2).toISOString(),
     times: [],
-    serviceName: serviceName,
+    serviceName,
+    serviceAmount,
     email: loggedUserMail,
+    overlap: false,
   };
-  //adding excluded times to  array
-  for (let i = 0; i < service; i = i + 15) {
-    workingMeeting.times.push(addMinutes(newDate, i).toISOString());
+  //adding excluded time range to  array
+  for (let i = 0; i < service; i += 15) {
+    workingMeeting.times.push(
+      addHours(new Date(addMinutes(pickedDate, i)), 2).toISOString()
+    );
   }
 
   const isWeekday = (date) => {
@@ -112,66 +128,64 @@ const CalendarForm = ({ startDate }) => {
   let maxDate = yyyy + "-" + newMM + "-" + dd + "T08:00";
 
   useEffect(() => {
-    let preOverlappedArray = [
-      ...meetings.filter(
-        (meeting) =>
-          new Date(meeting.date).toLocaleDateString() ===
-          newDate.toLocaleDateString()
-      ),
-    ];
+    //filter from all events to events at picked date
+    let meetingsAtPickedDate = meetings.filter(
+      (meeting) =>
+        new Date(meeting.date).toLocaleDateString() ===
+        pickedDate.toLocaleDateString()
+    );
+    setOverlapped(false);
     const checkOverlap = () => {
-      for (let i = 0; i < preOverlappedArray.length; i++) {
-        setOverlapped(
+      for (let i = 0; i < meetingsAtPickedDate.length; i++) {
+        if (
           areIntervalsOverlapping(
             {
-              start: newDate,
-              end: addMinutes(newDate, service),
+              start: pickedDate,
+              end: addMinutes(pickedDate, service),
             },
             {
-              start: new Date(preOverlappedArray[i].date),
-              end: new Date(preOverlappedArray[i].end),
+              start: subHours(new Date(meetingsAtPickedDate[i].date), 2),
+              end: subHours(new Date(meetingsAtPickedDate[i].end), 2),
             }
           )
-        );
+        )
+          setOverlapped(true);
       }
     };
     checkOverlap();
-  }, [meetings, newDate, service]);
+  }, [meetings, pickedDate, service]);
 
-  const getExcludedTimes = useCallback(
-    (date) => {
-      let arrSpecificDates = [];
-      let overlappedArr = [];
-
-      for (let i = 0; i < excludedEventsTimes.length; i++) {
-        if (
-          moment(date, moment.ISO_8601).format("YYYY/MM/DD") ===
-          moment(excludedEventsTimes[i], moment.ISO_8601).format("YYYY/MM/DD")
-        ) {
-          arrSpecificDates.push(
-            moment(excludedEventsTimes[i], moment.ISO_8601).toObject()
-          );
-          overlappedArr.push(new Date(excludedEventsTimes[i]));
-        }
-      }
-      let arrExcludedTimes = [];
-      let pickedDate;
-
-      for (let i = 0; i < arrSpecificDates.length; i++) {
-        pickedDate = setHours(
-          setMinutes(new Date(date), arrSpecificDates[i].minutes),
-          arrSpecificDates[i].hours
+  const getExcludedTimes = useCallback(() => {
+    let arrSpecificDates = [];
+    for (let i = 0; i < excludedEventsTimes.length; i++) {
+      if (
+        moment(pickedDate, moment.ISO_8601).format("YYYY/MM/DD") ===
+        moment(excludedEventsTimes[i], moment.ISO_8601).format("YYYY/MM/DD")
+      ) {
+        arrSpecificDates.push(
+          moment(excludedEventsTimes[i], moment.ISO_8601).toObject()
         );
-        arrExcludedTimes.push(pickedDate);
       }
-      setExcludedTimes(arrExcludedTimes);
-    },
-    [excludedEventsTimes]
-  );
+    }
+    let arrExcludedTimes = [];
+
+    for (let i = 0; i < arrSpecificDates.length; i++) {
+      arrExcludedTimes.push(
+        subHours(
+          setHours(
+            setMinutes(new Date(pickedDate), arrSpecificDates[i].minutes),
+            arrSpecificDates[i].hours
+          ),
+          2
+        )
+      );
+    }
+    setExcludedTimes(arrExcludedTimes);
+  }, [excludedEventsTimes, pickedDate]);
   useEffect(() => {
     getExcludedTimes();
   }, [getExcludedTimes]);
-
+  // console.log(excludedEventsTimes)
   /////
   useEffect(() => {
     const getMeetings = async () => {
@@ -193,7 +207,14 @@ const CalendarForm = ({ startDate }) => {
     dispatch(calendarActions.setIsChangingEvent(false));
     try {
       const docRef = doc(collection(db, "meetings"));
-      await setDoc(docRef, { ...workingMeeting, id: docRef.id });
+      await setDoc(docRef, {
+        ...workingMeeting,
+        id: docRef.id,
+        timeStamp: serverTimestamp(),
+      });
+
+      const userRef = doc(db, "users", loggedUserMail);
+      await updateDoc(userRef, { meetings: [...userMeetings, workingMeeting] });
     } catch (error) {
       const { code, message } = error;
       throw new Error(message, code);
@@ -208,12 +229,17 @@ const CalendarForm = ({ startDate }) => {
     });
     dispatch(calendarActions.fetchMeetings(meetings));
   };
+
   ///Cancel meeting
   const cancelMeetingHandler = async (e) => {
-    await deleteDoc(doc(db, "meetings", key));
-    dispatch(modalActions.modalToggle());
-    dispatch(calendarActions.setIsChangingEvent(false));
-    fetchEvents();
+    // await deleteDoc(doc(db, "meetings", key));
+    // // const userRef = doc(db, "users", loggedUserMail);
+    // // await updateDoc(userRef, {
+    // //   meetings: deleteField(),
+    // // });
+    // dispatch(modalActions.modalToggle());
+    // dispatch(calendarActions.setIsChangingEvent(false));
+    // fetchEvents();
   };
 
   ///Edit meeting
@@ -245,11 +271,11 @@ const CalendarForm = ({ startDate }) => {
                 locale="pl"
                 filterDate={isWeekday}
                 onChange={(e) => {
-                  setNewDate(e);
+                  setPickedDate(e);
                   getExcludedTimes();
                 }}
-                value={newDate ? newDate : "Wybierz datę"}
-                selected={newDate}
+                value={pickedDate ? pickedDate : "Wybierz datę"}
+                selected={pickedDate}
                 minDate={new Date()}
                 maxDate={parseISO(maxDate)}
                 required
@@ -267,14 +293,15 @@ const CalendarForm = ({ startDate }) => {
             <div className={classes.inputLineContainer}>
               <QueryBuilderIcon />
               <DatePicker
-                value={newDate ? newDate : "09:00"}
-                selected={newDate}
+                value={pickedDate ? pickedDate : "09:00"}
+                selected={pickedDate}
                 onChange={(e) => {
-                  setNewDate(e);
+                  setPickedDate(e);
                   getExcludedTimes();
                 }}
                 onSelect={getExcludedTimes}
                 excludeTimes={excludedTimes}
+                // excludeTimes={}
                 timeCaption="Godzina"
                 showTimeSelect
                 showTimeSelectOnly

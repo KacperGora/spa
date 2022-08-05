@@ -14,7 +14,7 @@ registerLocale("pl", pl);
 
 const Profile = () => {
   const loggedUser = useSelector((state) => state.user.user);
-  console.log(loggedUser);
+
 
   return (
     <Fragment>

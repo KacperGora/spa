@@ -12,7 +12,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockIcon from "@mui/icons-material/Lock";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 
 import { db } from "../../../../firebase";
 
@@ -110,7 +110,7 @@ const Register = () => {
   useEffect(() => {
     const addUserToCollection = async () => {
       if (status) {
-        const docRef = await addDoc(collection(db, "users"), {
+        const docRef = await setDoc(doc(db, "users", enteredMail), {
           email: enteredMail,
           phoneNumber: enteredPhoneNumber,
           name: enteredName,

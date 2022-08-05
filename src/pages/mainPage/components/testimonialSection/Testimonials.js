@@ -4,14 +4,11 @@ import i1 from "../../../../assets/images/face1.jpg"
 import i2 from "../../../../assets/images/face2.jpg";
 import i3 from "../../../../assets/images/face3.jpg";
 import i4 from "../../../../assets/images/face4.jpg";
-import g1 from "../../../../assets/images/g1.jpg";
-import g3 from "../../../../assets/images/g3.jpg";
-import g4 from "../../../../assets/images/g4.jpg";
-import g6 from "../../../../assets/images/g6.jpg";
-import g7 from "../../../../assets/images/g7.jpg";
-import g9 from "../../../../assets/images/g9.jpg";
+
+import TestimonialImages from "./components/TestimonialImages";
 
 const Testimonials = () => {
+
   return (
     <div className={classes.container}>
       {" "}
@@ -77,29 +74,7 @@ const Testimonials = () => {
             </figure>
           </div>
         </div>
-        <div className={classes.gallery}>
-          <figure className={classes.galleryItem}>
-            <img src={g1} alt="Gallery item" />
-          </figure>
-
-          <figure className={classes.galleryItem}>
-            <img src={g3} alt="Gallery item" />
-          </figure>
-          <figure className={classes.galleryItem}>
-            <img src={g4} alt="Gallery item" />
-          </figure>
-
-          <figure className={classes.galleryItem}>
-            <img src={g6} alt="Gallery item" />
-          </figure>
-          <figure className={classes.galleryItem}>
-            <img src={g7} alt="Gallery item" />
-          </figure>
-
-          <figure className={classes.galleryItem}>
-            <img src={g9} alt="Gallery item" />
-          </figure>
-        </div>
+       <TestimonialImages />
       </section>
     </div>
   );
