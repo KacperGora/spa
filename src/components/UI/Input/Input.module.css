@@ -1,0 +1,20 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.invalidInput {
+  border: 1px solid #b40e0e;
+  background-color: #fddddd;
+  outline: none;
+}
+
+.invalidInput:focus {
+  border-color: #ff8800;
+  background-color: #fbe8d2;
+}
+
+.errorParagraph {
+  color: red;
+  font-size: 12px;
+}

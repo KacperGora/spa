@@ -17,8 +17,8 @@ const Gallery = () => {
       setImgUrl(images);
       setIsLoaded(true);
     });
+    return () => unsub();
   }, []);
-  
 
   const content = imgUrl.map((item, index) => {
     return (

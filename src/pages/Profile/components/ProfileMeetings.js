@@ -1,85 +1,18 @@
-import { formatDistance } from "date-fns";
-import { pl } from "date-fns/locale";
-import { doc, getDoc } from "firebase/firestore";
-import { Fragment, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { db } from "../../../firebase";
+import { Fragment } from "react";
+import useFetchUserMeetings from "../../../hooks/useFetchUsersMeetings";
 import classes from "../Profile.module.css";
+import FutureMeetings from "./FutureMeetings";
+import PastMeetings from "./PastMeetings";
 const ProfileMeetings = () => {
-
-  const [userMeetings, setUserMeetings] = useState([]);
-  const loggedUserMail = useSelector((state) => state.user.user?.email);
-
-  useEffect(() => {
-    const fetchUsersMeetings = async () => {
-      const docRef = doc(db, "users", loggedUserMail);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserMeetings(docSnap.data().meetings);
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    };
-    fetchUsersMeetings();
-  }, [loggedUserMail]);
-
-  let pastMeetings = userMeetings.filter(
-    (meeting) => meeting.date < new Date().toISOString()
-  );
-
-  let futureMeetings = userMeetings.filter(
-    (meeting) => meeting.date > new Date().toISOString()
-  );
-
-  if (pastMeetings.length > 3) {
-    pastMeetings.shift();
-  }
-
-  const futureContent = futureMeetings.map((meeting) => (
-    <li key={Math.random()}>
-      {`${meeting.serviceName} dnia ${new Date(
-        meeting.date
-      ).toLocaleDateString()} o godzinie ${new Date(
-        meeting.date
-      ).toLocaleTimeString()}`}
-      {` za
-                   ${formatDistance(new Date(meeting.date), new Date(), {
-                     locale: pl,
-                   })}`}
-    </li>
-  ));
-  const pastContent = pastMeetings.map((meeting) => (
-    <li key={Math.random()}>
-      {`  ${`${meeting.serviceName}`} w dniu
-      ${`${new Date(meeting.date).toLocaleDateString()}`}, (
-      ${formatDistance(new Date(meeting.date), new Date(), {
-        locale: pl,
-      })}
-      temu)`}
-    </li>
-  ));
+  const userMeetings = useFetchUserMeetings();
 
   return (
     <Fragment>
-      <div>
-        <p className={classes.description}>
-          <b>Twoje ostatnie wizyty:</b>
-        </p>
-        <p className={classes.description}>{pastContent}</p>
-      </div>
-      <div>
-        <p className={classes.description}>
-          <b>Twoje przyszłe wizyty:</b>
-        </p>
-        <p className={classes.description}> {futureContent}</p>
-      </div>
-      {userMeetings.length === 0 ? (
-        <p style={{ fontSize: "16px" }}>
-          Najprawdopodbniej nie masz jeszcze żadnych umówionych wizyt.
-        </p>
-      ) : (
-        ""
+      <PastMeetings userMeetings={userMeetings} />
+      <FutureMeetings userMeetings={userMeetings} />
+
+      {userMeetings.length === 0 && (
+        <p>Najprawdopodbniej nie masz jeszcze żadnych umówionych wizyt.</p>
       )}
     </Fragment>
   );

@@ -7,7 +7,7 @@ const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
     meeting: {},
-    meetings: [{ title: "Justyna Góra", date: "2022-06-10T15:00" }],
+    meetings: [{ title: "Justyna Góra", date: new Date().toString() }],
     addMeeting: "",
     removeMeeting: "",
     pickedDate: "",

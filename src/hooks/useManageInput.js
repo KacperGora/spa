@@ -1,14 +1,14 @@
 import { useState } from "react";
-// custom hook - input validation
-const useInput = (validateValue) => {
+
+const useManageInput = (validateValue) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
   const valueIsValid = validateValue(enteredValue)
   const hasError = !valueIsValid && isTouched;
 
-  const valueChangeHandler = (event) => {
-    setEnteredValue(event.target.value)
+  const valueChangeHandler = (e) => {
+    setEnteredValue(e.target.value)
   }
 
   const inputBlurHandler = (event) => {
@@ -24,4 +24,4 @@ const useInput = (validateValue) => {
   }
 };
 
-export default useInput;
+export default useManageInput;

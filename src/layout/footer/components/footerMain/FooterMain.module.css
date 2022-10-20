@@ -1,13 +1,14 @@
-
-.flexContainer {
-  margin-top: 1.2rem;
-  height: 45%;
+.firstColumnContainer {
   display: flex;
-  align-items: center;
-
-  gap: 16px;
+  flex-direction: column;
+  justify-self: center;
+}
+.flexContainer {
+  display: flex;
+  padding: 1.2rem;
+  gap: 32px;
   justify-content: flex-start;
-  /* justify-content: space-around */
+  align-items: center;
 }
 .icons {
   width: 2.4rem;
@@ -16,14 +17,6 @@
   margin-right: 1.6rem;
 }
 .logoImg {
-  height: 50px;
-
-  aspect-ratio: inherit;
+  height: 5rem;
   cursor: pointer;
-}
-
-@media (max-width: 40em) {
-/* p {
-  font-size: 6px;
-} */
 }

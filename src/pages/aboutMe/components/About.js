@@ -3,7 +3,7 @@ const About = () => {
   return (
     <section className={classes.container}>
       <div className={classes.hero}>
-        <p className={classes.heading}>Hej,</p>
+        <h2 className={classes.heading}>Hej,</h2>
         <p className={classes.description}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

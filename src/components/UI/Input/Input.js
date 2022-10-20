@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import classes from "./register/Register.module.css";
+import classes from "./Input.module.css";
 const Input = (props) => {
+  console.log(props.hasError);
   return (
-    <Fragment>
+    <div className={classes.inputContainer}>
       <input
         className={props.hasError ? classes.invalidInput : classes.input}
         onChange={(e) => {
@@ -15,7 +15,9 @@ const Input = (props) => {
         pattern={props.pattern}
         minLength={props.minLength}
       />
-    </Fragment>
+
+      {props.hasError && <p className={classes.errorParagraph}>Wprowadź poprawne dane</p>}
+    </div>
   );
 };
 

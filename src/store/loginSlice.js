@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 let initialToken = localStorage.getItem("token");
 let token = initialToken;
 
-
 const loginSlice = createSlice({
   name: "login",
   initialState: {
@@ -19,14 +18,11 @@ const loginSlice = createSlice({
     },
     logout(state) {
       state.isLogged = false;
-      state.admin = false
-      state.token = ''
+      state.admin = false;
+      state.token = "";
     },
     admin(state, action) {
       state.admin = action.payload;
-    },
-    setHasError(state, action) {
-      state.hasError = action.payload;
     },
   },
 });

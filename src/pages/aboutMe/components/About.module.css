@@ -1,14 +1,8 @@
-.hero {
-  background-color: #fbf2f4;
-  margin: 0 auto;
-  max-width: 120rem;
-}
 .container {
-   margin: 0 auto;
-    max-width: 120rem;
-    padding: 4.8rem 3.2rem
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 4.8rem 3.2rem;
 }
-
 .heading {
   font-size: 5.2rem;
   font-weight: 700;
@@ -17,11 +11,8 @@
   letter-spacing: 2px;
   margin-bottom: 3.2rem;
 }
-
 .description {
   font-size: 2rem;
   line-height: 1.6;
-  margin-bottom: 4.8rem;
   text-align: justify;
- height:60vh;
 }

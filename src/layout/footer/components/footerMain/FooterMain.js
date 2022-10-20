@@ -1,16 +1,17 @@
-import React from 'react'
-import classes from './FooterMain.module.css'
+import React from "react";
+import classes from "./FooterMain.module.css";
 import logo from "../../../../assets/images/logotransparent.png";
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook } from "react-icons/fi";
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 function FooterMain() {
   const navigate = useNavigate();
   return (
-    <div className={classes.logo}>
+    <section className={classes.firstColumnContainer}>
       <div className={classes.flexContainer}>
         <img
-          onClick={()=> {return navigate('/')}}
+          onClick={() => navigate("/")}
           className={classes.logoImg}
           src={logo}
           alt="Brand logo"
@@ -23,8 +24,8 @@ function FooterMain() {
         </a>
       </div>
       <p>Copyright &copy; 2022 by Around Her Beauty</p>
-    </div>
+    </section>
   );
 }
 
-export default FooterMain
+export default FooterMain;
