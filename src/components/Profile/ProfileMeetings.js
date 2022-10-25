@@ -1,5 +1,6 @@
 import { Fragment } from "react";
-import useFetchUserMeetings from "../../hooks/useFetchUsersMeetings";
+import useFetchUserMeetings from "../../hooks/calendar hooks/useFetchUsersMeetings";
+
 import FutureMeetings from "./FutureMeetings";
 import PastMeetings from "./PastMeetings";
 const ProfileMeetings = () => {

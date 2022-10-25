@@ -1,14 +1,7 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 function useFetchUserMeetings() {
   const [userMeetings, setUserMeetings] = useState([]);

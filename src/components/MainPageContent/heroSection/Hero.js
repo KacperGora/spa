@@ -1,16 +1,16 @@
 import classes from "./Hero.module.css";
 import React from "react";
 
-import Slider from '../../UI/slider/Slider'
-import { Link } from "react-router-dom";
+import Slider from "../../UI/slider/Slider";
 import { useSelector } from "react-redux";
-
+import ContactButton from "../../UI/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../UI/PrimaryButton/PrimaryButton";
+import SecondaryButton from "../../UI/SecondaryButton/SecondaryButton";
 
 const Hero = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);
   return (
     <section className={classes.hero}>
-
       <div className={classes.grid}>
         <div className={classes.heroText}>
           <div className={classes.brand}>
@@ -26,26 +26,12 @@ const Hero = () => {
             officia perspiciatis?
           </p>
           <div className={classes.actions}>
-            {isAuth && (
-              <Link
-                to="/calendar"
-                className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-              >
-                Zadbaj o swoje dłonie
-              </Link>
-            )}
-            {!isAuth && (
-              <Link
-                to="/login"
-                className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-              >
-                Zadbaj o swoje dłonie
-              </Link>
-            )}
-
-            <a href="#" className={`${classes.btn} ${classes.outline}`}>
+            <PrimaryButton destination={isAuth ? "/calendar" : "/login"}>
+              Zadbaj o swoje dłonie
+            </PrimaryButton>
+            <SecondaryButton destination={"#"}>
               Dowiedz się więcej
-            </a>
+            </SecondaryButton>
           </div>
         </div>
         <div className={classes.aa}>

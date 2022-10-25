@@ -1,0 +1,22 @@
+.btn:link,
+.btn:visited {
+  font-size: 2rem;
+  color: #333;
+  padding: 1.6rem 3.2rem;
+  border-radius: 9px;
+  display: inline-block;
+  text-decoration: none;
+  transition: all 300ms;
+}
+.full:link,
+.full:visited {
+  background-color: #996c95;
+  color: #fff;
+}
+.full:hover,
+.full:active {
+  background-color: #aa78a6;
+}
+.marginRightSM {
+  margin-right: 1.6rem;
+}

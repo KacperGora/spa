@@ -1,6 +1,6 @@
 import Spinner from "../UI/spinner/Spinner";
 import classes from "./Gallery.module.css";
-import useFetchImages from "../../utilities/useFetchImages";
+import useFetchImages from "../../hooks/useFetchImages";
 
 const Gallery = () => {
   const { imgUrl, isLoaded } = useFetchImages("portfolio");
@@ -8,7 +8,7 @@ const Gallery = () => {
 
   return (
     <div className={classes.container}>
-      {imgCollection?.map((item, index) => {
+      {imgCollection?.map((item) => {
         return (
           <div key={Math.random()} className={`${classes.w2} ${classes.h4}`}>
             <div className={classes.galleryItem}>

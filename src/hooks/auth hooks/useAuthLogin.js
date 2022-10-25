@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { loginActions } from "../../store/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { userActions } from "../../store/usersSlice";
-import setLoggedUser from "../../utilities/setLoggedUser";
+import setLoggedUser from "../../utilities/Auth/setLoggedUser";
 import FormInputCfg from "./useAuthFormInputHandler";
 import firebaseAuthHandler from "../../components/Auth/firebaseAuthHandler";
 

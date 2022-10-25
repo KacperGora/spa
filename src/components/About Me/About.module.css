@@ -1,16 +1,4 @@
-.container {
-  max-width: 120rem;
-  margin: 0 auto;
-  padding: 4.8rem 3.2rem;
-}
-.heading {
-  font-size: 5.2rem;
-  font-weight: 700;
-  line-height: 1.05;
-  color: #333;
-  letter-spacing: 2px;
-  margin-bottom: 3.2rem;
-}
+
 .description {
   font-size: 2rem;
   line-height: 1.6;

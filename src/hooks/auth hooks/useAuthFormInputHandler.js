@@ -1,6 +1,8 @@
+import {
+  validateEmail,
+  validatePhoneNumber,
+} from "../../utilities/Auth/validationRegex";
 import useManageInput from "../useManageInput";
-import { validateEmail } from "../../utilities/validateEmail";
-import { validatePhoneNumber } from "../../utilities/validatePhoneNumber";
 
 function useAuthFormInputsHandler() {
   const { ...name } = useManageInput((value) => value.trim() !== "");

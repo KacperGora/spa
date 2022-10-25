@@ -5,12 +5,13 @@ import { Fragment } from "react";
 import Footer from "../../layout/footer/Footer";
 import NavBar from "../../layout/navBar/NavBar";
 import classes from "./Portfolio.module.css";
+import Container from "../../layout/Container/Container";
 
 const Portfolio = () => {
   return (
     <Fragment>
       <NavBar />
-      <div className={classes.container}>
+      <Container>
         <h3 className={classes.heading}>
           Więcej moich prac znajdziecie na moich profilach
           <div className={classes.contain}>
@@ -26,8 +27,7 @@ const Portfolio = () => {
             </div>
           </div>
         </h3>
-      </div>
-
+      </Container>
       <Gallery />
       <Footer />
     </Fragment>

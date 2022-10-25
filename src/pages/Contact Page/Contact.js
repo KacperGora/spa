@@ -5,21 +5,23 @@ import NavBar from "../../layout/navBar/NavBar";
 import Footer from "../../layout/footer/Footer";
 import ContactDetail from "../../components/ContactUs/contactDetail/ContactDetail";
 import ContactForm from "../../components/ContactUs/form/ContactForm";
+import Container from "../../layout/Container/Container";
+import PageHeading from "../../components/UI/PageHeading/PageHeading";
 
 const Contact = () => {
   return (
     <Fragment>
       <NavBar />
-      <section className={classes.container}>
+      <Container>
         <span className={classes.subheading}>KONTAKT</span>
-        <h2 className={classes.secondary}>Wybierz coś dla siebie...</h2>
+        <PageHeading> Wybierz coś dla siebie...</PageHeading>
         <h2 className={classes.mapHeading}>GDZIE NAS ZNALEŚĆ?</h2>
         <div className={classes.grid}>
           <ContactDetail />
           <Map />
           <ContactForm />
         </div>
-      </section>
+      </Container>
       <Footer />
     </Fragment>
   );

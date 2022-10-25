@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import classes from "./CalendarForm.module.css";
 import useCalendarEventClick from "../../hooks/calendar hooks/useCalendarEventClick";
 import useCalendarOnSelect from "../../hooks/calendar hooks/useCalendarOnSelect";
-import onAdminChange from "../../utilities/onAdminChange";
 
+import onAdminChange from "../../utilities/Calendar/onAdminChange";
 
 function CalendarComponent() {
   const events = useSelector((state) => state.calendar.meetings);

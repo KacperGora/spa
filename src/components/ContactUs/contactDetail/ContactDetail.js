@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./ContactDetail.module.css";
 import { contactConfiguration } from "./contactConfiguration";
-import ContactButton from "./ContactButton";
+import ContactButton from "../../UI/PrimaryButton/PrimaryButton";
 
 function ContactDetail() {
   const isAuth = useSelector((state) => state.auth.isLogged);

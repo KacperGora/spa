@@ -1,14 +1,14 @@
 import { addHours, addMinutes } from "date-fns";
 
 function calculateEventDuration(service, pickedDate) {
-  let serviceDuration = [];
+  let eventDuration = [];
   for (let i = 0; i < service; i += 15) {
-    serviceDuration.push(
+    eventDuration.push(
       addHours(new Date(addMinutes(pickedDate, i)), 2).toISOString()
     );
   }
 
-  return serviceDuration;
+  return eventDuration;
 }
 
 export default calculateEventDuration;

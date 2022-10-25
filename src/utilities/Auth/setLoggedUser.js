@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase";
-import { userActions } from "../store/usersSlice";
+import { db } from "../../firebase";
+import { userActions } from "../../store/usersSlice";
 
 async function setLoggedUser(email) {
   let loggedUser;

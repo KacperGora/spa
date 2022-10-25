@@ -1,6 +1,6 @@
 import { addMinutes } from "date-fns";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 
 const onAdminChange = async (e, meetings) => {

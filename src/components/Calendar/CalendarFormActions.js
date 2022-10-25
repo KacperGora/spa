@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase";
 import useFetchEvents from "../../hooks/calendar hooks/useFetchEvents";
 import { calendarActions } from "../../store/calendarSlice";
-import cancelMeetingHandler from "../../utilities/cancelMeetingHandler";
-import editMeetingHandler from "../../utilities/editMeetingHandler";
-import useToggleModal from "../../utilities/useToggleModal";
+import useToggleModal from "../../hooks/useToggleModal";
+import cancelMeetingHandler from "../../utilities/Meetings/cancelMeetingHandler";
+import editMeetingHandler from "../../utilities/Meetings/editMeetingHandler";
 
 import classes from "./CalendarFormActions.module.css";
 function CalendarFormActions({ workingMeeting, isOverlapped, isChanging }) {

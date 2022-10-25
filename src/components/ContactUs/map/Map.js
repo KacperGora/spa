@@ -1,7 +1,5 @@
 import React from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import style from "./Mapstyles";
-
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -21,10 +19,7 @@ function Map() {
       zoom={15}
       options={{ disableDefaultUI: true }}
     >
-      <>
-        {" "}
-        <Marker position={center} label={"Around Her Beauty"} />
-      </>
+      <Marker position={center} label={"Around Her Beauty"} />
     </GoogleMap>
   );
 }

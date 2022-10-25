@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import PhoneIcon from "@mui/icons-material/Phone";
 import useFormInputHandler from "./useAuthFormInputHandler";
 import firebaseAuthHandler from "../../components/Auth/firebaseAuthHandler";
-import addUserToCollection from "../addUserToCollection";
+import addUserToCollection from "./addUserToCollection";
 
 function useAuthRegister() {
   const [authError, setAuthError] = useState(false);

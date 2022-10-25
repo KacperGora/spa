@@ -1,5 +1,5 @@
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 async function addUserToCollection(authCredentials) {
   await setDoc(doc(db, "users", authCredentials.email), {

@@ -1,5 +1,5 @@
 import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 async function submitEvent(workingMeeting) {
   const docRef = doc(collection(db, "meetings"));

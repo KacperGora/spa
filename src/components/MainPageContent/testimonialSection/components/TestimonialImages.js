@@ -1,5 +1,5 @@
 import React from "react";
-import useFetchImages from "../../../../utilities/useFetchImages";
+import useFetchImages from "../../../../hooks/useFetchImages";
 import classes from "./TestimonialImages.module.css";
 
 function TestimonialImages() {

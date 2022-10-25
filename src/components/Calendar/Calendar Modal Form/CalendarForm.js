@@ -5,10 +5,11 @@ import { setHours, setMinutes, addMinutes, addHours } from "date-fns";
 import CalendarFormSelectService from "../Calendar Service Select/CalendarFormSelectService";
 import CalendarFormTitle from "../Calendar Title/CalendarFormTitle";
 import WarningParagraph from "../Warning Paragraph/WarningParagraph";
-import calculateEventDuration from "../../../utilities/calculateEventDuration";
+
 import CalendarFormActions from "../../../components/Calendar/CalendarFormActions";
 import useCalendarFormConfiguration from "../CalendarFormConfiguration";
-import getServiceNameAndPrice from "../../../utilities/getServiceNameAndPrice";
+import getServiceNameAndPrice from "../../../utilities/Meetings/getServiceNameAndPrice";
+import calculateEventDuration from "../../../utilities/Meetings/calculateEventDuration";
 import useCheckOverlappingEvents from "../../../hooks/calendar hooks/useCheckOverlappingEvents";
 
 const CalendarForm = () => {

@@ -6,6 +6,7 @@ import classes from "./LoginForm.module.css";
 import useAuthLogin from "../../../hooks/auth hooks/useAuthLogin";
 function LoginForm() {
   const { ...loginParams } = useAuthLogin("login");
+
   return (
     <form className={classes.form} onSubmit={loginParams.loginSubmitHandler}>
       <h2 className={classes.formHeader}>Zaloguj się</h2>

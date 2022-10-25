@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import classes from "./ContactDetail.module.css";
-function ContactButton({ children, destination }) {
+import classes from "./PrimaryButton.module.css";
+function PrimaryButton({ children, destination }) {
   return (
     <Link
       className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
@@ -11,4 +11,4 @@ function ContactButton({ children, destination }) {
   );
 }
 
-export default ContactButton;
+export default PrimaryButton;

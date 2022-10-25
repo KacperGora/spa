@@ -1,10 +1,10 @@
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
 import { parseISO, setHours, setMinutes } from "date-fns";
-
-import { maxDate } from "../../utilities/getOneMonthFurther";
+import { getBusinessDay } from "../../utilities/Calendar/getBusinessDay";
+import { maxDate } from "../../utilities/Calendar/getOneMonthFurther";
 import "./react-datepicker.css";
-import { getBusinessDay } from "../../utilities/getBuisnessDay";
+
 registerLocale("pl", pl);
 function DatePickerCalendarComponent({
   pickedDate,
