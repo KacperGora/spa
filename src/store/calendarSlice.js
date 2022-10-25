@@ -1,6 +1,3 @@
-
-
-
 import { createSlice } from "@reduxjs/toolkit";
 
 const calendarSlice = createSlice({
@@ -31,8 +28,7 @@ const calendarSlice = createSlice({
     },
     fetchMeetings(state, action) {
       state.meetings = action.payload;
-      state.excludedTimes = []
-   
+      state.excludedTimes = [];
       for (let i = 0; i < action.payload.length; i++) {
         state.excludedTimes = [
           ...state.excludedTimes,
@@ -40,7 +36,6 @@ const calendarSlice = createSlice({
         ];
       }
     },
- 
     findKey(state, action) {
       state.key = action.payload;
     },
@@ -52,13 +47,9 @@ const calendarSlice = createSlice({
         times: action.payload.times,
         serviceName: action.payload.serviceName,
         email: action.payload.email,
-
-       
       };
       state.meetings = [...state.meetings, action.payload];
-     
     },
- 
   },
 });
 

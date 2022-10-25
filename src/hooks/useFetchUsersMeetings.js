@@ -1,4 +1,11 @@
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
@@ -6,20 +13,21 @@ import { db } from "../firebase";
 function useFetchUserMeetings() {
   const [userMeetings, setUserMeetings] = useState([]);
   const loggedUserMail = useSelector((state) => state.user.user?.email);
+  useEffect(() => {
+    async function get() {
+      const q = query(
+        collection(db, "meetings"),
+        where("email", "==", loggedUserMail)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setUserMeetings((currState) => [...currState, doc.data()]);
+      });
+    }
+    get();
+  }, [loggedUserMail]);
 
-    const fetchUsersMeetings = async () => {
-      const docRef = doc(db, "users", loggedUserMail);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserMeetings(docSnap.data().meetings);
-      } else {
-        console.log("No such document!");
-      }
-    };
-    fetchUsersMeetings();
-
-
-  return userMeetings;
+  return userMeetings ? userMeetings : [];
 }
 
 export default useFetchUserMeetings;

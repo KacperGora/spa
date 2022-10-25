@@ -12,6 +12,7 @@ const firebaseAuthHandler = async (
   setAuthError
 ) => {
   setIsLoading(true);
+
   if (type === "login") {
     let loggedUser;
     try {

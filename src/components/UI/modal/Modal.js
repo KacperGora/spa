@@ -1,18 +1,18 @@
 import { Fragment } from "react";
 import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../../store/modalSlice";
 import { calendarActions } from "../../../store/calendarSlice";
 
 import classes from "./Modal.module.css";
 
-const Backdrop = (props) => {
+const Backdrop = () => {
   const dispatch = useDispatch();
   return (
     <div
       onClick={() => {
         dispatch(modalActions.modalToggle());
-         dispatch(calendarActions.setIsChangingEvent(false));
+        dispatch(calendarActions.setIsChangingEvent(false));
       }}
       className={classes.backdrop}
     />
@@ -20,14 +20,9 @@ const Backdrop = (props) => {
 };
 
 const ModalOverlay = (props) => {
-   const dispatch = useDispatch();
   return (
-    <div  className={classes.modal}>
-      <div className={classes.content}>
-        
-        {props.children}
-     
-      </div>
+    <div className={classes.modal}>
+      <div className={classes.content}>{props.children}</div>
     </div>
   );
 };
@@ -35,12 +30,11 @@ const ModalOverlay = (props) => {
 const portalElement = document.getElementById("overlays");
 
 const Modal = (props) => {
-
   return (
     <Fragment>
-      {ReactDOM.createPortal(<Backdrop/>, portalElement)}
+      {ReactDOM.createPortal(<Backdrop />, portalElement)}
       {ReactDOM.createPortal(
-        <ModalOverlay >{props.children}</ModalOverlay>,
+        <ModalOverlay>{props.children}</ModalOverlay>,
         portalElement
       )}
     </Fragment>

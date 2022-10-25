@@ -1,18 +1,19 @@
 import { Route, Routes } from "react-router-dom";
-import Calendar from "../components/appointment/Calendar";
-import AboutMe from "../pages/aboutMe/AboutMe";
-import Kontakt from "../pages/contactUs/Kontakt";
-import Register from "../pages/loginPage/components/register/Register";
-import LoginPage from "../pages/loginPage/LoginPage";
-import Main from "../pages/mainPage/Main";
-import Portfolio from "../pages/portfolio/Portfolio";
-import Profile from "../pages/Profile/Profile";
+import AboutMe from "../pages/About Me Page/AboutMe";
+import Portfolio from "../pages/Portfolio Page/PortfolioPage";
+import Profile from "../pages/ProfilePage/ProfilePage";
 import { useSelector } from "react-redux";
 import { RequireAuth } from "./RequireAuth";
+import Calendar from "../pages/Calendar/Calendar";
+import LoginPage from "../pages/Login Page/LoginPage";
+import Register from "../pages/Register Page/RegisterPage";
+import Contact from "../pages/Contact Page/Contact";
+import Main from "../pages/Main Page/MainPage";
+
 const Routers = () => {
   const admin = useSelector((state) => state.auth.admin);
   const isAuth = useSelector((state) => state.auth.isLogged);
-  const user = useSelector((state) => state.user.user.name);
+  const user = useSelector((state) => state.user?.user?.name);
   const isLogged = (isAuth && user) || admin;
 
   return (
@@ -20,7 +21,7 @@ const Routers = () => {
       <Routes>
         <Route element={<AboutMe />} path="/about" />
         <Route element={<Portfolio />} path="/portfolio" />
-        <Route element={<Kontakt />} path="/kontakt" />
+        <Route element={<Contact />} path="/kontakt" />
         <Route element={<LoginPage />} path="/login" />
         <Route element={<Register />} path="/register" />
         <Route

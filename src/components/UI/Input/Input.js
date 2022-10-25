@@ -1,6 +1,5 @@
 import classes from "./Input.module.css";
 const Input = (props) => {
-  console.log(props.hasError);
   return (
     <div className={classes.inputContainer}>
       <input
@@ -16,7 +15,9 @@ const Input = (props) => {
         minLength={props.minLength}
       />
 
-      {props.hasError && <p className={classes.errorParagraph}>Wprowadź poprawne dane</p>}
+      {props.hasError && (
+        <p className={classes.errorParagraph}>Wprowadź poprawne dane</p>
+      )}
     </div>
   );
 };

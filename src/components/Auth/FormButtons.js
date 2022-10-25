@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import classes from "./FormButtons.module.css";
 
 function FormButtons({
-  onclickDestination,
+  onClickDestination,
   disabled,
   actionText,
   alternativeActionText,
@@ -13,7 +13,7 @@ function FormButtons({
       <button
         className={classes.button}
         onClick={() => {
-          navigate(`/${onclickDestination}`);
+          navigate(`/${onClickDestination}`);
         }}
       >
         {alternativeActionText}

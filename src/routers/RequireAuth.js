@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
 
-export const RequireAuth = ({ children }) => {
+export const RequireAuth = () => {
   const [user, setUser] = useState("");
 
   onAuthStateChanged(auth, (user) => {
@@ -16,6 +16,4 @@ export const RequireAuth = ({ children }) => {
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
-  return children;
 };

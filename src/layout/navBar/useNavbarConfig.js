@@ -5,11 +5,14 @@ import { loginActions } from "../../store/loginSlice";
 import classes from "./navbarCfg.module.css";
 
 function useNavbarConfig() {
-  const isAuth = useSelector((state) => state.auth.isLogged);
-  const user = useSelector((state) => state.user.user.name);
-  const isLogged = isAuth && user;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.auth.isLogged);
+  const user = useSelector((state) => state.user.user?.name);
+  const admin = useSelector((state) => state.auth.admin);
+
+  const isLogged = (isAuth && user) || admin;
+
   const navbarLinksConfiguration = [
     {
       title: "O mnie",
