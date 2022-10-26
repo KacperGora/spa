@@ -2,7 +2,7 @@ import { formatDistance } from "date-fns";
 import { pl } from "date-fns/locale";
 import classes from "./PastMeetings.module.css";
 function PastMeetings({ userMeetings }) {
-  let pastMeetings = userMeetings.filter(
+  const pastMeetings = userMeetings.filter(
     (meeting) => meeting.date < new Date().toISOString()
   );
 

@@ -7,14 +7,7 @@
   max-width: 120rem;
   border-top: solid 2px #996c95;
 }
-.addressCol a {
-  color: #333;
-}
-ul {
-  padding: 1.2rem;
-  line-height: 2;
-  text-align: center;
-}
+
 .footer {
   min-height: 110px;
 }
@@ -24,7 +17,5 @@ ul {
     align-items: center;
     justify-content: center;
   }
-  .main {
-    grid-row: span 2;
-  }
+
 }

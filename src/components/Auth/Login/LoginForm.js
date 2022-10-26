@@ -9,7 +9,7 @@ function LoginForm() {
 
   return (
     <form className={classes.form} onSubmit={loginParams.loginSubmitHandler}>
-      <h2 className={classes.formHeader}>Zaloguj się</h2>
+      <h2 className={classes.formTitle}>Zaloguj się</h2>
       {loginParams.formConfiguration.map((input) => {
         return (
           <div key={input.placeholder} className={classes.inputContainer}>

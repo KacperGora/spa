@@ -20,7 +20,7 @@ function useFetchUserMeetings() {
     get();
   }, [loggedUserMail]);
 
-  return userMeetings ? userMeetings : [];
+  return userMeetings || [];
 }
 
 export default useFetchUserMeetings;

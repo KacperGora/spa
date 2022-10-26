@@ -18,7 +18,11 @@ function FormButtons({
       >
         {alternativeActionText}
       </button>
-      <button className={classes.button} type="submit" disabled={!disabled}>
+      <button
+        className={`${classes.button} ${classes.primary}`}
+        type="submit"
+        disabled={!disabled}
+      >
         {actionText}
       </button>
     </div>

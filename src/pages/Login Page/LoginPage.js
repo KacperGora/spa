@@ -1,4 +1,4 @@
-import Login from "../../components/Auth/Login/Login";
+import LoginForm from "../../components/Auth/Login/LoginForm";
 import Footer from "../../layout/footer/Footer";
 import NavBar from "../../layout/navBar/NavBar";
 import classes from "./LoginPage.module.css";
@@ -7,7 +7,7 @@ const LoginPage = () => {
     <>
       <NavBar />
       <div className={classes.main}>
-        <Login />
+        <LoginForm />
       </div>
       <Footer />
     </>

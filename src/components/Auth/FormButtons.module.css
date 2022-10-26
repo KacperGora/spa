@@ -5,8 +5,29 @@
   margin-top: 1.2rem;
 }
 .button {
-  display: flex;
-  padding: 8px 16px;
+  padding: 8px 24px;
+  border: solid 1px #c4b9bb;
+  border-radius: 5px;
   cursor: pointer;
+  background-color: white;
   transition: all 300ms;
+}
+.primary {
+  background-color: #996c95;
+  color: white;
+  transition: all 300ms;
+}
+.primary:hover {
+  background-color: #c295bf;
+}
+.primary:active {
+  scale: 1.05;
+}
+@media (max-width: 35em) {
+  .button {
+    padding: 4px 12px;
+  }
+  .buttonsContainer {
+    flex-direction: column;
+  }
 }

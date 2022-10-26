@@ -28,6 +28,8 @@ const firebaseAuthHandler = async (
       const { code } = error;
       if (code === "auth/wrong-password") {
         setAuthError("Podano nieprawidłowe dane.");
+      } else if (code === "auth/user-not-found") {
+        setAuthError("Nie znaleziono użytkownika.");
       } else setAuthError(code);
       setIsLoading(false);
       throw new Error(code);

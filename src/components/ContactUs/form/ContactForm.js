@@ -1,12 +1,12 @@
 import React from "react";
-
+import CustomButton from "../../UI/PrimaryButton/CustomButton";
 import classes from "./ContactForm.module.css";
 import { contactFormConfiguration } from "./ContactFormConfiguration";
 function ContactForm() {
   return (
     <>
       <div className={classes.formDescriptionContainer}>
-        <h2>FORMULARZ KONTAKTOWY </h2>
+        <h2 className={classes.formTitle}>FORMULARZ KONTAKTOWY </h2>
         <h3 className={classes.description}>
           Wypełnij formularz kontaktowy. Na każde zapytanie odpowiadamy
           maksymalnie w 48 godzin. Dla szybszej informacji zalecamy kontakt
@@ -23,13 +23,9 @@ function ContactForm() {
             />
           </div>
         ))}
-
-        <a
-          href="#"
-          className={`${classes.btn} ${classes.full} ${classes.marginRightSM}`}
-        >
-          Wyślij!
-        </a>
+        <CustomButton primary destination={"/"}>
+          Wyślij
+        </CustomButton>
       </form>
     </>
   );

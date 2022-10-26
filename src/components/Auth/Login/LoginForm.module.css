@@ -1,36 +1,36 @@
 .form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  place-content: center;
   gap: 1rem;
+  margin: 2.4rem auto;
   border: solid 2px #e1d8da;
   padding: 2.4rem;
   border-radius: 1rem;
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.5);
+  width: 50rem;
+  min-height: 30rem;
 }
-.formHeader {
+.formTitle {
   text-align: center;
   padding: 1rem 1rem 1.8rem 1rem;
   font-size: 1.8rem;
 }
+
 .inputContainer {
   display: flex;
-  gap: 4px;
   align-items: center;
+  gap: 4px;
 }
 input {
-  display: flex;
   border: none;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 input:focus {
   outline: none;
 }
-.invalidInput {
-  border: 1px solid #b40e0e;
-  background-color: #fddddd;
-}
-.invalidInput:focus {
-  border-color: #ff8800;
-  background-color: #fbe8d2;
+@media (max-width: 35em) {
+  .form {
+    width: 30rem;
+  }
 }

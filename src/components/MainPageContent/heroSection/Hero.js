@@ -3,15 +3,14 @@ import React from "react";
 
 import Slider from "../../UI/slider/Slider";
 import { useSelector } from "react-redux";
-import PrimaryButton from "../../UI/PrimaryButton/PrimaryButton";
-import SecondaryButton from "../../UI/SecondaryButton/SecondaryButton";
+import CustomButton from "../../UI/PrimaryButton/CustomButton";
 
 const Hero = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);
   return (
     <section className={classes.hero}>
       <div className={classes.grid}>
-        <div className={classes.heroText}>
+        <div>
           <div className={classes.brand}>
             <h1 className={classes.heading}>Around her Beauty</h1>
             <p className={classes.name}>by Justyna GÓRA</p>
@@ -25,12 +24,10 @@ const Hero = () => {
             officia perspiciatis?
           </p>
           <div className={classes.actions}>
-            <PrimaryButton destination={isAuth ? "/calendar" : "/login"}>
+            <CustomButton primary destination={isAuth ? "/calendar" : "/login"}>
               Zadbaj o swoje dłonie
-            </PrimaryButton>
-            <SecondaryButton destination={"#"}>
-              Dowiedz się więcej
-            </SecondaryButton>
+            </CustomButton>
+            <CustomButton destination={"#"}>Dowiedz się więcej</CustomButton>
           </div>
         </div>
         <div className={classes.aa}>

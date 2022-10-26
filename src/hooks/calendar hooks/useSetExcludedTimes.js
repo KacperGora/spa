@@ -8,10 +8,10 @@ function useSetExcludedTimes(pickedDate) {
   );
   const formattedDate = new Date(pickedDate).toDateString();
 
-  let excludedAtThisDay = excludedEventsTimes.filter(
+  const excludedAtThisDay = excludedEventsTimes.filter(
     (date) => new Date(date).toDateString() === formattedDate
   );
-  let arrExcludedTimes = [];
+  const arrExcludedTimes = [];
 
   excludedAtThisDay.forEach((time) =>
     arrExcludedTimes.push(subHours(parseISO(time), 2))

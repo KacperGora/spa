@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 function useCheckOverlappingEvents(pickedDate, meetings, service) {
   const [isOverlapped, setOverlapped] = useState(false);
 
-  let meetingsAtPickedDate = meetings.filter(
+  const meetingsAtPickedDate = meetings.filter(
     (meeting) =>
       new Date(meeting.date).toLocaleDateString() ===
       pickedDate.toLocaleDateString()

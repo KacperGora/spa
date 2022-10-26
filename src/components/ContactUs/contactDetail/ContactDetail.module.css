@@ -1,8 +1,10 @@
 .contactDetail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   font-size: 1.8rem;
   color: #333;
   font-weight: 500;
-  padding-top: 3.2rem;
   text-align: center;
   line-height: 2;
 }
@@ -16,9 +18,4 @@ a {
   height: 24px;
   color: #996c95;
   margin-right: 1.6rem;
-}
-
-.contactIconsContainer {
-  display: flex;
-  justify-content: center;
 }

@@ -7,14 +7,18 @@ function useFetchImages(location) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(false);
-    const unsub = onSnapshot(doc(db, "images", location), (doc) => {
-      const images = [];
-      images.push(doc.data());
-      setImgUrl(images[0]);
-    });
-    setIsLoaded(true);
-    return () => unsub();
+    try {
+      setIsLoaded(false);
+      onSnapshot(doc(db, "images", location), (doc) => {
+        const images = [];
+        images.push(doc.data());
+        setImgUrl(images[0]);
+      });
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      setIsLoaded(true);
+    }
   }, [location]);
 
   return { imgUrl, isLoaded };

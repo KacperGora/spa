@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import classes from "./FooterLinks.module.css";
 function FooterLinks() {
   const linksConfiguration = [
     { to: "/register", label: "Zarejestruj konto" },
@@ -10,7 +10,7 @@ function FooterLinks() {
   ];
 
   return (
-    <ul>
+    <ul className={classes.footerLinksContainer}>
       {linksConfiguration.map((link) => {
         return (
           <li key={Math.random()}>

@@ -20,3 +20,14 @@
   height: 5rem;
   cursor: pointer;
 }
+@media (max-width: 25em) {
+  .logoImg {
+    height: 3rem;
+  }
+  .icons {
+    width: 1.6rem;
+    height: 1.6rem;
+
+    margin-right: 1.2rem;
+  }
+}
