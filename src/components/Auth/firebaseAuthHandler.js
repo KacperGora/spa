@@ -25,10 +25,10 @@ const firebaseAuthHandler = async (
       loggedUser = userCredential.user;
       localStorage.setItem("token", loggedUser.uid);
     } catch (error) {
-      const { code, message } = error;
-      if (message === "Firebase: Error (auth/user-not-found).") {
-        setAuthError("Podano nieprawidłowe dane logowania.");
-      }
+      const { code } = error;
+      if (code === "auth/wrong-password") {
+        setAuthError("Podano nieprawidłowe dane.");
+      } else setAuthError(code);
       setIsLoading(false);
       throw new Error(code);
     }
@@ -48,7 +48,7 @@ const firebaseAuthHandler = async (
         displayName: authCredentials.name,
       });
     } catch (error) {
-      const { code, message } = error;
+      const { message } = error;
       if (message === "Firebase: Error (auth/email-already-in-use).") {
         setAuthError("Na podany email istnieje zarejestrowane konto.");
       }

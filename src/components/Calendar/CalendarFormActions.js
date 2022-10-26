@@ -37,11 +37,17 @@ function CalendarFormActions({ workingMeeting, isOverlapped, isChanging }) {
 
   const firstButtonChangeEvent = {
     text: "Anuluj Spotkanie",
-    action: cancelMeetingHandler.bind(this, [key, getEvents, toggleModal]),
+    action: (e) => {
+      e.preventDefault();
+      cancelMeetingHandler([key, getEvents, toggleModal]);
+    },
   };
   const secondButtonChangeEvent = {
     text: "Akceptuj zmiany",
-    action: editMeetingHandler.bind(this, [key, workingMeeting, toggleModal]),
+    action: (e) => {
+      e.preventDefault();
+      editMeetingHandler([key, workingMeeting, getEvents, toggleModal]);
+    },
   };
   const firstButtonMain = {
     text: "Anuluj",

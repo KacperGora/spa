@@ -3,7 +3,6 @@ import React from "react";
 
 import Slider from "../../UI/slider/Slider";
 import { useSelector } from "react-redux";
-import ContactButton from "../../UI/PrimaryButton/PrimaryButton";
 import PrimaryButton from "../../UI/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../UI/SecondaryButton/SecondaryButton";
 

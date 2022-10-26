@@ -5,6 +5,7 @@ import FormStatus from "../FormStatus";
 import classes from "./RegisterForm.module.css";
 function RegisterForm() {
   const { ...registerParams } = useAuthRegister();
+
   return (
     <section className={classes.container}>
       <div className={`${classes.container}`}>

@@ -15,7 +15,7 @@ function ContactForm() {
       </div>
       <form className={classes.contactForm}>
         {contactFormConfiguration.map((input) => (
-          <div className={classes.inputContainer}>
+          <div key={input.placeholder} className={classes.inputContainer}>
             {input.icon}
             <input
               placeholder={input.placeholder}

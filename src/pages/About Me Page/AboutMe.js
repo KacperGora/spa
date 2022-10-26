@@ -7,10 +7,10 @@ const AboutMe = () => {
   return (
     <Fragment>
       <NavBar />
-      <About />
-      <div className={classes.footerBox}>
-        <Footer />
+      <div className={classes.main}>
+        <About />
       </div>
+      <Footer />
     </Fragment>
   );
 };

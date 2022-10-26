@@ -15,12 +15,8 @@ ul {
   line-height: 2;
   text-align: center;
 }
-
-@media (max-width: 59em) {
-  .container {
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-  }
+.footer {
+  min-height: 110px;
 }
 @media (max-width: 25em) {
   .container {
