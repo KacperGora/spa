@@ -43,34 +43,32 @@ const CalendarForm = () => {
     <Fragment>
       <form>
         <CalendarFormTitle />
-        <div className={classes.container}>
-          <div className={classes.subContainer}>
-            {formConfiguration.map((entry) => {
-              return (
-                <div key={Math.random()} className={classes.inputLineContainer}>
-                  {entry.icon}
-                  {entry.toRender && entry.toRender}
-                  {!entry.toRender && (
-                    <input
-                      value={entry.value}
-                      required
-                      onChange={(e) => entry.onChange(e.target.value)}
-                      type={entry.type}
-                      placeholder={entry.placeholder}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <CalendarFormSelectService />
-          {!isChanging && (
-            <CalendarFormActions
-              isOverlapped={isOverlapped}
-              workingMeeting={workingMeeting}
-            />
-          )}
+        <div className={classes.subContainer}>
+          {formConfiguration.map((entry) => {
+            return (
+              <div key={Math.random()} className={classes.inputLineContainer}>
+                {entry.icon}
+                {entry.toRender}
+                {!entry.toRender && (
+                  <input
+                    value={entry.value}
+                    required
+                    onChange={(e) => entry.onChange(e.target.value)}
+                    type={entry.type}
+                    placeholder={entry.placeholder}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
+        <CalendarFormSelectService />
+        {!isChanging && (
+          <CalendarFormActions
+            isOverlapped={isOverlapped}
+            workingMeeting={workingMeeting}
+          />
+        )}
         {isOverlapped && (
           <WarningParagraph>
             Termin zajety, wybierz proszę inny.

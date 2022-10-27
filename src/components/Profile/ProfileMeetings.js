@@ -11,7 +11,7 @@ const ProfileMeetings = () => {
       <PastMeetings userMeetings={userMeetings} />
       <FutureMeetings userMeetings={userMeetings} />
 
-      {!!userMeetings && (
+      {!userMeetings && (
         <p>Najprawdopodbniej nie masz jeszcze żadnych umówionych wizyt.</p>
       )}
     </Fragment>

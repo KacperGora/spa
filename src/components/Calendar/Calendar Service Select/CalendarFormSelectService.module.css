@@ -1,5 +1,11 @@
-.serviceContainer{
-    display: flex;
-    align-items: center;
-    padding: 1.6rem;
+.serviceContainer {
+  display: flex;
+  align-items: center;
+  padding: 1.6rem;
+}
+@media (max-width: 62em) {
+  .serviceContainer {
+    flex-direction: column;
+    padding: 1rem;
+  }
 }

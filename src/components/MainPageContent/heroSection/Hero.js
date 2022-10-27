@@ -1,15 +1,15 @@
 import classes from "./Hero.module.css";
 import React from "react";
-
 import Slider from "../../UI/slider/Slider";
 import { useSelector } from "react-redux";
-import CustomButton from "../../UI/PrimaryButton/CustomButton";
+
+import CustomLinkBox from "../../UI/CustomLinkBox/CustomLinkBox";
 
 const Hero = () => {
   const isAuth = useSelector((state) => state.auth.isLogged);
   return (
     <section className={classes.hero}>
-      <div className={classes.grid}>
+      <div data-aos="fade-left" className={classes.grid}>
         <div>
           <div className={classes.brand}>
             <h1 className={classes.heading}>Around her Beauty</h1>
@@ -24,10 +24,13 @@ const Hero = () => {
             officia perspiciatis?
           </p>
           <div className={classes.actions}>
-            <CustomButton primary destination={isAuth ? "/calendar" : "/login"}>
+            <CustomLinkBox
+              primary
+              destination={isAuth ? "/calendar" : "/login"}
+            >
               Zadbaj o swoje dłonie
-            </CustomButton>
-            <CustomButton destination={"#"}>Dowiedz się więcej</CustomButton>
+            </CustomLinkBox>
+            <CustomLinkBox destination={"#"}>Dowiedz się więcej</CustomLinkBox>
           </div>
         </div>
         <div className={classes.aa}>

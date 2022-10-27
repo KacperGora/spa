@@ -1,42 +1,18 @@
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  width: 50%;
-  gap: 0.5rem;
-}
 .subContainer {
   display: grid;
   margin: 12px;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-.actions button {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  align-items: center;
-  padding: 8px;
+.subContainer input {
+  border-bottom: 1px solid gray;
 }
-
-.serviceContainer {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-}
-.actions button:hover {
-  background-color: #996c95;
-}
-
 select {
   display: flex;
-
   margin: 2rem auto;
-  margin-top: 2rem;
   border-radius: 5px;
-  padding: 5px 8px;
+  padding: 5px 0;
   text-align: center;
-  width: fit-content;
 }
 .inputLineContainer {
   display: flex;
@@ -46,16 +22,16 @@ select {
 }
 
 @media (max-width: 62em) {
-  .container {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 80%;
-  }
   select {
-    width: 40%;
+    width: 60%;
+    font-size: 1.4rem;
   }
   .subContainer {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .inputLineContainer {
+    gap: 4px;
   }
 }

@@ -8,10 +8,10 @@ function FutureMeetings({ userMeetings }) {
 
   return (
     <div>
-      <h2>Twoje przyszłe wizyty:</h2>
+      <h2 className={classes.title}>Twoje przyszłe wizyty:</h2>
       {futureMeetings.map((meeting) => (
         <li key={Math.random()}>
-          <p>
+          <p className={classes.singleMeeting}>
             {`${meeting.serviceName} dnia ${new Date(
               meeting.date
             ).toLocaleDateString()} o godzinie ${new Date(

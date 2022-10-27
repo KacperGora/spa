@@ -16,6 +16,7 @@ const firebaseAuthHandler = async (
   if (type === "login") {
     let loggedUser;
     try {
+      setIsLoading(true);
       const userCredential = await signInWithEmailAndPassword(
         auth,
         authCredentials.email,
@@ -31,21 +32,23 @@ const firebaseAuthHandler = async (
       } else if (code === "auth/user-not-found") {
         setAuthError("Nie znaleziono użytkownika.");
       } else setAuthError(code);
-      setIsLoading(false);
+
       throw new Error(code);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
+
     return loggedUser;
   } else if (type === "register") {
     let registeredUser;
     try {
+      setIsLoading(true);
       registeredUser = await createUserWithEmailAndPassword(
         auth,
         authCredentials.email,
         authCredentials.password
       );
 
-      registeredUser.user && setIsLoading(false);
       updateProfile(registeredUser.user, {
         displayName: authCredentials.name,
       });
@@ -54,8 +57,9 @@ const firebaseAuthHandler = async (
       if (message === "Firebase: Error (auth/email-already-in-use).") {
         setAuthError("Na podany email istnieje zarejestrowane konto.");
       }
-      setIsLoading(false);
       throw new Error(message);
+    } finally {
+      setIsLoading(false);
     }
     return registeredUser;
   }

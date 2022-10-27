@@ -1,0 +1,19 @@
+.actions {
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  justify-content: center;
+
+  gap: 5px;
+}
+.button {
+  padding: 8px 16px;
+  border: 1px solid grey;
+  border-radius: 8px;
+  width: 50%;
+  cursor: pointer;
+}
+.primary {
+  background-color: #996c95;
+  color: white;
+}

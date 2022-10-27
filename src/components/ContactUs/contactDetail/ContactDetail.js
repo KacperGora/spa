@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./ContactDetail.module.css";
 import { contactConfiguration } from "./contactConfiguration";
-import CustomButton from "../../UI/PrimaryButton/CustomButton";
+
+import CustomLinkBox from "../../UI/CustomLinkBox/CustomLinkBox";
 
 function ContactDetail() {
   const isAuth = useSelector((state) => state.auth.isLogged);
@@ -17,9 +18,9 @@ function ContactDetail() {
           </>
         );
       })}
-      <CustomButton destination={isAuth ? "/calendar" : "/login"}>
+      <CustomLinkBox primary destination={isAuth ? "/calendar" : "/login"}>
         Zadbaj o swoje dłonie
-      </CustomButton>
+      </CustomLinkBox>
     </div>
   );
 }

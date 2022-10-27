@@ -1,5 +1,5 @@
 import React from "react";
-import CustomButton from "../../UI/PrimaryButton/CustomButton";
+import CustomLinkBox from "../../UI/CustomLinkBox/CustomLinkBox";
 import classes from "./ContactForm.module.css";
 import { contactFormConfiguration } from "./ContactFormConfiguration";
 function ContactForm() {
@@ -23,9 +23,9 @@ function ContactForm() {
             />
           </div>
         ))}
-        <CustomButton primary destination={"/"}>
+        <CustomLinkBox primary destination={"/"}>
           Wyślij
-        </CustomButton>
+        </CustomLinkBox>
       </form>
     </>
   );

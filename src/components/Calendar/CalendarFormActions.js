@@ -8,6 +8,7 @@ import cancelMeetingHandler from "../../utilities/Meetings/cancelMeetingHandler"
 import editMeetingHandler from "../../utilities/Meetings/editMeetingHandler";
 
 import classes from "./CalendarFormActions.module.css";
+import Button from "../UI/Button/Button";
 function CalendarFormActions({ workingMeeting, isOverlapped, isChanging }) {
   const key = useSelector((state) => state.calendar.key);
   const toggleModal = useToggleModal();
@@ -59,23 +60,21 @@ function CalendarFormActions({ workingMeeting, isOverlapped, isChanging }) {
   };
   return (
     <div className={classes.actions}>
-      <button
-        className={classes.button}
+      <Button
         onClick={
           isChanging ? firstButtonChangeEvent.action : firstButtonMain.action
         }
       >
         {isChanging ? firstButtonChangeEvent.text : firstButtonMain.text}
-      </button>
-
-      <button
-        className={classes.button}
+      </Button>
+      <Button
+        primary
         onClick={
           isChanging ? secondButtonChangeEvent.action : secondButtonMain.action
         }
       >
         {isChanging ? secondButtonChangeEvent.text : secondButtonMain.text}
-      </button>
+      </Button>
     </div>
   );
 }

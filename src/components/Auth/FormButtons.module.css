@@ -1,13 +1,12 @@
 .buttonsContainer {
   display: flex;
   gap: 1.2rem;
-  align-self: center;
-  margin-top: 1.2rem;
+  margin-top: 2rem;
 }
 .button {
   padding: 8px 24px;
   border: solid 1px #c4b9bb;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   background-color: white;
   transition: all 300ms;

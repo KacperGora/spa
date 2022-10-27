@@ -8,6 +8,8 @@ function RegisterForm() {
 
   return (
     <form
+      data-aos="flip-right"
+      data-aos-duration="1000"
       className={classes.form}
       onSubmit={registerParams.registerSubmitHandler}
     >

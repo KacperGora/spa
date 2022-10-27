@@ -8,10 +8,10 @@ function PastMeetings({ userMeetings }) {
 
   return (
     <div>
-      <h2>Twoje ostatnie wizyty:</h2>
+      <h2 className={classes.title}>Twoje ostatnie wizyty:</h2>
       {pastMeetings.map((meeting) => (
         <li key={Math.random()}>
-          <p>
+          <p className={classes.singleMeeting}>
             {`  ${`${meeting.serviceName}`} w dniu
       ${`${new Date(meeting.date).toLocaleDateString()}`}, (
       ${formatDistance(new Date(meeting.date), new Date(), {

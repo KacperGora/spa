@@ -8,7 +8,11 @@ function LoginForm() {
   const { ...loginParams } = useAuthLogin("login");
 
   return (
-    <form className={classes.form} onSubmit={loginParams.loginSubmitHandler}>
+    <form
+      data-aos="flip-left"
+      className={classes.form}
+      onSubmit={loginParams.loginSubmitHandler}
+    >
       <h2 className={classes.formTitle}>Zaloguj się</h2>
       {loginParams.formConfiguration.map((input) => {
         return (

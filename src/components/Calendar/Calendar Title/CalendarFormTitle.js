@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import classes from "./CalendarFormTitle.module.css";
 
 function CalendarFormTitle() {
   const isChanging = useSelector((state) => state.calendar.changeEvent);
@@ -7,7 +6,7 @@ function CalendarFormTitle() {
     ? "Edytuj lub anuluj spotkanie"
     : "Dodaj spotkanie";
 
-  return <h2 className={classes.header}>{content}</h2>;
+  return <h2>{content}</h2>;
 }
 
 export default CalendarFormTitle;
